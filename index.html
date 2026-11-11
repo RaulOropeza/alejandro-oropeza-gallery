@@ -44,7 +44,8 @@
 
   /* 4. SPACING, SIZING & RADIUS TOKENS */
   --ds-header-height: 4.5rem;      /* 72px — Comfortable room for header alignment */
-  --ds-btn-height: 1.75rem;        /* 28px — Standardized height across Filled, Outlined & Surface buttons */
+  --ds-btn-height: 1.75rem;        /* 28px — Standardized height on desktop across all button types */
+  --ds-social-size: 1.75rem;       /* 28px — Standardized circular diameter on desktop */
   --ds-btn-padding-x: 0.5rem;      /* 8px — Standardized horizontal padding */
   --ds-btn-gap: 0.375rem;          /* 6px — Space between icon and label inside buttons */
   --ds-grid-gap: 0.625rem;         /* 10px gallery grid gutter */
@@ -478,8 +479,8 @@
    ============================================================================ */
 
 .ds-social-pill {
-  width: 40px;  /* 40px touch-accessible circle */
-  height: 40px; /* 40px touch-accessible circle */
+  width: var(--ds-social-size, 1.75rem);  /* 28px on desktop, 40px on mobile */
+  height: var(--ds-social-size, 1.75rem); /* 28px on desktop, 40px on mobile */
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -502,8 +503,8 @@
 /* Vector Icon Glyph Masked Strictly to SVG Shape (Instagram / 500px) */
 .ds-social-glyph {
   display: inline-block;
-  width: 19px;
-  height: 19px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
   pointer-events: none;
   -webkit-mask-size: contain;
@@ -520,8 +521,8 @@
 }
 
 .ds-social-glyph-500px {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
@@ -1015,6 +1016,108 @@
   backface-visibility: hidden;
 }
 
+/* ============================================================================
+   RESPONSIVE MOBILE BREAKPOINT (< 768px)
+   - Desktop (>= 768px) retains classic 28px buttons and top bar showcase navigation.
+   - Mobile (< 768px) scales ALL buttons to 40px high for effortless touch targets.
+   - Showcase back and nav buttons float at the bottom of the viewport in tonal style.
+   ============================================================================ */
+
+@media (max-width: 767px) {
+  :root {
+    --ds-btn-height: 40px;
+    --ds-social-size: 40px;
+    --ds-btn-padding-x: 0.95rem;
+  }
+
+  /* Every button on mobile is 40px high */
+  .ds-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+    font-size: 0.8125rem !important; /* 13px */
+  }
+
+  .ds-btn.ds-btn-icon {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+  }
+
+  .ds-social-pill {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .ds-social-glyph {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .ds-social-glyph-500px {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .ds-hamburger-btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* Floating Bottom Showcase Navigation Dock (Mobile Only) */
+.ds-mobile-showcase-bar {
+  position: fixed;
+  bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 2rem);
+  max-width: 22.5rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 9999px;
+  background-color: rgba(250, 250, 250, 0.90);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.18),
+              0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  pointer-events: auto;
+  transition: opacity 220ms ease, transform 240ms var(--ds-ease-out-expo);
+}
+
+@media (min-width: 768px) {
+  .ds-mobile-showcase-bar {
+    display: none !important;
+  }
+}
+
+.ds-mobile-tonal-back {
+  height: 40px !important;
+  padding: 0 1rem !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+.ds-mobile-tonal-counter {
+  font-family: var(--ds-font-sans);
+  font-weight: 400;
+  font-size: 0.75rem; /* 12px */
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-color-ink-secondary);
+  user-select: none;
+}
+
+.ds-mobile-tonal-step {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 9999px !important;
+}
+
 
   </style>
 </head>
@@ -1221,11 +1324,34 @@
         </div>
 
         <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-        <div class="mt-5 pb-4">
+        <div class="mt-5 pb-16 md:pb-4">
           <h3 class="ds-h3 text-center">DESCRIPTION</h3>
           <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
         </div>
       </div>
+
+      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only) -->
+      <nav id="mobile-showcase-bar" class="ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation">
+        <button onclick="showView('gallery')" class="ds-btn ds-btn-tonal ds-mobile-tonal-back focus:outline-none" aria-label="Back to gallery">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+          <span>Gallery</span>
+        </button>
+        <span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>
+        <div class="flex items-center gap-1.5">
+          <button onclick="stepPhoto(-1)" title="Previous photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Previous photograph">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+          <button onclick="stepPhoto(1)" title="Next photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Next photograph">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
 
     </section>
 
@@ -1726,6 +1852,7 @@
       const leftBack = document.getElementById('hdr-left-back');
       const brandName = document.getElementById('hdr-brand-name');
       const hamburgerBtn = document.getElementById('hdr-hamburger-btn');
+      const mobShowcaseBar = document.getElementById('mobile-showcase-bar');
       floatingHeader.classList.toggle('is-detail', view === 'detail');
 
       if (view === 'detail') {
@@ -1734,22 +1861,23 @@
         photoTitleWrap.classList.remove('hidden');
         photoTitleWrap.classList.add('flex');
         mainNav.classList.add('hidden');
-        statusNav.classList.remove('hidden');
-        statusNav.classList.add('flex');
-        leftBack.classList.remove('hidden');
+        // Top bar buttons are desktop-only in detail mode (mobile uses floating bottom dock)
+        statusNav.className = "hidden md:flex items-center justify-end gap-2.5";
+        leftBack.className = "hidden md:inline-flex ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.add('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.add('hidden');
+        if (mobShowcaseBar) mobShowcaseBar.classList.remove('hidden');
       } else {
         photoTitleWrap.classList.add('hidden');
         photoTitleWrap.classList.remove('flex');
         menuNav.classList.remove('hidden');
         menuNav.classList.add('md:inline-flex');
-        statusNav.classList.add('hidden');
-        statusNav.classList.remove('flex');
+        statusNav.className = "hidden items-center justify-end gap-2.5";
         mainNav.classList.remove('hidden');
-        leftBack.classList.add('hidden');
+        leftBack.className = "hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.remove('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.remove('hidden');
+        if (mobShowcaseBar) mobShowcaseBar.classList.add('hidden');
       }
 
       // Sync active state in mobile navigation drawer
@@ -1786,6 +1914,8 @@
 
       document.getElementById('hdr-photo-title').textContent = p.title;
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
+      const mobCounter = document.getElementById('mob-photo-counter');
+      if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;
       document.getElementById('detail-img').src = p.src;
 
       const specRows = [

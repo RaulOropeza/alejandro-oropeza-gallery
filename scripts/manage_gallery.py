@@ -548,11 +548,34 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
 
         <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-        <div class="mt-5 pb-4">
+        <div class="mt-5 pb-16 md:pb-4">
           <h3 class="ds-h3 text-center">DESCRIPTION</h3>
           <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
         </div>
       </div>
+
+      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only) -->
+      <nav id="mobile-showcase-bar" class="ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation">
+        <button onclick="showView('gallery')" class="ds-btn ds-btn-tonal ds-mobile-tonal-back focus:outline-none" aria-label="Back to gallery">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+          <span>Gallery</span>
+        </button>
+        <span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>
+        <div class="flex items-center gap-1.5">
+          <button onclick="stepPhoto(-1)" title="Previous photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Previous photograph">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+          <button onclick="stepPhoto(1)" title="Next photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Next photograph">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
 
     </section>
 
@@ -1053,6 +1076,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const leftBack = document.getElementById('hdr-left-back');
       const brandName = document.getElementById('hdr-brand-name');
       const hamburgerBtn = document.getElementById('hdr-hamburger-btn');
+      const mobShowcaseBar = document.getElementById('mobile-showcase-bar');
       floatingHeader.classList.toggle('is-detail', view === 'detail');
 
       if (view === 'detail') {
@@ -1061,22 +1085,23 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         photoTitleWrap.classList.remove('hidden');
         photoTitleWrap.classList.add('flex');
         mainNav.classList.add('hidden');
-        statusNav.classList.remove('hidden');
-        statusNav.classList.add('flex');
-        leftBack.classList.remove('hidden');
+        // Top bar buttons are desktop-only in detail mode (mobile uses floating bottom dock)
+        statusNav.className = "hidden md:flex items-center justify-end gap-2.5";
+        leftBack.className = "hidden md:inline-flex ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.add('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.add('hidden');
+        if (mobShowcaseBar) mobShowcaseBar.classList.remove('hidden');
       } else {
         photoTitleWrap.classList.add('hidden');
         photoTitleWrap.classList.remove('flex');
         menuNav.classList.remove('hidden');
         menuNav.classList.add('md:inline-flex');
-        statusNav.classList.add('hidden');
-        statusNav.classList.remove('flex');
+        statusNav.className = "hidden items-center justify-end gap-2.5";
         mainNav.classList.remove('hidden');
-        leftBack.classList.add('hidden');
+        leftBack.className = "hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.remove('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.remove('hidden');
+        if (mobShowcaseBar) mobShowcaseBar.classList.add('hidden');
       }
 
       // Sync active state in mobile navigation drawer
@@ -1113,6 +1138,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
       document.getElementById('hdr-photo-title').textContent = p.title;
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
+      const mobCounter = document.getElementById('mob-photo-counter');
+      if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;
       document.getElementById('detail-img').src = p.src;
 
       const specRows = [
