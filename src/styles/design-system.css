@@ -33,14 +33,14 @@
   --ds-font-sans: 'Avenir', 'Avenir Next', 'Montserrat', 'Century Gothic', sans-serif;
 
   /* 4. SPACING, SIZING & RADIUS TOKENS */
-  --ds-header-height: 5rem;        /* 80px — Generous breathing room for 48px buttons */
-  --ds-btn-height: 48px;           /* 48px — Standardized height everywhere */
-  --ds-social-size: 48px;          /* 48px — Standardized circular diameter everywhere */
-  --ds-btn-padding-x: 1.15rem;     /* 18px horizontal padding */
-  --ds-btn-gap: 0.5rem;            /* 8px space between icon and label inside buttons */
+  --ds-header-height: 4.25rem;     /* 68px — Elegant desktop & mobile floating header height */
+  --ds-btn-height: 32px;           /* 32px — Sleek unified height */
+  --ds-social-size: 32px;          /* 32px — Standardized circular diameter */
+  --ds-btn-padding-x: 0.95rem;     /* 15px horizontal padding */
+  --ds-btn-gap: 0.4rem;            /* 6px space between icon and label inside buttons */
   --ds-grid-gap: 0.625rem;         /* 10px gallery grid gutter */
   --ds-radius-sm: 0.125rem;        /* 2px photo frame corner radius */
-  --ds-radius-md: 9999px;          /* Full pill radius for 48px buttons */
+  --ds-radius-md: 9999px;          /* Full pill radius */
 
   /* 5. MOTION & ANIMATION TOKENS */
   --ds-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,50 +51,66 @@
 }
 
 /* ============================================================================
-   TYPOGRAPHY SCALE & HIERARCHY CLASSES
+   TYPOGRAPHY SCALE & HIERARCHY CLASSES (Base 16px Scale)
    ============================================================================ */
 
 /* H1: Page Headline (e.g., "EXPLORE THE GALLERY") — Futura Light (300), Never Bold */
 .ds-h1 {
   font-family: var(--ds-font-display);
   font-weight: 300;
-  font-size: 1.125rem; /* 18px */
-  line-height: 1.2;
-  letter-spacing: 0.07em;
+  font-size: 1.625rem; /* 26px on mobile */
+  line-height: 1.22;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
+}
+@media (min-width: 768px) {
+  .ds-h1 {
+    font-size: 1.875rem; /* 30px on desktop */
+  }
 }
 
 /* H2: Showcase Photograph Title (Header Center) — Futura Regular (400), Never Bold */
 .ds-h2 {
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 0.875rem; /* 14px */
-  line-height: 1;
-  letter-spacing: 0.06em;
+  font-size: 1.125rem; /* 18px on mobile */
+  line-height: 1.25;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
+}
+@media (min-width: 768px) {
+  .ds-h2 {
+    font-size: 1.25rem; /* 20px on desktop */
+  }
 }
 
 /* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Futura Regular (400) */
 .ds-h3 {
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.3;
-  letter-spacing: 0.14em;
+  font-size: 0.875rem; /* 14px on mobile */
+  line-height: 1.35;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
 }
+@media (min-width: 768px) {
+  .ds-h3 {
+    font-size: 0.9375rem; /* 15px on desktop */
+  }
+}
 
-/* Brand Name ("Alejandro Oropeza") — Avenir Medium (500), Baseline-Aligned */
+/* Brand Name ("Alejandro Oropeza") — Avenir Medium (500), Horizontally Aligned to Social Buttons */
 .ds-brand-name {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--ds-font-sans);
   font-weight: 500;
-  font-size: 0.875rem; /* 14px */
+  font-size: 1.125rem; /* 18px on mobile */
   line-height: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   margin: 0;
   padding: 0;
   background: transparent;
@@ -102,24 +118,29 @@
   white-space: nowrap;
   transition: opacity var(--ds-duration-fast) ease;
 }
+@media (min-width: 768px) {
+  .ds-brand-name {
+    font-size: 1.1875rem; /* 19px on desktop */
+  }
+}
 
-/* Body Copy — Avenir Light (300) */
+/* Body Copy — Avenir Light (300) / Book (400) — 16px Base */
 .ds-body {
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.62;
-  letter-spacing: 0.015em;
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  letter-spacing: 0.012em;
   color: var(--ds-color-ink-secondary);
 }
 
-/* Metadata / Spec Row Label (e.g., "FOCAL LENGTH", "ISO") — Avenir Regular (400) */
+/* Metadata / Spec Row Label (e.g., "LOCATION & YEAR", "ISO") — Avenir Regular (400) */
 .ds-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
   font-size: 0.75rem; /* 12px */
   line-height: 1.4;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--ds-color-ink-label);
 }
@@ -128,9 +149,9 @@
 .ds-value {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.9375rem; /* 15px */
   line-height: 1.4;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.015em;
   font-variant-numeric: tabular-nums;
   color: var(--ds-color-ink-primary);
 }
@@ -198,11 +219,12 @@
 .ds-btn {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.8125rem; /* 13px */
   line-height: 1;
-  letter-spacing: 0.03em;
-  height: var(--ds-btn-height);           /* 28px (1.75rem) across all button types */
-  padding: 0 var(--ds-btn-padding-x);     /* 8px (0.5rem) left & right padding */
+  letter-spacing: 0.02em;
+  text-transform: none; /* Sentence case across all buttons */
+  height: var(--ds-btn-height);           /* 32px sleek unified height */
+  padding: 0 var(--ds-btn-padding-x);
   border-radius: var(--ds-radius-md);
   border: 1px solid transparent;
   transition: opacity var(--ds-duration-fast) ease,
@@ -231,9 +253,6 @@
   color: var(--ds-color-ink-inverse);
   border-color: var(--ds-color-ink-primary);
 }
-.ds-btn-filled:hover {
-  opacity: 0.85;
-}
 .ds-btn-filled:active {
   opacity: 0.75;
 }
@@ -244,15 +263,11 @@
   color: var(--ds-color-ink-primary);
   border-color: var(--ds-color-border-strong);
 }
-.ds-btn-outlined:hover {
-  background-color: var(--ds-surface-hover);
-  border-color: var(--ds-color-ink-primary);
-}
 .ds-btn-outlined:active {
   background-color: var(--ds-surface-active);
 }
 
-/* 3. SURFACE: Surface Button (Fully rounded pill; circular 28×28 when paired with .ds-btn-icon) */
+/* 3. SURFACE: Surface Button (Fully rounded pill; circular 32×32 when paired with .ds-btn-icon) */
 .ds-btn-surface {
   background-color: transparent;
   color: rgba(20, 20, 20, 0.72);
@@ -260,12 +275,8 @@
   border-radius: 9999px;
 }
 .ds-btn-surface.ds-btn-icon {
-  width: var(--ds-btn-height); /* 28px × 28px exact circle */
+  width: var(--ds-btn-height); /* 32px × 32px exact circle */
   padding: 0;
-}
-.ds-btn-surface:hover {
-  background-color: var(--ds-surface-hover);
-  color: #000000;
 }
 .ds-btn-surface:active {
   background-color: var(--ds-surface-active);
@@ -291,20 +302,8 @@
               color 180ms ease;
 }
 .ds-btn-tonal.ds-btn-icon {
-  width: var(--ds-btn-height); /* 28px × 28px exact circle */
+  width: var(--ds-btn-height); /* 32px × 32px exact circle */
   padding: 0;
-}
-.ds-btn-tonal:hover {
-  color: var(--lite-peak);
-  background-image: radial-gradient(
-    circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
-    var(--lite-surface-peak) 0%,
-    var(--lite-surface-mid) 38%,
-    rgba(20, 20, 20, 0.08) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-              0 2px 5px -1px rgba(0, 0, 0, 0.11);
 }
 .ds-btn-tonal:active {
   transform: translateY(0.5px) scale(0.96);
@@ -320,19 +319,6 @@
   border-color: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.62);
 }
-.ds-header-hero .ds-btn-tonal:hover,
-.ds-btn-tonal-hero:hover {
-  color: #FFFFFF;
-  background-image: radial-gradient(
-    circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
-    rgba(255, 255, 255, 0.48) 0%,
-    rgba(255, 255, 255, 0.30) 40%,
-    rgba(255, 255, 255, 0.20) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.26);
-  box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
-              0 3px 6px -1px rgba(0, 0, 0, 0.30);
-}
 .ds-header-hero .ds-btn-tonal:active,
 .ds-btn-tonal-hero:active {
   transform: translateY(0.5px) scale(0.96);
@@ -340,6 +326,46 @@
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
               inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
+}
+
+/* Mouse Hover States (Strictly scoped to devices with hover capabilities — prevents sticky tap on mobile) */
+@media (hover: hover) and (pointer: fine) {
+  .ds-btn-filled:hover {
+    opacity: 0.85;
+  }
+  .ds-btn-outlined:hover {
+    background-color: var(--ds-surface-hover);
+    border-color: var(--ds-color-ink-primary);
+  }
+  .ds-btn-surface:hover {
+    background-color: var(--ds-surface-hover);
+    color: #000000;
+  }
+  .ds-btn-tonal:hover {
+    color: var(--lite-peak);
+    background-image: radial-gradient(
+      circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
+      var(--lite-surface-peak) 0%,
+      var(--lite-surface-mid) 38%,
+      rgba(20, 20, 20, 0.08) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
+                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+  .ds-header-hero .ds-btn-tonal:hover,
+  .ds-btn-tonal-hero:hover {
+    color: #FFFFFF;
+    background-image: radial-gradient(
+      circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
+      rgba(255, 255, 255, 0.48) 0%,
+      rgba(255, 255, 255, 0.30) 40%,
+      rgba(255, 255, 255, 0.20) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
+                0 3px 6px -1px rgba(0, 0, 0, 0.30);
+  }
 }
 
 /* ============================================================================
@@ -521,8 +547,8 @@
 /* Vector Icon Glyph Masked Strictly to SVG Shape (Instagram / 500px) */
 .ds-social-glyph {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
   pointer-events: none;
   -webkit-mask-size: contain;
@@ -539,8 +565,8 @@
 }
 
 .ds-social-glyph-500px {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
@@ -556,32 +582,7 @@
   background-color: rgba(255, 255, 255, 0.62);
 }
 
-/* Hover (Hero Mode): Ultra-bright white radial light + floating drop shadow */
-.ds-header-hero .ds-social-pill:hover {
-  transform: translateY(0) scale(1);
-  background-image: radial-gradient(
-    circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
-    rgba(255, 255, 255, 0.48) 0%,
-    rgba(255, 255, 255, 0.30) 40%,
-    rgba(255, 255, 255, 0.20) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.26);
-  box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
-              0 3px 6px -1px rgba(0, 0, 0, 0.30);
-}
-
-.ds-header-hero .ds-social-pill:hover .ds-social-glyph {
-  background-color: transparent;
-  background-image: radial-gradient(
-    circle 20px at var(--spot-x, 50%) var(--spot-y, 50%),
-    #FFFFFF 0%,
-    #FFFFFF 36%,
-    rgba(255, 255, 255, 0.94) 56%,
-    rgba(255, 255, 255, 0.62) 100%
-  );
-}
-
-/* Active / Pressed (Hero Mode): Slight, noticeable physical press */
+/* Active / Pressed (Hero Mode): Slight physical press */
 .ds-header-hero .ds-social-pill:active {
   transform: translateY(0.5px) scale(0.96);
   background-color: rgba(255, 255, 255, 0.17);
@@ -605,29 +606,6 @@
   background-color: rgba(20, 20, 20, 0.72);
 }
 
-/* Hover (Pill Mode / Light Surface) */
-.ds-header-frosted .ds-social-pill:hover,
-.ds-header-transparent-dark .ds-social-pill:hover,
-.ds-social-pill-dark:hover {
-  transform: translateY(0) scale(1);
-  background-image: radial-gradient(
-    circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
-    var(--lite-surface-peak) 0%,
-    var(--lite-surface-mid) 38%,
-    rgba(20, 20, 20, 0.08) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-              0 2px 5px -1px rgba(0, 0, 0, 0.11);
-}
-
-.ds-header-frosted .ds-social-pill:hover .ds-social-glyph,
-.ds-header-transparent-dark .ds-social-pill:hover .ds-social-glyph,
-.ds-social-pill-dark:hover .ds-social-glyph {
-  background-image: none;
-  background-color: var(--lite-peak);
-}
-
 /* Active / Pressed (Pill Mode / Light Surface) */
 .ds-header-frosted .ds-social-pill:active,
 .ds-header-transparent-dark .ds-social-pill:active,
@@ -639,19 +617,69 @@
               inset 0 1px 2px rgba(0, 0, 0, 0.16);
 }
 
+/* Mouse Hover States for Social Pills */
+@media (hover: hover) and (pointer: fine) {
+  .ds-header-hero .ds-social-pill:hover {
+    transform: translateY(0) scale(1);
+    background-image: radial-gradient(
+      circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
+      rgba(255, 255, 255, 0.48) 0%,
+      rgba(255, 255, 255, 0.30) 40%,
+      rgba(255, 255, 255, 0.20) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
+                0 3px 6px -1px rgba(0, 0, 0, 0.30);
+  }
+
+  .ds-header-hero .ds-social-pill:hover .ds-social-glyph {
+    background-color: transparent;
+    background-image: radial-gradient(
+      circle 20px at var(--spot-x, 50%) var(--spot-y, 50%),
+      #FFFFFF 0%,
+      #FFFFFF 36%,
+      rgba(255, 255, 255, 0.94) 56%,
+      rgba(255, 255, 255, 0.62) 100%
+    );
+  }
+
+  .ds-header-frosted .ds-social-pill:hover,
+  .ds-header-transparent-dark .ds-social-pill:hover,
+  .ds-social-pill-dark:hover {
+    transform: translateY(0) scale(1);
+    background-image: radial-gradient(
+      circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
+      var(--lite-surface-peak) 0%,
+      var(--lite-surface-mid) 38%,
+      rgba(20, 20, 20, 0.08) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
+                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+
+  .ds-header-frosted .ds-social-pill:hover .ds-social-glyph,
+  .ds-header-transparent-dark .ds-social-pill:hover .ds-social-glyph,
+  .ds-social-pill-dark:hover .ds-social-glyph {
+    background-image: none;
+    background-color: var(--lite-peak);
+  }
+}
+
 /* ============================================================================
    MOBILE HAMBURGER BUTTON & FULL-SCREEN OVERLAY MENU
    ============================================================================ */
 
 .ds-hamburger-btn {
-  width: 40px;
-  height: 40px;
+  width: var(--ds-social-size);  /* 32px — exactly matches social pills */
+  height: var(--ds-social-size); /* 32px — exactly matches social pills */
+  min-width: var(--ds-social-size);
   border-radius: 9999px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   border: 1px solid transparent;
   cursor: pointer;
   position: relative;
@@ -667,7 +695,7 @@
 
 .ds-hamburger-line {
   display: block;
-  width: 17px;
+  width: 14px;
   height: 1.5px;
   border-radius: 1px;
   transition: transform 220ms var(--ds-ease-out-expo),
@@ -683,9 +711,6 @@
 .ds-header-hero .ds-hamburger-line {
   background-color: rgba(255, 255, 255, 0.85);
 }
-.ds-header-hero .ds-hamburger-btn:hover {
-  background-color: rgba(255, 255, 255, 0.28);
-}
 
 /* Frosted / Transparent Dark Mode */
 .ds-header-frosted .ds-hamburger-btn,
@@ -697,12 +722,19 @@
 .ds-header-transparent-dark .ds-hamburger-line {
   background-color: rgba(20, 20, 20, 0.85);
 }
-.ds-header-frosted .ds-hamburger-btn:hover,
-.ds-header-transparent-dark .ds-hamburger-btn:hover {
-  background-color: rgba(20, 20, 20, 0.12);
-}
+
 .ds-hamburger-btn:active {
   transform: translateY(0.5px) scale(0.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ds-header-hero .ds-hamburger-btn:hover {
+    background-color: rgba(255, 255, 255, 0.28);
+  }
+  .ds-header-frosted .ds-hamburger-btn:hover,
+  .ds-header-transparent-dark .ds-hamburger-btn:hover {
+    background-color: rgba(20, 20, 20, 0.12);
+  }
 }
 
 /* Mobile Nav Overlay & Sheet */
@@ -875,49 +907,61 @@
   object-position: center;
   transition: transform var(--ds-duration-zoom) var(--ds-ease-out-expo);
 }
-.ds-thumb-card:hover img {
-  transform: scale(var(--ds-hover-scale));
+@media (hover: hover) and (pointer: fine) {
+  .ds-thumb-card:hover img {
+    transform: scale(var(--ds-hover-scale));
+  }
 }
 
 .ds-showcase-stage {
   background-color: var(--ds-color-stage); /* Strictly Pure Neutral Grey #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
+  box-sizing: border-box;
+  /* Mobile padding: 5rem (80px) top under header, 5.75rem (92px) bottom above floating dock */
+  padding: 5rem 1.25rem 5.75rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .ds-showcase-stage {
+    /* Desktop padding: 7.5rem (120px) top to ensure generous space below author name, 3.5rem (56px) bottom */
+    padding: 7.5rem 2.5rem 3.5rem 2.5rem;
+  }
 }
 
 .ds-spec-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.375rem 0; /* 6px */
+  padding: 0.5rem 0; /* 8px */
   border-bottom: 1px solid var(--ds-color-border);
 }
 
 /* SHOWCASE TOP BAR:
-   - Hero / Unscrolled (.is-detail): align Left (Back), Center Row 1 (Photo Title, 28px line-height to match 28px buttons), and Right ('n of n' + Prev/Next) horizontally at the top; Row 2 is subtle 12px capitalized author name below
+   - Hero / Unscrolled (.is-detail): align Left (Back), Center Row 1 (Photo Title), and Right ('n of n' + Prev/Next) horizontally centered; Row 2 is subtle capitalized author name below
    - Pill Mode (.ds-header-frosted.is-detail): horizontally centered; only Back, Photo Title, and Prev/Next remain */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
-  align-items: flex-start;
+  align-items: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-right-col {
-  align-self: flex-start;
+  align-self: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
-  line-height: var(--ds-btn-height); /* 28px — exact horizontal alignment with Back & Prev/Next buttons */
+  line-height: 1.25;
 }
 #hdr-showcase-author {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.25;
-  letter-spacing: 0.04em;
+  font-size: 0.875rem; /* 14px on mobile & desktop */
+  line-height: 1.2;
+  letter-spacing: 0.03em;
   text-transform: capitalize;
   color: var(--ds-color-ink-muted);
-  margin-top: 0.125rem; /* 2px below the 28px title row */
+  margin-top: 0.15rem;
 }
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.8125rem; /* 13px */
   line-height: 1;
   letter-spacing: 0.03em;
   text-transform: none; /* keep "of" lowercase */
@@ -1045,8 +1089,8 @@
   align-items: center;
   justify-content: space-between;
   width: calc(100% - 2rem);
-  max-width: 23rem;
-  padding: 0.35rem 0.5rem;
+  max-width: 22rem;
+  padding: 0.3rem 0.45rem;
   border-radius: 9999px;
   background-color: rgba(250, 250, 250, 0.90);
   backdrop-filter: blur(20px) saturate(140%);
@@ -1055,7 +1099,7 @@
   box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.18),
               0 2px 6px -1px rgba(0, 0, 0, 0.06);
   pointer-events: auto;
-  transition: opacity 220ms ease, transform 240ms var(--ds-ease-out-expo);
+  transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
 }
 
 @media (min-width: 768px) {
@@ -1065,28 +1109,28 @@
 }
 
 .ds-mobile-tonal-back {
-  height: 48px !important;
-  min-height: 48px !important;
-  padding: 0 1.25rem !important;
-  font-size: 0.75rem !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 1.15rem !important;
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important; /* Sentence case: "Gallery" */
 }
 
 .ds-mobile-tonal-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
   font-size: 0.8125rem; /* 13px */
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--ds-color-ink-secondary);
   user-select: none;
 }
 
 .ds-mobile-tonal-step {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
   border-radius: 9999px !important;
   padding: 0 !important;
 }

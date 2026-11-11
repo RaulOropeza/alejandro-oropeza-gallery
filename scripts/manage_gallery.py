@@ -374,7 +374,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Whisper Mist Floating Pill Capsule) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero __HEADER_POS_CLS__">
-      <div id="floating-header-pill" class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-baseline content-center">
+      <div id="floating-header-pill" class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center">
         
         <!-- COLUMN 1 (LEFT):
              - On Home / About: "Alejandro Oropeza" (Avenir Medium, baseline-aligned unscrolled, horizontally centered in pill mode)
@@ -522,7 +522,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <section id="view-detail" class="hidden __MAIN_PULL_CLS__">
       
       <!-- Full-Viewport-Height Pure Grey Photo Stage (.ds-showcase-stage) -->
-      <div class="ds-showcase-stage relative w-full __STAGE_HEIGHT_CLS__ pt-[4.5rem] pb-4 px-4 flex items-center justify-center overflow-hidden">
+      <div class="ds-showcase-stage relative w-full __STAGE_HEIGHT_CLS__ flex items-center justify-center overflow-hidden">
         <div class="w-full h-full flex items-center justify-center">
           <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm rounded-sm mx-auto block" />
         </div>
@@ -961,10 +961,36 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       } else {
         floatingHeader.classList.add('ds-header-frosted');
       }
+
+      if (currentView === 'detail' && window.innerWidth < 768) {
+        updateMobileDockPosition();
+      }
+    }
+
+    function updateMobileDockPosition() {
+      const dock = document.getElementById('mobile-showcase-bar');
+      const footer = document.getElementById('site-footer');
+      if (!dock || !footer || currentView !== 'detail') return;
+      if (window.innerWidth >= 768) {
+        dock.style.transform = '';
+        return;
+      }
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const baseBottom = 18;
+      const clearance = 16;
+      const threshold = windowHeight - baseBottom;
+      if (footerRect.top < threshold + clearance) {
+        const pushUp = (threshold + clearance) - footerRect.top;
+        dock.style.transform = `translateX(-50%) translateY(-${pushUp}px)`;
+      } else {
+        dock.style.transform = 'translateX(-50%) translateY(0)';
+      }
     }
 
     scrollViewport.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('scroll', updateHeaderStyle, { passive: true });
+    window.addEventListener('resize', updateMobileDockPosition, { passive: true });
 
     const heroLandscapeIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
     const heroLandscape = heroLandscapeIdx !== -1 ? PHOTOS[heroLandscapeIdx] : PHOTOS[0];
@@ -1109,7 +1135,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
       scrollViewport.scrollTop = 0;
       window.scrollTo({ top: 0, behavior: 'instant' });
+      if (mobShowcaseBar) {
+        mobShowcaseBar.style.transform = 'translateX(-50%) translateY(0)';
+      }
       updateHeaderStyle();
+      if (view === 'detail' && window.innerWidth < 768) {
+        updateMobileDockPosition();
+      }
     }
 
     function openPhoto(idx, push = true) {
