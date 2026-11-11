@@ -582,7 +582,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <!-- VIEW 3: ABOUT ME PAGE -->
     <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-4 sm:px-6 pb-8 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
-      <h1 id="about-heading" class="ds-brand-name text-lg sm:text-xl mt-1">Alejandro Oropeza</h1>
+      <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
       <p id="about-bio" class="ds-body mt-2.5"></p>
       <div id="about-specs" class="mt-4 pt-2" style="border-top: 1px solid var(--ds-color-border);"></div>
     </section>
@@ -835,38 +835,38 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Futura Light (300) · Uppercase · +0.07em</span>
+            <span class="ds-label block">.ds-h1 · Futura Light (300) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
-          <code class="text-xs text-neutral-500">18px / 300</code>
+          <code class="text-xs text-neutral-500">26px M · 30px D / 300</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.06em</span>
+            <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">14px / 400</code>
+          <code class="text-xs text-neutral-500">18px / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Futura Regular (400) · Uppercase · +0.14em</span>
+            <span class="ds-label block">.ds-h3 · Futura Regular (400) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
-          <code class="text-xs text-neutral-500">12px / 400</code>
+          <code class="text-xs text-neutral-500">14px M · 15px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-brand-name · Avenir Medium (500) · +0.03em · Baseline-Aligned</span>
+            <span class="ds-label block">.ds-brand-name · Avenir Medium (500) · +0.02em · Center-Aligned</span>
             <span class="ds-brand-name mt-0.5 block">Alejandro Oropeza</span>
           </div>
-          <code class="text-xs text-neutral-500">14px / 500</code>
+          <code class="text-xs text-neutral-500">18px / 500</code>
         </div>
         <div class="ds-spec-row" style="border-bottom: none;">
           <div>
-            <span class="ds-label block">.ds-body / .ds-label / .ds-value · Avenir</span>
+            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Avenir</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
-          <code class="text-xs text-neutral-500">12px / 300–400</code>
+          <code class="text-xs text-neutral-500">16px / 300–400</code>
         </div>
       </div>
     </div>

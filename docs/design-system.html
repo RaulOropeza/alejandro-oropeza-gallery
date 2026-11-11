@@ -96,16 +96,11 @@
 .ds-h2 {
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 1.125rem; /* 18px on mobile */
+  font-size: 1.125rem; /* 18px on mobile & desktop */
   line-height: 1.25;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
-}
-@media (min-width: 768px) {
-  .ds-h2 {
-    font-size: 1.25rem; /* 20px on desktop */
-  }
 }
 
 /* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Futura Regular (400) */
@@ -130,7 +125,7 @@
   align-items: center;
   font-family: var(--ds-font-sans);
   font-weight: 500;
-  font-size: 1.125rem; /* 18px on mobile */
+  font-size: 1.125rem; /* 18px on mobile & desktop */
   line-height: 1;
   letter-spacing: 0.02em;
   margin: 0;
@@ -139,11 +134,6 @@
   border: none;
   white-space: nowrap;
   transition: opacity var(--ds-duration-fast) ease;
-}
-@media (min-width: 768px) {
-  .ds-brand-name {
-    font-size: 1.1875rem; /* 19px on desktop */
-  }
 }
 
 /* Body Copy — Avenir Light (300) / Book (400) — 16px Base */
@@ -212,7 +202,7 @@
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.6875rem; /* 11px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.04em;
 }
@@ -241,7 +231,7 @@
 .ds-btn {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: none; /* Sentence case across all buttons */
@@ -443,7 +433,7 @@
   margin: 0 0.85rem;
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.72rem; /* 11.5px — matches menu link baseline */
+  font-size: 0.875rem; /* 14px — matches menu link baseline */
   line-height: 1;
   opacity: 0.35;
   pointer-events: none;
@@ -458,7 +448,7 @@
   border: none;
   font-family: var(--ds-font-sans);
   font-weight: 500;
-  font-size: 0.72rem; /* 11.5px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -983,7 +973,7 @@
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.03em;
   text-transform: none; /* keep "of" lowercase */
@@ -1134,7 +1124,7 @@
   height: 38px !important;
   min-height: 38px !important;
   padding: 0 1.15rem !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.875rem !important; /* 14px */
   letter-spacing: 0.02em !important;
   text-transform: none !important; /* Sentence case: "Gallery" */
 }
@@ -1142,7 +1132,7 @@
 .ds-mobile-tonal-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--ds-color-ink-secondary);
@@ -1379,7 +1369,7 @@
     <!-- VIEW 3: ABOUT ME PAGE -->
     <section id="view-about" class="hidden  pt-24 px-4 sm:px-6 pb-8 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
-      <h1 id="about-heading" class="ds-brand-name text-lg sm:text-xl mt-1">Alejandro Oropeza</h1>
+      <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
       <p id="about-bio" class="ds-body mt-2.5"></p>
       <div id="about-specs" class="mt-4 pt-2" style="border-top: 1px solid var(--ds-color-border);"></div>
     </section>
@@ -1632,38 +1622,38 @@
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Futura Light (300) · Uppercase · +0.07em</span>
+            <span class="ds-label block">.ds-h1 · Futura Light (300) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
-          <code class="text-xs text-neutral-500">18px / 300</code>
+          <code class="text-xs text-neutral-500">26px M · 30px D / 300</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.06em</span>
+            <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">14px / 400</code>
+          <code class="text-xs text-neutral-500">18px / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Futura Regular (400) · Uppercase · +0.14em</span>
+            <span class="ds-label block">.ds-h3 · Futura Regular (400) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
-          <code class="text-xs text-neutral-500">12px / 400</code>
+          <code class="text-xs text-neutral-500">14px M · 15px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-brand-name · Avenir Medium (500) · +0.03em · Baseline-Aligned</span>
+            <span class="ds-label block">.ds-brand-name · Avenir Medium (500) · +0.02em · Center-Aligned</span>
             <span class="ds-brand-name mt-0.5 block">Alejandro Oropeza</span>
           </div>
-          <code class="text-xs text-neutral-500">14px / 500</code>
+          <code class="text-xs text-neutral-500">18px / 500</code>
         </div>
         <div class="ds-spec-row" style="border-bottom: none;">
           <div>
-            <span class="ds-label block">.ds-body / .ds-label / .ds-value · Avenir</span>
+            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Avenir</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
-          <code class="text-xs text-neutral-500">12px / 300–400</code>
+          <code class="text-xs text-neutral-500">16px / 300–400</code>
         </div>
       </div>
     </div>

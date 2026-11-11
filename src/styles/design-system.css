@@ -74,16 +74,11 @@
 .ds-h2 {
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 1.125rem; /* 18px on mobile */
+  font-size: 1.125rem; /* 18px on mobile & desktop */
   line-height: 1.25;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
-}
-@media (min-width: 768px) {
-  .ds-h2 {
-    font-size: 1.25rem; /* 20px on desktop */
-  }
 }
 
 /* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Futura Regular (400) */
@@ -108,7 +103,7 @@
   align-items: center;
   font-family: var(--ds-font-sans);
   font-weight: 500;
-  font-size: 1.125rem; /* 18px on mobile */
+  font-size: 1.125rem; /* 18px on mobile & desktop */
   line-height: 1;
   letter-spacing: 0.02em;
   margin: 0;
@@ -117,11 +112,6 @@
   border: none;
   white-space: nowrap;
   transition: opacity var(--ds-duration-fast) ease;
-}
-@media (min-width: 768px) {
-  .ds-brand-name {
-    font-size: 1.1875rem; /* 19px on desktop */
-  }
 }
 
 /* Body Copy — Avenir Light (300) / Book (400) — 16px Base */
@@ -190,7 +180,7 @@
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.6875rem; /* 11px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.04em;
 }
@@ -219,7 +209,7 @@
 .ds-btn {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: none; /* Sentence case across all buttons */
@@ -421,7 +411,7 @@
   margin: 0 0.85rem;
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.72rem; /* 11.5px — matches menu link baseline */
+  font-size: 0.875rem; /* 14px — matches menu link baseline */
   line-height: 1;
   opacity: 0.35;
   pointer-events: none;
@@ -436,7 +426,7 @@
   border: none;
   font-family: var(--ds-font-sans);
   font-weight: 500;
-  font-size: 0.72rem; /* 11.5px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -961,7 +951,7 @@
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.03em;
   text-transform: none; /* keep "of" lowercase */
@@ -1112,7 +1102,7 @@
   height: 38px !important;
   min-height: 38px !important;
   padding: 0 1.15rem !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.875rem !important; /* 14px */
   letter-spacing: 0.02em !important;
   text-transform: none !important; /* Sentence case: "Gallery" */
 }
@@ -1120,7 +1110,7 @@
 .ds-mobile-tonal-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.8125rem; /* 13px */
+  font-size: 0.875rem; /* 14px */
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--ds-color-ink-secondary);
