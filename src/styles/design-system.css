@@ -342,13 +342,6 @@
               inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
 }
 
-/* Ensure .hidden always hides custom flex/grid components (e.g., menu nav on Showcase pages) */
-.hidden,
-.ds-menu-nav.hidden,
-.ds-btn.hidden {
-  display: none !important;
-}
-
 /* ============================================================================
    TOP BAR EDITORIAL SLASH MENU ("GALLERY  /  ABOUT ME")
    - Baseline-aligned with "Alejandro Oropeza" when unscrolled; horizontally
@@ -372,6 +365,28 @@
 /* Explicitly hide menu nav on all screen sizes when in detail/showcase view */
 .ds-menu-nav.is-hidden,
 .ds-floating-header.is-detail .ds-menu-nav {
+  display: none !important;
+}
+
+/* SHOWCASE TOP BAR DESKTOP CONTROLS:
+   - Hidden on mobile (<768px) where bottom tonal dock is used
+   - Visible on desktop (>=768px) unless .is-hidden */
+.ds-showcase-back,
+.ds-showcase-status {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .ds-showcase-back:not(.is-hidden) {
+    display: inline-flex !important;
+  }
+  .ds-showcase-status:not(.is-hidden) {
+    display: inline-flex !important;
+  }
+}
+
+.ds-showcase-back.is-hidden,
+.ds-showcase-status.is-hidden {
   display: none !important;
 }
 

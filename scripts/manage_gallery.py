@@ -383,7 +383,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">
             Alejandro Oropeza
           </button>
-          <button id="hdr-left-back" onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" class="hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none">
+          <button id="hdr-left-back" onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" class="ds-showcase-back is-hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none">
             <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
@@ -429,7 +429,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             </button>
           </div>
 
-          <div id="header-photo-status" class="hidden items-center justify-end gap-2.5">
+          <div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">
             <span id="hdr-photo-counter" class="whitespace-nowrap">
               1 of 10
             </span>
@@ -1084,21 +1084,20 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         photoTitleWrap.classList.remove('hidden');
         photoTitleWrap.classList.add('flex');
         mainNav.classList.add('hidden');
-        // Top bar buttons are desktop-only in detail mode (mobile uses floating bottom dock)
-        statusNav.className = "hidden md:flex items-center justify-end gap-2.5";
-        leftBack.className = "hidden md:inline-flex ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.add('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.add('hidden');
+        leftBack.classList.remove('is-hidden');
+        statusNav.classList.remove('is-hidden');
         if (mobShowcaseBar) mobShowcaseBar.classList.remove('hidden');
       } else {
         photoTitleWrap.classList.add('hidden');
         photoTitleWrap.classList.remove('flex');
         menuNav.classList.remove('is-hidden');
-        statusNav.className = "hidden items-center justify-end gap-2.5";
         mainNav.classList.remove('hidden');
-        leftBack.className = "hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
         brandName.classList.remove('hidden');
         if (hamburgerBtn) hamburgerBtn.classList.remove('hidden');
+        leftBack.classList.add('is-hidden');
+        statusNav.classList.add('is-hidden');
         if (mobShowcaseBar) mobShowcaseBar.classList.add('hidden');
       }
 
@@ -1249,6 +1248,19 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         }
       }, { passive: true });
     }
+
+    // Keyboard Navigation for Desktop Showcase
+    window.addEventListener('keydown', (e) => {
+      if (currentView === 'detail') {
+        if (e.key === 'ArrowRight' || e.key === 'Right') {
+          stepPhoto(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+          stepPhoto(-1);
+        } else if (e.key === 'Escape') {
+          showView('gallery');
+        }
+      }
+    });
 
     function switchMode(mode) {
       const isDS = mode === 'design-system';
