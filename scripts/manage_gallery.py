@@ -395,7 +395,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
              - On Home / About: Editorial Slash Menu ("GALLERY  /  ABOUT ME")
              - On Showcase: Row 1 subtle "Alejandro Oropeza" (hidden in pill mode), Row 2 Photo Title (.ds-h2) -->
         <div class="justify-self-center z-10">
-          <nav id="header-menu-nav" class="ds-menu-nav hidden md:inline-flex">
+          <nav id="header-menu-nav" class="ds-menu-nav">
             <button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none">
               <span class="ds-menu-text">GALLERY</span>
             </button>
@@ -1080,8 +1080,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       floatingHeader.classList.toggle('is-detail', view === 'detail');
 
       if (view === 'detail') {
-        menuNav.classList.add('hidden');
-        menuNav.classList.remove('md:inline-flex');
+        menuNav.classList.add('is-hidden');
         photoTitleWrap.classList.remove('hidden');
         photoTitleWrap.classList.add('flex');
         mainNav.classList.add('hidden');
@@ -1094,8 +1093,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       } else {
         photoTitleWrap.classList.add('hidden');
         photoTitleWrap.classList.remove('flex');
-        menuNav.classList.remove('hidden');
-        menuNav.classList.add('md:inline-flex');
+        menuNav.classList.remove('is-hidden');
         statusNav.className = "hidden items-center justify-end gap-2.5";
         mainNav.classList.remove('hidden');
         leftBack.className = "hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none";
