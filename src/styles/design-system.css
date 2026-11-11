@@ -468,8 +468,8 @@
    ============================================================================ */
 
 .ds-social-pill {
-  width: var(--ds-btn-height);  /* 28px */
-  height: var(--ds-btn-height); /* 28px */
+  width: 40px;  /* 40px touch-accessible circle */
+  height: 40px; /* 40px touch-accessible circle */
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -492,8 +492,8 @@
 /* Vector Icon Glyph Masked Strictly to SVG Shape (Instagram / 500px) */
 .ds-social-glyph {
   display: inline-block;
-  width: 15px;
-  height: 15px;
+  width: 19px;
+  height: 19px;
   flex-shrink: 0;
   pointer-events: none;
   -webkit-mask-size: contain;
@@ -510,8 +510,8 @@
 }
 
 .ds-social-glyph-500px {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
@@ -527,11 +527,11 @@
   background-color: rgba(255, 255, 255, 0.62);
 }
 
-/* Hover (Hero Mode): Ultra-bright white radial light + floating drop shadow (no upward move) */
+/* Hover (Hero Mode): Ultra-bright white radial light + floating drop shadow */
 .ds-header-hero .ds-social-pill:hover {
   transform: translateY(0) scale(1);
   background-image: radial-gradient(
-    circle 24px at var(--pill-x, 50%) var(--pill-y, 50%),
+    circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
     rgba(255, 255, 255, 0.48) 0%,
     rgba(255, 255, 255, 0.30) 40%,
     rgba(255, 255, 255, 0.20) 100%
@@ -544,7 +544,7 @@
 .ds-header-hero .ds-social-pill:hover .ds-social-glyph {
   background-color: transparent;
   background-image: radial-gradient(
-    circle 16px at var(--spot-x, 50%) var(--spot-y, 50%),
+    circle 20px at var(--spot-x, 50%) var(--spot-y, 50%),
     #FFFFFF 0%,
     #FFFFFF 36%,
     rgba(255, 255, 255, 0.94) 56%,
@@ -552,7 +552,7 @@
   );
 }
 
-/* Active / Pressed (Hero Mode): Slight, noticeable physical press (scale 0.96, 0.5px nudge) */
+/* Active / Pressed (Hero Mode): Slight, noticeable physical press */
 .ds-header-hero .ds-social-pill:active {
   transform: translateY(0.5px) scale(0.96);
   background-color: rgba(255, 255, 255, 0.17);
@@ -561,7 +561,7 @@
               inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
 }
 
-/* --- WHISPER MIST PILL & TRANSPARENT-DARK MODE (Dark Icon Glyphs with Bright White Light on Hover) --- */
+/* --- WHISPER MIST PILL & TRANSPARENT-DARK MODE (Dark Icon Glyphs) --- */
 .ds-header-frosted .ds-social-pill,
 .ds-header-transparent-dark .ds-social-pill,
 .ds-social-pill-dark {
@@ -576,13 +576,13 @@
   background-color: rgba(20, 20, 20, 0.72);
 }
 
-/* Hover (Pill Mode / Light Surface): ALWAYS bright white (#FFFFFF) radial light + floating drop shadow */
+/* Hover (Pill Mode / Light Surface) */
 .ds-header-frosted .ds-social-pill:hover,
 .ds-header-transparent-dark .ds-social-pill:hover,
 .ds-social-pill-dark:hover {
   transform: translateY(0) scale(1);
   background-image: radial-gradient(
-    circle 24px at var(--pill-x, 50%) var(--pill-y, 50%),
+    circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
     var(--lite-surface-peak) 0%,
     var(--lite-surface-mid) 38%,
     rgba(20, 20, 20, 0.08) 100%
@@ -599,7 +599,7 @@
   background-color: var(--lite-peak);
 }
 
-/* Active / Pressed (Pill Mode / Light Surface): Slight, noticeable physical press (scale 0.96, 0.5px nudge) */
+/* Active / Pressed (Pill Mode / Light Surface) */
 .ds-header-frosted .ds-social-pill:active,
 .ds-header-transparent-dark .ds-social-pill:active,
 .ds-social-pill-dark:active {
@@ -608,6 +608,134 @@
   border-color: rgba(20, 20, 20, 0.12);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
               inset 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+/* ============================================================================
+   MOBILE HAMBURGER BUTTON & FULL-SCREEN OVERLAY MENU
+   ============================================================================ */
+
+.ds-hamburger-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+  transform: translateY(0) scale(1);
+  transition: transform 95ms cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 180ms ease,
+              background-color 180ms ease,
+              border-color 180ms ease;
+  --pill-x: 50%;
+  --pill-y: 50%;
+}
+
+.ds-hamburger-line {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 1px;
+  transition: transform 220ms var(--ds-ease-out-expo),
+              opacity 220ms ease,
+              background-color 180ms ease;
+}
+
+/* Hero Mode (Over dark hero image) */
+.ds-header-hero .ds-hamburger-btn {
+  background-color: rgba(255, 255, 255, 0.20);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.ds-header-hero .ds-hamburger-line {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+.ds-header-hero .ds-hamburger-btn:hover {
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Frosted / Transparent Dark Mode */
+.ds-header-frosted .ds-hamburger-btn,
+.ds-header-transparent-dark .ds-hamburger-btn {
+  background-color: rgba(20, 20, 20, 0.08);
+  border-color: rgba(20, 20, 20, 0.05);
+}
+.ds-header-frosted .ds-hamburger-line,
+.ds-header-transparent-dark .ds-hamburger-line {
+  background-color: rgba(20, 20, 20, 0.85);
+}
+.ds-header-frosted .ds-hamburger-btn:hover,
+.ds-header-transparent-dark .ds-hamburger-btn:hover {
+  background-color: rgba(20, 20, 20, 0.12);
+}
+.ds-hamburger-btn:active {
+  transform: translateY(0.5px) scale(0.96);
+}
+
+/* Mobile Nav Overlay & Sheet */
+.ds-mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ds-mobile-nav-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ds-mobile-nav-sheet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--ds-color-canvas);
+  border-bottom: 1px solid var(--ds-color-border);
+  box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.18);
+  padding: 1.25rem 1.25rem 1.75rem 1.25rem;
+  transform: translateY(-100%);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ds-mobile-nav-overlay.is-open .ds-mobile-nav-sheet {
+  transform: translateY(0);
+}
+.ds-mob-menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0;
+  font-family: var(--ds-font-sans);
+  font-weight: 500;
+  font-size: 0.875rem; /* 14px */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ds-color-ink-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 160ms ease;
+}
+.ds-mob-menu-link:hover {
+  opacity: 0.7;
+}
+.ds-mob-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: transparent;
+  transition: background 180ms ease;
+}
+.ds-mob-menu-link.is-active .ds-mob-indicator {
+  background: var(--ds-color-ink-primary);
 }
 
 /* ============================================================================

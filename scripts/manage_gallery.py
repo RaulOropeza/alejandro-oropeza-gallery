@@ -313,7 +313,15 @@ This directory (`dist/`) contains the complete, self-contained production build 
     with open(dist_dir / "README.md", "w", encoding="utf-8") as f:
         f.write(readme_md)
 
-    print(f"Production build ready in {dist_dir} ({dist_dir / 'index.html'}, {len(catalog['photos'])} photos in dist/photos/)")
+    # 7. Mirror dist/ to docs/ for automatic GitHub Pages deployment
+    docs_dir = ROOT_DIR / "docs"
+    if docs_dir.exists():
+        shutil.rmtree(docs_dir)
+    shutil.copytree(dist_dir, docs_dir)
+    with open(docs_dir / ".nojekyll", "w", encoding="utf-8") as f:
+        pass
+
+    print(f"Production build ready in {dist_dir} and mirrored to {docs_dir}")
 
 
 def cmd_build(_args):
@@ -387,7 +395,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
              - On Home / About: Editorial Slash Menu ("GALLERY  /  ABOUT ME")
              - On Showcase: Row 1 subtle "Alejandro Oropeza" (hidden in pill mode), Row 2 Photo Title (.ds-h2) -->
         <div class="justify-self-center z-10">
-          <nav id="header-menu-nav" class="ds-menu-nav">
+          <nav id="header-menu-nav" class="ds-menu-nav hidden md:inline-flex">
             <button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none">
               <span class="ds-menu-text">GALLERY</span>
             </button>
@@ -405,16 +413,20 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
 
         <!-- COLUMN 3 (RIGHT):
-             - On Home / About: Circular Social Media Pills (Instagram & 500px Only)
+             - On Home / About: 40px Circular Social Media Pills + Mobile Hamburger Button
              - On Showcase: Subtle "n of n" counter to the left of circular Prev/Next Surface Icon Buttons -->
         <div id="hdr-right-col" class="justify-self-end self-center z-10">
-          <div id="header-main-nav" class="flex items-center justify-end gap-2.5">
+          <div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">
             <a href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" class="ds-social-pill focus:outline-none">
               <span class="ds-social-glyph ds-social-glyph-ig"></span>
             </a>
             <a href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" class="ds-social-pill focus:outline-none">
               <span class="ds-social-glyph ds-social-glyph-500px"></span>
             </a>
+            <button id="hdr-hamburger-btn" type="button" onclick="toggleMobileMenu()" class="ds-hamburger-btn md:hidden focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false">
+              <span class="ds-hamburger-line"></span>
+              <span class="ds-hamburger-line"></span>
+            </button>
           </div>
 
           <div id="header-photo-status" class="hidden items-center justify-end gap-2.5">
@@ -439,16 +451,54 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </div>
     </header>
 
+    <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
+    <div id="mobile-nav-overlay" class="ds-mobile-nav-overlay" onclick="if(event.target===this) toggleMobileMenu(false)">
+      <div class="ds-mobile-nav-sheet">
+        <div class="flex items-center justify-between pb-4 border-b border-[var(--ds-color-border)]">
+          <span class="ds-brand-name text-sm">Alejandro Oropeza</span>
+          <button onclick="toggleMobileMenu(false)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit w-10 h-10 focus:outline-none" aria-label="Close menu">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <nav class="flex flex-col py-6 space-y-2">
+          <button onclick="mobileNavTo('gallery')" id="mob-nav-gallery" class="ds-mob-menu-link is-active focus:outline-none">
+            <span>GALLERY</span>
+            <span class="ds-mob-indicator"></span>
+          </button>
+          <button onclick="mobileNavTo('about')" id="mob-nav-about" class="ds-mob-menu-link focus:outline-none">
+            <span>ABOUT ME</span>
+            <span class="ds-mob-indicator"></span>
+          </button>
+        </nav>
+        <div class="pt-4 border-t border-[var(--ds-color-border)] flex items-center justify-between">
+          <span class="ds-label text-[10px]">CONNECT</span>
+          <div class="flex items-center gap-2.5">
+            <a href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="ds-social-pill ds-social-pill-dark" title="Instagram">
+              <span class="ds-social-glyph ds-social-glyph-ig"></span>
+            </a>
+            <a href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer" class="ds-social-pill ds-social-pill-dark" title="500px">
+              <span class="ds-social-glyph ds-social-glyph-500px"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- VIEW 1: GALLERY HOME PAGE -->
     <main id="view-gallery" class="__MAIN_PULL_CLS__">
       
-      <!-- Full-Viewport-Height Main Image: Non-clickable, no zoom effect, subtle technical EXIF details at the bottom-right -->
+      <!-- Full-Viewport-Height Main Image: Non-clickable, responsive picture (portrait photo on mobile, landscape on desktop) -->
       <section id="hero-banner" class="relative w-full __HERO_HEIGHT_CLS__ overflow-hidden" style="background-color: var(--ds-color-ink-primary);">
-        <img id="hero-featured-img" alt="Featured Horizontal Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
+        <picture id="hero-picture" class="w-full h-full block">
+          <source id="hero-source-mobile" media="(max-width: 767px)" srcset="" />
+          <img id="hero-featured-img" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
+        </picture>
         <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);"></div>
         <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0) 100%);">
           <!-- Technical details (bottom-right) -->
-          <span id="hero-tech-details" class="ds-hero-tech absolute right-4 sm:right-6 bottom-4 text-right">28 mm · f/5.6 · 1/125s · ISO 400</span>
+          <span id="hero-tech-details" class="ds-hero-tech absolute right-4 sm:right-6 bottom-4 text-right"></span>
           <!-- Scroll signifier (bottom-center): label + softly bobbing arrow -->
           <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-3 pointer-events-auto focus:outline-none" aria-label="View gallery">
             <span class="ds-scroll-cue-label">View gallery</span>
@@ -893,14 +943,41 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     scrollViewport.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('scroll', updateHeaderStyle, { passive: true });
 
-    function renderGallery() {
-      const heroIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
-      const heroPhoto = heroIdx !== -1 ? PHOTOS[heroIdx] : PHOTOS[0];
-      document.getElementById('hero-featured-img').src = heroPhoto.src;
+    const heroLandscapeIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
+    const heroLandscape = heroLandscapeIdx !== -1 ? PHOTOS[heroLandscapeIdx] : PHOTOS[0];
+    const heroPortrait = PHOTOS.find(p => p.orientation === 'portrait') || PHOTOS[1] || heroLandscape;
+
+    function updateHeroForViewport() {
+      const isMobile = window.innerWidth < 768;
+      const activeHero = isMobile ? heroPortrait : heroLandscape;
       const heroTechEl = document.getElementById('hero-tech-details');
-      if (heroTechEl && heroPhoto.exif) {
-        heroTechEl.innerHTML = `${heroPhoto.exif.focalLength} &middot; ${heroPhoto.exif.aperture} &middot; ${heroPhoto.exif.shutterSpeed} &middot; ${heroPhoto.exif.iso}`;
+      if (heroTechEl && activeHero && activeHero.exif) {
+        heroTechEl.innerHTML = `${activeHero.exif.focalLength} &middot; ${activeHero.exif.aperture} &middot; ${activeHero.exif.shutterSpeed} &middot; ${activeHero.exif.iso}`;
       }
+    }
+    window.addEventListener('resize', updateHeroForViewport);
+
+    function toggleMobileMenu(open) {
+      const overlay = document.getElementById('mobile-nav-overlay');
+      const btn = document.getElementById('hdr-hamburger-btn');
+      if (!overlay) return;
+      const isOpen = open !== undefined ? open : !overlay.classList.contains('is-open');
+      overlay.classList.toggle('is-open', isOpen);
+      if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    function mobileNavTo(view) {
+      toggleMobileMenu(false);
+      showView(view);
+    }
+
+    function renderGallery() {
+      const heroMobileSource = document.getElementById('hero-source-mobile');
+      const heroFeaturedImg = document.getElementById('hero-featured-img');
+      if (heroMobileSource) heroMobileSource.srcset = heroPortrait.src;
+      if (heroFeaturedImg) heroFeaturedImg.src = heroLandscape.src;
+      updateHeroForViewport();
 
       document.getElementById('gallery-intro-h1').textContent = CATALOG.site.introHeading;
       document.getElementById('gallery-intro-body').textContent = CATALOG.site.introDescription;
@@ -975,10 +1052,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const statusNav = document.getElementById('header-photo-status');
       const leftBack = document.getElementById('hdr-left-back');
       const brandName = document.getElementById('hdr-brand-name');
+      const hamburgerBtn = document.getElementById('hdr-hamburger-btn');
       floatingHeader.classList.toggle('is-detail', view === 'detail');
 
       if (view === 'detail') {
         menuNav.classList.add('hidden');
+        menuNav.classList.remove('md:inline-flex');
         photoTitleWrap.classList.remove('hidden');
         photoTitleWrap.classList.add('flex');
         mainNav.classList.add('hidden');
@@ -986,16 +1065,25 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         statusNav.classList.add('flex');
         leftBack.classList.remove('hidden');
         brandName.classList.add('hidden');
+        if (hamburgerBtn) hamburgerBtn.classList.add('hidden');
       } else {
         photoTitleWrap.classList.add('hidden');
         photoTitleWrap.classList.remove('flex');
         menuNav.classList.remove('hidden');
+        menuNav.classList.add('md:inline-flex');
         statusNav.classList.add('hidden');
         statusNav.classList.remove('flex');
         mainNav.classList.remove('hidden');
         leftBack.classList.add('hidden');
         brandName.classList.remove('hidden');
+        if (hamburgerBtn) hamburgerBtn.classList.remove('hidden');
       }
+
+      // Sync active state in mobile navigation drawer
+      const mobGal = document.getElementById('mob-nav-gallery');
+      const mobAbt = document.getElementById('mob-nav-about');
+      if (mobGal) mobGal.classList.toggle('is-active', view === 'gallery');
+      if (mobAbt) mobAbt.classList.toggle('is-active', view === 'about');
 
       scrollViewport.scrollTop = 0;
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1074,6 +1162,67 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     function stepPhoto(dir) {
       const next = (currentIdx + dir + PHOTOS.length) % PHOTOS.length;
       openPhoto(next);
+    }
+
+    // Touch Swiping in Fullscreen Lightbox View
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchCurrentX = 0;
+    let touchStartTime = 0;
+    let isTouchSwiping = false;
+
+    const detailStage = document.getElementById('view-detail');
+    const detailImg = document.getElementById('detail-img');
+
+    if (detailStage) {
+      detailStage.addEventListener('touchstart', (e) => {
+        if (currentView !== 'detail' || e.touches.length !== 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchCurrentX = touchStartX;
+        touchStartTime = Date.now();
+        isTouchSwiping = true;
+        if (detailImg) detailImg.style.transition = 'none';
+      }, { passive: true });
+
+      detailStage.addEventListener('touchmove', (e) => {
+        if (!isTouchSwiping || currentView !== 'detail') return;
+        touchCurrentX = e.touches[0].clientX;
+        const deltaX = touchCurrentX - touchStartX;
+        const deltaY = e.touches[0].clientY - touchStartY;
+
+        // Provide elastic horizontal feedback when dragging
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+          if (detailImg) {
+            detailImg.style.transform = `translateX(${deltaX * 0.35}px)`;
+          }
+        }
+      }, { passive: true });
+
+      detailStage.addEventListener('touchend', (e) => {
+        if (!isTouchSwiping || currentView !== 'detail') return;
+        isTouchSwiping = false;
+        const deltaX = touchCurrentX - touchStartX;
+        const deltaY = (e.changedTouches[0] ? e.changedTouches[0].clientY : touchStartY) - touchStartY;
+        const duration = Date.now() - touchStartTime;
+
+        if (detailImg) {
+          detailImg.style.transition = 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)';
+          detailImg.style.transform = 'translateX(0)';
+        }
+
+        const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+        const isQuickFlick = duration < 380 && Math.abs(deltaX) > 35;
+        const isLongSwipe = Math.abs(deltaX) > 65;
+
+        if (isHorizontal && (isQuickFlick || isLongSwipe)) {
+          if (deltaX < 0) {
+            stepPhoto(1);  // Swipe Left -> Next Photo
+          } else {
+            stepPhoto(-1); // Swipe Right -> Previous Photo
+          }
+        }
+      }, { passive: true });
     }
 
     function switchMode(mode) {
