@@ -1,0 +1,245 @@
+{
+  "site": {
+    "title": "Alejandro Oropeza",
+    "subtitle": "Photo gallery",
+    "heroPhotoId": "fisherman-acapulco",
+    "introHeading": "Explore the gallery",
+    "introDescription": "Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation. Click any photograph to view full frame and technical camera details.",
+    "about": {
+      "kicker": "ABOUT ME",
+      "heading": "Alejandro Oropeza",
+      "bio": "I am a travel photographer drawn to quiet intervals and isolated subjects. Whether photographing a solitary fisherman along the Pacific shoreline, historic towers in Mexico and the United Kingdom, or wildlife pausing in stillness, my work seeks solitude even within busy environments.",
+      "specs": [
+        { "label": "SUBJECTS", "value": "Architecture, Wildlife, Coastlines, Solitary Figures" },
+        { "label": "LOCATIONS", "value": "Mexico, United Kingdom, Canada, United States" }
+      ]
+    },
+    "social": {
+      "instagram": "https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&mdxt=ZDNlZDc0MzIxNw==",
+      "fiveHundredPx": "https://500px.com/user/R6dqvyPxtGm"
+    },
+    "printShopGlobalEnabled": false
+  },
+  "photos": [
+    {
+      "id": "fisherman-acapulco",
+      "title": "Fisherman on Shoreline",
+      "file": "FishermanOnShoreline_Acapulco_2022_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 1,
+      "location": "Acapulco, Mexico · 2022",
+      "exif": {
+        "focalLength": "35 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/320s",
+        "iso": "ISO 160"
+      },
+      "description": "A lone fisherman walks along the wet reflective shoreline at dusk as Pacific waves roll in beneath a vast, cloud-layered sky in Acapulco.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "18 × 27 in",
+        "providerUrl": "https://example.com/prints/fisherman-acapulco"
+      }
+    },
+    {
+      "id": "perch-rock-lighthouse",
+      "title": "Perch Rock Lighthouse",
+      "file": "PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 1,
+      "location": "New Brighton, UK · 2023",
+      "exif": {
+        "focalLength": "135 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/640s",
+        "iso": "ISO 200"
+      },
+      "description": "Standing isolated where the River Mersey meets Liverpool Bay, Perch Rock Lighthouse rises above rippled low-tide sandbars under a quiet overcast sky.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/perch-rock-lighthouse"
+      }
+    },
+    {
+      "id": "la-grande-roue",
+      "title": "La Grande Roue",
+      "file": "FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 1,
+      "location": "Old Port of Montreal, Canada · 2019",
+      "exif": {
+        "focalLength": "28 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/125s",
+        "iso": "ISO 400"
+      },
+      "description": "Framed down the center of an empty, frost-dusted wooden pier at dusk, the observation wheel stands still against a clear winter twilight gradient.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/la-grande-roue"
+      }
+    },
+    {
+      "id": "elizabeth-tower",
+      "title": "Elizabeth Tower",
+      "file": "BigBenElizabethTower_London_2025_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 2,
+      "location": "London, UK · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/7.1",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 160"
+      },
+      "description": "Isolated against brooding slate clouds, crisp afternoon sunlight catches the intricate Neo-Gothic stonework and clock face of Big Ben.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/elizabeth-tower"
+      }
+    },
+    {
+      "id": "mute-swan",
+      "title": "Mute Swan",
+      "file": "MuteSwanDipping_London_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 2,
+      "location": "London, UK · 2026",
+      "exif": {
+        "focalLength": "300 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/1250s",
+        "iso": "ISO 320"
+      },
+      "description": "A close portrait of a mute swan against dark rippled water, freezing a delicate arc of falling water droplets mid-air.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/mute-swan"
+      }
+    },
+    {
+      "id": "nuestra-senora-tower",
+      "title": "Nuestra Señora de los Ángeles",
+      "file": "NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 2,
+      "location": "León, Guanajuato, Mexico · 2026",
+      "exif": {
+        "focalLength": "150 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 100"
+      },
+      "description": "Warm late-afternoon light illuminates the baroque spire and ornate iron weathervane rising in isolation against soft clouds.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/nuestra-senora-tower"
+      }
+    },
+    {
+      "id": "margate-cliffs",
+      "title": "Beach & Chalk Cliffs",
+      "file": "BeachAndCliffs_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 2,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "85 mm",
+        "aperture": "f/9.0",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 100"
+      },
+      "description": "Weathered white chalk sea stacks meet deep channel waters and wide sand along the Kent coastline, with distant figures emphasizing the scale of the shore.",
+      "print": {
+        "enabled": false,
+        "price": "$220",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/margate-cliffs"
+      }
+    },
+    {
+      "id": "red-deer-stag",
+      "title": "Red Deer Stag",
+      "file": "RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 3,
+      "location": "Richmond Park, London · 2025",
+      "exif": {
+        "focalLength": "250 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 250"
+      },
+      "description": "A solitary red deer stag crowned with velvet antlers stands waist-deep in sunlit green bracken.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/red-deer-stag"
+      }
+    },
+    {
+      "id": "brooklyn-bridge-symmetry",
+      "title": "Brooklyn Bridge Symmetry",
+      "file": "BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 3,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "24 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/250s",
+        "iso": "ISO 250"
+      },
+      "description": "Diagonal steel suspension cables converge toward the Neo-Gothic granite tower along a wet, snow-edged boardwalk on an overcast winter morning.",
+      "print": {
+        "enabled": false,
+        "price": "$300",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/brooklyn-bridge-symmetry"
+      }
+    },
+    {
+      "id": "snow-leopard",
+      "title": "Snow Leopard",
+      "file": "SnowLeopard_NewYork_2019_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 3,
+      "location": "New York, USA · 2019",
+      "exif": {
+        "focalLength": "300 mm",
+        "aperture": "f/4.5",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 500"
+      },
+      "description": "Tightly framed against soft out-of-focus foliage, a solitary snow leopard rests in quiet contemplation.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/snow-leopard"
+      }
+    }
+  ]
+}
