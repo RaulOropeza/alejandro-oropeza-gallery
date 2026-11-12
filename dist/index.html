@@ -33,13 +33,13 @@
 
 /* ============================================================================
    SELF-HOSTED CROSS-DEVICE WEB FONTS (100% Identical Across Android, iOS, Mac & Windows)
-   - Jost (300–400): Geometric Futura architecture for uppercase Display Headlines
+   - Jost (300–500): Geometric Futura architecture for uppercase Display Headlines (+100 weight: 400/500)
    - Nunito Sans (300–500): Geometric-humanist Avenir proportions for Brand, UI & Body
    ============================================================================ */
 @font-face {
   font-family: 'Jost';
   font-style: normal;
-  font-weight: 300 400;
+  font-weight: 300 500;
   font-display: swap;
   src: url('fonts/jost-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -47,7 +47,7 @@
 @font-face {
   font-family: 'Jost';
   font-style: normal;
-  font-weight: 300 400;
+  font-weight: 300 500;
   font-display: swap;
   src: url('fonts/jost-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -104,19 +104,19 @@
   --lite-surface-mid: rgba(255, 255, 255, 0.58);
 
   /* 3. TYPOGRAPHY FAMILY TOKENS (Self-Hosted Web Fonts -> Identical Across All Devices) */
-  /* Titles: Geometric Futura Display ('Jost' self-hosted webfont, 300 & 400 weight only — Never Bold) */
+  /* Titles: Geometric Futura Display ('Jost' self-hosted webfont, 400 & 500 weight — Never Heavy Bold) */
   --ds-font-display: 'Jost', 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
   /* Brand Name, Menu, Body, Labels, Buttons, Technical Specs: Geometric-Humanist Avenir Sans ('Nunito Sans' self-hosted webfont) */
   --ds-font-sans: 'Nunito Sans', 'Avenir', 'Avenir Next', 'Century Gothic', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
-     - Mobile (< 768px): 56px high (12px side padding) buttons & 56px diameter icon buttons
-     - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
+     - Mobile (< 768px): 56px high (16px side padding) buttons & 56px diameter icon buttons
+     - Desktop (>= 768px): 40px high (20px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
-  --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
+  --ds-btn-padding-x: 16px;            /* Mobile default: 16px side padding (+4px per side) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
   --ds-gallery-max-width: 72rem;       /* 1152px (144 × 8px) desktop gallery grid max-width */
@@ -137,7 +137,7 @@
     --ds-header-pad-x: 2.5rem;           /* 40px (5 × 8px) desktop header side padding */
     --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
     --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
-    --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
+    --ds-btn-padding-x: 20px;            /* Desktop: 20px side padding (+4px per side) */
     --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
@@ -161,11 +161,11 @@
    TYPOGRAPHY SCALE & HIERARCHY CLASSES (Base 16px Scale)
    ============================================================================ */
 
-/* H1: Page Headline (e.g., "EXPLORE THE GALLERY") — Futura Light (300), Never Bold */
+/* H1: Page Headline (e.g., "EXPLORE THE GALLERY") — Jost Regular (400), +100 weight */
 .ds-h1 {
   font-family: var(--ds-font-display);
-  font-weight: 300;
-  font-size: 1.625rem; /* 26px on mobile */
+  font-weight: 400;
+  font-size: 1.75rem; /* 28px on mobile (+2px) */
   line-height: 1.22;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -177,11 +177,11 @@
   }
 }
 
-/* H2: Showcase Photograph Title (Header Center) — Futura Regular (400), Never Bold */
+/* H2: Showcase Photograph Title (Header Center) — Jost Medium (500), +100 weight */
 .ds-h2 {
   font-family: var(--ds-font-display);
-  font-weight: 400;
-  font-size: 1.25rem; /* 20px on mobile */
+  font-weight: 500;
+  font-size: 1.375rem; /* 22px on mobile (+2px) */
   line-height: 1.22;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -198,11 +198,11 @@
   }
 }
 
-/* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Futura Regular (400) */
+/* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Jost Medium (500), +100 weight */
 .ds-h3 {
   font-family: var(--ds-font-display);
-  font-weight: 400;
-  font-size: 0.875rem; /* 14px on mobile */
+  font-weight: 500;
+  font-size: 1rem; /* 16px on mobile (+2px) */
   line-height: 1.35;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -229,6 +229,16 @@
   border: none;
   white-space: nowrap;
   transition: opacity var(--ds-duration-fast) ease;
+}
+
+/* About Page H1 Tag ("Alejandro Oropeza") — +2px on mobile alongside all H tags */
+h1.ds-brand-name {
+  font-size: 1.25rem; /* 20px on mobile (+2px) */
+}
+@media (min-width: 768px) {
+  h1.ds-brand-name {
+    font-size: 1.125rem; /* 18px on desktop */
+  }
 }
 
 /* Body Copy — Avenir Light (300) / Book (400) — 16px Base */
@@ -263,15 +273,31 @@
   color: var(--ds-color-ink-primary);
 }
 
-/* Subtle Hero Technical Overlay Text (Bottom of Main Image) */
+/* Subtle Hero Technical Overlay Text (Mobile: Centered above View gallery cue | Desktop: Bottom-Right) */
 .ds-hero-tech {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  bottom: 5rem; /* 80px (10 × 8px) — centered cleanly above View gallery signifier on mobile */
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.625rem; /* 10px */
+  font-size: 0.75rem; /* 12px on all devices */
   line-height: 1;
   letter-spacing: 0.05em;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.44);
+}
+@media (min-width: 768px) {
+  .ds-hero-tech {
+    left: auto;
+    right: 1.5rem; /* 24px (3 × 8px) */
+    bottom: 1rem;  /* 16px (2 × 8px) */
+    transform: none;
+    text-align: right;
+  }
 }
 
 /* Hero Scroll Signifier — subtle label with a softly bobbing chevron below; fades out when scrolled */
@@ -299,13 +325,13 @@
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.875rem; /* 14px */
+  font-size: 1rem; /* 16px (+2px from 14px) */
   line-height: 1;
   letter-spacing: 0.04em;
 }
 .ds-scroll-cue-arrow {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   animation: ds-scroll-bob 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 @keyframes ds-scroll-bob {
@@ -327,8 +353,8 @@
                                           appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
-     - Mobile (< 768px): 56px height / diameter, 12px horizontal padding on .ds-btn
-     - Desktop (>= 768px): 40px height / diameter, 16px horizontal padding on .ds-btn
+     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn
+     - Desktop (>= 768px): 40px height / diameter, 20px horizontal padding on .ds-btn
    ============================================================================ */
 
 .ds-btn,
@@ -918,6 +944,36 @@
   color: var(--ds-color-ink-primary);
 }
 
+/* Mobile Showcase Scrolled State: Full-Width Solid White Container (No Pill) */
+@media (max-width: 767px) {
+  .ds-floating-header.is-detail .ds-floating-pill {
+    border-radius: 0;
+    margin-top: 0;
+    max-width: 100%;
+    border: none;
+    border-bottom: 1px solid transparent;
+  }
+  .ds-floating-header.ds-header-frosted.is-detail {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    height: auto;
+  }
+  .ds-floating-header.ds-header-frosted.is-detail .ds-floating-pill {
+    width: 100%;
+    max-width: 100%;
+    min-height: 4.5rem; /* 72px (9 × 8px) */
+    margin-top: 0;
+    padding: 1rem 1.5rem; /* 16px top/bottom, 24px sides */
+    border-radius: 0;
+    background: var(--ds-color-canvas); /* Solid #FFFFFF */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    border-bottom: 1px solid var(--ds-color-border);
+    box-shadow: none;
+  }
+}
+
 /* Concentric button padding when Desktop Showcase header morphs into pill mode */
 @media (min-width: 768px) {
   .ds-header-frosted.is-detail .ds-floating-pill {
@@ -1057,8 +1113,8 @@
   box-sizing: border-box;
   max-width: 28rem; /* 448px (56 × 8px) */
   margin: 0 auto;
-  /* Mobile (all multiples of 8): 64px top, 32px sides, 112px bottom */
-  padding: 4rem 2rem 7rem 2rem;
+  /* Mobile (all multiples of 8): 64px top, 32px sides, 176px bottom (leaves ~90px clearance above stuck bottom bar) */
+  padding: 4rem 2rem 11rem 2rem;
 }
 @media (min-width: 768px) {
   .ds-showcase-details-inner {
@@ -1325,8 +1381,8 @@
 .ds-icon-btn.ds-visualizer-close-btn,
 .ds-visualizer-close-btn {
   position: absolute;
-  top: auto;
-  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px — bottom-right on mobile */
+  top: calc(1rem + env(safe-area-inset-top, 0px)); /* 16px — top-right on mobile */
+  bottom: auto;
   right: 1rem; /* 16px */
   z-index: 210;
 }
@@ -1355,7 +1411,7 @@
 
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 md:px-10">
-      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span><span id="hdr-showcase-author">Alejandro Oropeza</span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
+      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span><span id="hdr-showcase-author">Alejandro Oropeza</span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
       <div id="mobile-social-stack" class="ds-mobile-social-stack ds-header-hero" aria-label="Social links"><a id="mob-hero-ig-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a id="mob-hero-500px-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div>
     </header>
 
@@ -1396,13 +1452,13 @@
           <img id="hero-featured-img" src="photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
         </picture>
         <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);"></div>
-        <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0) 100%);">
-          <!-- Technical details (bottom-right) -->
-          <span id="hero-tech-details" class="ds-hero-tech absolute right-4 sm:right-6 bottom-4 text-right"></span>
+        <div class="absolute inset-x-0 bottom-0 h-36 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);">
+          <!-- Technical details (Mobile: centered above View gallery cue | Desktop: bottom-right) -->
+          <span id="hero-tech-details" class="ds-hero-tech"></span>
           <!-- Scroll signifier (bottom-center): label + softly bobbing arrow -->
-          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-3 pointer-events-auto focus:outline-none" aria-label="View gallery">
+          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-4 pointer-events-auto focus:outline-none" aria-label="View gallery">
             <span class="ds-scroll-cue-label">View gallery</span>
-            <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
       </section>
@@ -1432,7 +1488,7 @@
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
       <div class="ds-showcase-details">
-        <div class="ds-showcase-details-inner max-w-md mx-auto px-8 pt-16 pb-28 md:px-8 md:py-20">
+        <div class="ds-showcase-details-inner">
           <div style="text-align: center;" class="text-center">
             <h2 class="ds-h3">Photo details</h2>
           </div>
@@ -1520,7 +1576,7 @@
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 56px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (16px side padding) · Desktop: 40px high (20px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
@@ -1554,7 +1610,7 @@
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
         </div>
@@ -1571,7 +1627,7 @@
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
         </div>
@@ -1654,24 +1710,24 @@
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Jost / Futura Light (300) · Uppercase · +0.04em</span>
+            <span class="ds-label block">.ds-h1 · Jost / Futura Regular (400) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
-          <code class="text-xs text-neutral-500">26px M · 30px D / 300</code>
+          <code class="text-xs text-neutral-500">28px M · 30px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Jost / Futura Regular (400) · Uppercase · +0.05em</span>
+            <span class="ds-label block">.ds-h2 · Jost / Futura Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">20px M · 24px D / 400</code>
+          <code class="text-xs text-neutral-500">22px M · 24px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Jost / Futura Regular (400) · Uppercase · +0.12em</span>
+            <span class="ds-label block">.ds-h3 · Jost / Futura Medium (500) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
-          <code class="text-xs text-neutral-500">14px M · 15px D / 400</code>
+          <code class="text-xs text-neutral-500">16px M · 15px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
@@ -1823,7 +1879,7 @@
       }
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = getVisibleViewportHeight();
-      const baseBottom = 18;
+      const baseBottom = parseFloat(getComputedStyle(dock).bottom) || 16;
       const clearance = 16;
       const threshold = windowHeight - baseBottom;
       if (footerRect.top < threshold + clearance) {

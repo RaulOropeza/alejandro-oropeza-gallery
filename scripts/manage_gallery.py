@@ -208,7 +208,7 @@ PROD_EXTRA_HEAD = """  <link rel="preload" href="fonts/jost-latin.woff2" as="fon
 ICON_MARKUP = {
     "arrow-left": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
     "arrow-right": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
-    "menu": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>',
+    "menu": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>',
     "close": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     "fullscreen": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>',
     "instagram": '<span class="ds-icon-glyph ds-icon-glyph-ig"></span>',
@@ -859,13 +859,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <img id="hero-featured-img" src="__HERO_DESKTOP_SRC__" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
         </picture>
         <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);"></div>
-        <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0) 100%);">
-          <!-- Technical details (bottom-right) -->
-          <span id="hero-tech-details" class="ds-hero-tech absolute right-4 sm:right-6 bottom-4 text-right"></span>
+        <div class="absolute inset-x-0 bottom-0 h-36 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);">
+          <!-- Technical details (Mobile: centered above View gallery cue | Desktop: bottom-right) -->
+          <span id="hero-tech-details" class="ds-hero-tech"></span>
           <!-- Scroll signifier (bottom-center): label + softly bobbing arrow -->
-          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-3 pointer-events-auto focus:outline-none" aria-label="View gallery">
+          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-4 pointer-events-auto focus:outline-none" aria-label="View gallery">
             <span class="ds-scroll-cue-label">View gallery</span>
-            <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
       </section>
@@ -895,7 +895,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
       <div class="ds-showcase-details">
-        <div class="ds-showcase-details-inner max-w-md mx-auto px-8 pt-16 pb-28 md:px-8 md:py-20">
+        <div class="ds-showcase-details-inner">
           <div style="text-align: center;" class="text-center">
             <h2 class="ds-h3">Photo details</h2>
           </div>
@@ -983,7 +983,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 56px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (16px side padding) · Desktop: 40px high (20px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             __DS_BTN_LABEL_ONLY__
@@ -1117,24 +1117,24 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Jost / Futura Light (300) · Uppercase · +0.04em</span>
+            <span class="ds-label block">.ds-h1 · Jost / Futura Regular (400) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
-          <code class="text-xs text-neutral-500">26px M · 30px D / 300</code>
+          <code class="text-xs text-neutral-500">28px M · 30px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Jost / Futura Regular (400) · Uppercase · +0.05em</span>
+            <span class="ds-label block">.ds-h2 · Jost / Futura Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">20px M · 24px D / 400</code>
+          <code class="text-xs text-neutral-500">22px M · 24px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Jost / Futura Regular (400) · Uppercase · +0.12em</span>
+            <span class="ds-label block">.ds-h3 · Jost / Futura Medium (500) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
-          <code class="text-xs text-neutral-500">14px M · 15px D / 400</code>
+          <code class="text-xs text-neutral-500">16px M · 15px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
@@ -1286,7 +1286,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = getVisibleViewportHeight();
-      const baseBottom = 18;
+      const baseBottom = parseFloat(getComputedStyle(dock).bottom) || 16;
       const clearance = 16;
       const threshold = windowHeight - baseBottom;
       if (footerRect.top < threshold + clearance) {
