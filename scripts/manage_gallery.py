@@ -204,7 +204,7 @@ def render_button(
     aria_label: str | None = None,
     extra_cls: str = "",
 ) -> str:
-    """Master Component 1: Tonal Pill Button (48px/12px Mobile, 40px/8px Desktop)."""
+    """Master Component 1: Tonal Pill Button (48px/12px Mobile, 40px/16px Desktop)."""
     classes = " ".join(c for c in ["ds-btn", extra_cls, "focus:outline-none"] if c)
     attrs = [f'class="{classes}"', 'onmousemove="trackMenuLight(event, this)"']
     if elem_id:
@@ -596,7 +596,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
               <span class="ds-menu-text">ABOUT ME</span>
             </button>
           </nav>
-          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-start text-center pointer-events-none px-2 truncate">
+          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">
             <span id="hdr-photo-title" class="ds-h2"></span>
             <span id="hdr-showcase-author">
               Alejandro Oropeza
@@ -786,7 +786,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Master Component 1 — Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (8px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             __DS_BTN_LABEL_ONLY__
@@ -902,7 +902,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">18px / 400</code>
+          <code class="text-xs text-neutral-500">20px M · 24px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>

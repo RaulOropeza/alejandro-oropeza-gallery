@@ -48,14 +48,15 @@
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
      - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
-     - Desktop (>= 768px): 40px high (8px side padding) buttons & 40px diameter icon buttons */
-  --ds-header-height: 4.5rem;      /* 72px — Accommodates 48px mobile controls comfortably */
-  --ds-control-size: 48px;         /* Mobile default: 48px height / diameter */
-  --ds-btn-padding-x: 12px;        /* Mobile default: 12px side padding */
-  --ds-btn-gap: 0.4rem;            /* 6.4px space between icon and label inside buttons */
-  --ds-grid-gap: 0.625rem;         /* 10px gallery grid gutter */
-  --ds-radius-sm: 0.125rem;        /* 2px photo frame corner radius */
-  --ds-radius-pill: 9999px;        /* Full pill / circle radius */
+     - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
+  --ds-header-height: 4.5rem;          /* 72px — Accommodates 48px mobile controls comfortably */
+  --ds-showcase-header-height: 6.5rem; /* 104px — Positions mobile showcase title/author comfortably lower */
+  --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
+  --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
+  --ds-btn-gap: 0.4rem;                /* 6.4px space between icon and label inside buttons */
+  --ds-grid-gap: 0.625rem;             /* 10px gallery grid gutter */
+  --ds-radius-sm: 0.125rem;            /* 2px photo frame corner radius */
+  --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 
   /* 5. MOTION & ANIMATION TOKENS */
   --ds-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,9 +68,10 @@
 
 @media (min-width: 768px) {
   :root {
-    --ds-header-height: 4.25rem;   /* 68px desktop floating header height */
-    --ds-control-size: 40px;       /* Desktop: 40px height / diameter */
-    --ds-btn-padding-x: 8px;       /* Desktop: 8px side padding */
+    --ds-header-height: 4.25rem;           /* 68px desktop floating header height */
+    --ds-showcase-header-height: 7.75rem;  /* 124px desktop showcase band (equal space above & below title+author) */
+    --ds-control-size: 40px;               /* Desktop: 40px height / diameter */
+    --ds-btn-padding-x: 16px;              /* Desktop: 16px side padding */
   }
 }
 
@@ -97,11 +99,16 @@
 .ds-h2 {
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 1.125rem; /* 18px on mobile & desktop */
-  line-height: 1.25;
+  font-size: 1.25rem; /* 20px on mobile */
+  line-height: 1.22;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
+}
+@media (min-width: 768px) {
+  .ds-h2 {
+    font-size: 1.5rem; /* 24px on desktop */
+  }
 }
 
 /* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Futura Regular (400) */
@@ -230,7 +237,7 @@
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
      - Mobile (< 768px): 48px height / diameter, 12px horizontal padding on .ds-btn
-     - Desktop (>= 768px): 40px height / diameter, 8px horizontal padding on .ds-btn
+     - Desktop (>= 768px): 40px height / diameter, 16px horizontal padding on .ds-btn
    ============================================================================ */
 
 .ds-btn,
@@ -616,6 +623,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  transition: height 320ms var(--ds-ease-out-expo);
 }
 
 .ds-floating-pill {
@@ -720,14 +728,14 @@
   background-color: var(--ds-color-stage); /* Strictly Pure Neutral Grey #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: 5.25rem (84px) top under header, 6.25rem (100px) bottom above 48px floating dock */
-  padding: 5.25rem 1.25rem 6.25rem 1.25rem;
+  /* Mobile padding: matches --ds-showcase-header-height (104px) top, 6.25rem (100px) bottom above 48px floating dock */
+  padding: var(--ds-showcase-header-height) 1.25rem 6.25rem 1.25rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding: 7.5rem (120px) top to ensure generous space below author name, 3.5rem (56px) bottom */
-    padding: 7.5rem 2.5rem 3.5rem 2.5rem;
+    /* Desktop padding: matches --ds-showcase-header-height (124px) top so title+author block has equal space to page top & image top */
+    padding: var(--ds-showcase-header-height) 2.5rem 3.5rem 2.5rem;
   }
 }
 
@@ -740,6 +748,9 @@
 }
 
 /* SHOWCASE TOP BAR */
+.ds-floating-header.is-detail:not(.ds-header-frosted) {
+  height: var(--ds-showcase-header-height);
+}
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
@@ -747,17 +758,17 @@
   align-self: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
-  line-height: 1.25;
+  line-height: 1.22;
 }
 #hdr-showcase-author {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.875rem; /* 14px on mobile & desktop */
-  line-height: 1.2;
+  font-size: 1rem; /* 16px on mobile & desktop */
+  line-height: 1.25;
   letter-spacing: 0.03em;
   text-transform: capitalize;
   color: var(--ds-color-ink-muted);
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
 }
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
@@ -934,7 +945,7 @@
               <span class="ds-menu-text">ABOUT ME</span>
             </button>
           </nav>
-          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-start text-center pointer-events-none px-2 truncate">
+          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">
             <span id="hdr-photo-title" class="ds-h2"></span>
             <span id="hdr-showcase-author">
               Alejandro Oropeza
@@ -1124,7 +1135,7 @@
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Master Component 1 — Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (8px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
@@ -1240,7 +1251,7 @@
             <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">18px / 400</code>
+          <code class="text-xs text-neutral-500">20px M · 24px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>

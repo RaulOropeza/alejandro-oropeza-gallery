@@ -45,7 +45,7 @@ export function Text({ variant = 'body', tag = 'p', text, className = '', id = '
  * Master Component 1: Tonal Button (.ds-btn)
  * Responsive sizing:
  *   - Mobile (< 768px): 48px high, 12px horizontal padding
- *   - Desktop (>= 768px): 40px high, 8px horizontal padding
+ *   - Desktop (>= 768px): 40px high, 16px horizontal padding
  */
 export function Button({
   label = '',
