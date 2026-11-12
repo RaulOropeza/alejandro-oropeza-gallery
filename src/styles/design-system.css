@@ -212,8 +212,8 @@
 /* Mobile Home Hero Brand Title (Same style as .ds-h1 in white, 2 lines, subtle drop shadow without top gradient) */
 .ds-hero-mobile-brand {
   position: absolute;
-  top: 1rem; /* 16px — aligned with top bar */
-  left: var(--ds-header-pad-x);
+  top: 1.5rem; /* 24px (3 × 8px) */
+  left: 1.5rem; /* 24px (3 × 8px) */
   z-index: 15;
   display: flex;
   flex-direction: column;
@@ -370,8 +370,10 @@ h1.ds-brand-name {
   height: var(--ds-control-size);
   min-height: var(--ds-control-size);
   border-radius: var(--ds-radius-pill);
-  border: 1px solid rgba(20, 20, 20, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   background-color: rgba(20, 20, 20, 0.08);
+  box-shadow: 0 0 0 1px rgba(20, 20, 20, 0.06),
+              inset 0 1px 0 rgba(255, 255, 255, 0.65);
   color: rgba(20, 20, 20, 0.72);
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -499,9 +501,9 @@ h1.ds-brand-name {
 .ds-header-hero .ds-btn,
 .ds-header-hero .ds-icon-btn {
   background-color: rgba(255, 255, 255, 0.20);
-  border-color: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  border-color: rgba(255, 255, 255, 0.34);
+  color: rgba(255, 255, 255, 0.80);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .ds-header-hero .ds-btn-surface {
@@ -527,7 +529,7 @@ h1.ds-brand-name {
   .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: var(--lite-peak);
-    border-color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.92);
     box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
                 0 2px 5px -1px rgba(0, 0, 0, 0.11);
   }
@@ -551,7 +553,7 @@ h1.ds-brand-name {
   .ds-header-hero .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.26);
+    border-color: rgba(255, 255, 255, 0.56);
     box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
                 0 3px 6px -1px rgba(0, 0, 0, 0.30);
   }
@@ -950,8 +952,8 @@ h1.ds-brand-name {
 }
 
 /* Mobile Top Bar (< 768px):
-   - Menu + social icons live in a vertical frosted pill at top-right
-   - On scroll down, social icons collapse & menu pill stays at top-right */
+   - Menu + social icons stack vertically at top-right with no pill background at top scroll
+   - On scroll down, social icons collapse & frosted circular pill appears around Menu button */
 @media (max-width: 767px) {
   #hdr-brand-name {
     display: none !important;
@@ -972,6 +974,13 @@ h1.ds-brand-name {
     margin-left: auto;
     margin-top: 0;
     padding: 0.35rem;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid transparent;
+    box-shadow: none;
+  }
+  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill {
     background: var(--ds-pill-bg);
     backdrop-filter: var(--ds-pill-blur);
     -webkit-backdrop-filter: var(--ds-pill-blur);
@@ -984,9 +993,11 @@ h1.ds-brand-name {
     align-items: center;
     gap: 0;
   }
-  .ds-floating-header:not(.is-detail) .ds-floating-pill .ds-icon-btn {
+  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill .ds-icon-btn {
     background-color: rgba(20, 20, 20, 0.08);
-    border-color: rgba(20, 20, 20, 0.05);
+    border-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 0 0 1px rgba(20, 20, 20, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.65);
     color: rgba(20, 20, 20, 0.72);
   }
   .ds-floating-header:not(.is-detail) #hdr-left-col,
