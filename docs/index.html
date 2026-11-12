@@ -112,7 +112,7 @@
      - Desktop (>= 768px): 40px high (20px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
-  --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
+  --ds-showcase-title-band: 7.5rem;    /* 120px (15 × 8px) — Gives generous clearance below 2-line mobile titles */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
   --ds-btn-padding-x: 16px;            /* Mobile default: 16px side padding (+4px per side) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
@@ -252,7 +252,7 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ds-color-ink-inverse);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.30), 0 1px 3px rgba(0, 0, 0, 0.22);
+  text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.16), 1px 2px 3px rgba(0, 0, 0, 0.12);
   pointer-events: none;
 }
 @media (min-width: 768px) {
@@ -871,6 +871,7 @@ h1.ds-brand-name {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  transition: transform 360ms var(--ds-ease-out-expo);
 }
 
 /* Top-bar horizontal social icons: Desktop only (>= 768px) */
@@ -885,11 +886,11 @@ h1.ds-brand-name {
   }
 }
 
-/* Mobile vertical social stack: Aligned directly below Menu button, fades out on scroll */
+/* Mobile vertical social stack: Aligned directly below Menu pill, fades out on scroll */
 .ds-mobile-social-stack {
   position: absolute;
-  top: calc((var(--ds-header-height) + var(--ds-control-size)) / 2 + 0.5rem);
-  right: calc(var(--ds-header-pad-x) + 1px);
+  top: calc((var(--ds-header-height) + var(--ds-control-size)) / 2 + 0.35rem + 0.5rem);
+  right: calc(var(--ds-header-pad-x) + 0.35rem + 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -974,26 +975,43 @@ h1.ds-brand-name {
   color: var(--ds-color-ink-primary);
 }
 
-/* Mobile Top Bar (< 768px): Name lives in Hero; Hamburger Menu is the only persistent button in the pill */
+/* Mobile Top Bar (< 768px):
+   - Menu pill is in pill mode by default even at top scroll
+   - On scroll down, glides to bottom-right thumb reach */
 @media (max-width: 767px) {
   #hdr-brand-name {
     display: none !important;
   }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) {
+  .ds-floating-header:not(.is-detail) {
     justify-content: flex-end;
   }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill {
+  .ds-floating-header:not(.is-detail) .ds-floating-pill {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
     width: auto;
     max-width: calc(var(--ds-control-size) + 0.7rem);
     margin-left: auto;
+    margin-top: 0;
     padding: 0.35rem;
+    background: var(--ds-pill-bg);
+    backdrop-filter: var(--ds-pill-blur);
+    -webkit-backdrop-filter: var(--ds-pill-blur);
+    border: 1px solid var(--ds-pill-border);
+    box-shadow: var(--ds-pill-shadow);
+    color: var(--ds-color-ink-primary);
   }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) #hdr-left-col,
-  .ds-floating-header.ds-header-frosted:not(.is-detail) #floating-header-pill > div:nth-child(2) {
+  .ds-floating-header:not(.is-detail) .ds-floating-pill .ds-icon-btn {
+    background-color: rgba(20, 20, 20, 0.08);
+    border-color: rgba(20, 20, 20, 0.05);
+    color: rgba(20, 20, 20, 0.72);
+  }
+  .ds-floating-header:not(.is-detail) #hdr-left-col,
+  .ds-floating-header:not(.is-detail) #floating-header-pill > div:nth-child(2) {
     display: none !important;
+  }
+  .ds-floating-header.ds-header-frosted:not(.is-detail) {
+    transform: translateY(calc(var(--app-viewport-height, 100dvh) - var(--ds-header-height) - 0.5rem - env(safe-area-inset-bottom, 0px)));
   }
   .ds-floating-header.is-detail .ds-floating-pill {
     border-radius: 0;
@@ -1125,8 +1143,8 @@ h1.ds-brand-name {
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 160px + safe-area bottom (clears 56px pill + fullscreen button) */
-  padding: var(--ds-showcase-title-band) 1.5rem calc(10rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+  /* Mobile padding (all multiples of 8): 120px top, 24px sides, 184px + safe-area bottom (keeps Fullscreen closer to image than bottom bar) */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(11.5rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
@@ -1136,14 +1154,14 @@ h1.ds-brand-name {
   }
 }
 
-/* Stage Fullscreen Visualizer Trigger (Surface Button: centered on mobile, bottom-right on desktop) */
+/* Stage Fullscreen Visualizer Trigger (Surface Button: centered closer to image on mobile, bottom-right on desktop) */
 .ds-btn.ds-stage-visualizer-btn,
 .ds-stage-visualizer-btn {
   position: absolute;
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); /* 88px — sits cleanly above mobile bottom pill */
+  bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px)); /* 120px — 8px below image box vs 36px above bottom bar */
   z-index: 20;
 }
 .ds-btn.ds-stage-visualizer-btn:active,
@@ -1234,7 +1252,7 @@ h1.ds-brand-name {
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
   position: absolute;
-  top: calc(var(--ds-showcase-title-band) / 2 - 0.915rem);
+  top: 2.335rem; /* ~37px — keeps line 1 fixed while 2-line titles get 24px space below */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
