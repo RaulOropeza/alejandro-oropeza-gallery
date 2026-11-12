@@ -1,6 +1,6 @@
 /* ============================================================================
    ALEJANDRO OROPEZA — PHOTO GALLERY DESIGN SYSTEM (design-system.css)
-   Single Source of Truth for Tokens, Typography, Buttons, Surfaces & Patterns.
+   Single Source of Truth for Tokens, Typography, Tonal Buttons, Surfaces & Patterns.
    Modifying any token in :root automatically cascades across all pages.
    ============================================================================ */
 
@@ -19,12 +19,16 @@
   --ds-color-ink-label: #8C8C8C;
   --ds-color-ink-inverse: #FFFFFF;
 
-  /* 2. FROSTED GLASS & SURFACE HOVER TOKENS */
+  /* 2. FROSTED GLASS & LIGHT-SURFACE HOVER TOKENS */
   --ds-surface-frosted: rgba(255, 255, 255, 0.76);
   --ds-border-frosted: rgba(20, 20, 20, 0.08);
   --ds-blur-frosted: blur(16px) saturate(140%);
-  --ds-surface-hover: rgba(20, 20, 20, 0.08);
-  --ds-surface-active: rgba(20, 20, 20, 0.14);
+  --menu-light-peak: rgba(178, 178, 178, 1);
+  --menu-light-mid: rgba(156, 156, 156, 0.96);
+  --lite-peak: rgba(0, 0, 0, 1);
+  --lite-mid: rgba(10, 10, 10, 0.96);
+  --lite-surface-peak: rgba(255, 255, 255, 0.92);
+  --lite-surface-mid: rgba(255, 255, 255, 0.58);
 
   /* 3. TYPOGRAPHY FAMILY TOKENS */
   /* Titles: Always Futura, Never Bold (300 or 400 weight only) */
@@ -32,15 +36,16 @@
   /* Brand Name, Menu, Body, Labels, Buttons, Technical Specs: Always Avenir */
   --ds-font-sans: 'Avenir', 'Avenir Next', 'Montserrat', 'Century Gothic', sans-serif;
 
-  /* 4. SPACING, SIZING & RADIUS TOKENS */
-  --ds-header-height: 4.25rem;     /* 68px — Elegant desktop & mobile floating header height */
-  --ds-btn-height: 32px;           /* 32px — Sleek unified height */
-  --ds-social-size: 32px;          /* 32px — Standardized circular diameter */
-  --ds-btn-padding-x: 0.95rem;     /* 15px horizontal padding */
-  --ds-btn-gap: 0.4rem;            /* 6px space between icon and label inside buttons */
+  /* 4. RESPONSIVE CONTROL & SPACING TOKENS
+     - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
+     - Desktop (>= 768px): 40px high (8px side padding) buttons & 40px diameter icon buttons */
+  --ds-header-height: 4.5rem;      /* 72px — Accommodates 48px mobile controls comfortably */
+  --ds-control-size: 48px;         /* Mobile default: 48px height / diameter */
+  --ds-btn-padding-x: 12px;        /* Mobile default: 12px side padding */
+  --ds-btn-gap: 0.4rem;            /* 6.4px space between icon and label inside buttons */
   --ds-grid-gap: 0.625rem;         /* 10px gallery grid gutter */
   --ds-radius-sm: 0.125rem;        /* 2px photo frame corner radius */
-  --ds-radius-md: 9999px;          /* Full pill radius */
+  --ds-radius-pill: 9999px;        /* Full pill / circle radius */
 
   /* 5. MOTION & ANIMATION TOKENS */
   --ds-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -48,6 +53,14 @@
   --ds-duration-header: 350ms;
   --ds-duration-zoom: 450ms;
   --ds-hover-scale: 1.03;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --ds-header-height: 4.25rem;   /* 68px desktop floating header height */
+    --ds-control-size: 40px;       /* Desktop: 40px height / diameter */
+    --ds-btn-padding-x: 8px;       /* Desktop: 8px side padding */
+  }
 }
 
 /* ============================================================================
@@ -176,7 +189,9 @@
   opacity: 0;
   pointer-events: none !important;
 }
-.ds-scroll-cue:hover { color: #FFFFFF; }
+@media (hover: hover) and (pointer: fine) {
+  .ds-scroll-cue:hover { color: #FFFFFF; }
+}
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -198,92 +213,40 @@
 }
 
 /* ============================================================================
-   UNIFIED BUTTON SYSTEM
-   4 Variants:
-     1. Primary   -> Filled Button (.ds-btn-filled)    — Primary actions
-     2. Secondary -> Outlined Button (.ds-btn-outlined) — Secondary actions
-     3. Surface   -> Surface Button (.ds-btn-surface)   — Navigation & tools (fully rounded pill; circular icon button)
-     4. Tonal     -> Tonal Button (.ds-btn-tonal)       — Social & ambient floating actions (translucent fill + cursor light)
+   UNIFIED TONAL BUTTON ARCHITECTURE (2 MASTER COMPONENTS)
+   1. Button (.ds-btn)         — Pill button with label + optional leading/trailing icon toggle
+   2. IconButton (.ds-icon-btn) — Circular icon-only button
+   Shared Styling: Tonal translucent surface (adapts automatically to Hero dark glass vs Light surface)
+   Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
+   Responsive Sizing:
+     - Mobile (< 768px): 48px height / diameter, 12px horizontal padding on .ds-btn
+     - Desktop (>= 768px): 40px height / diameter, 8px horizontal padding on .ds-btn
    ============================================================================ */
 
-.ds-btn {
+.ds-btn,
+.ds-icon-btn {
+  --pill-x: 50%;
+  --pill-y: 50%;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  box-sizing: border-box;
+  height: var(--ds-control-size);
+  min-height: var(--ds-control-size);
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid rgba(20, 20, 20, 0.05);
+  background-color: rgba(20, 20, 20, 0.08);
+  color: rgba(20, 20, 20, 0.72);
   font-family: var(--ds-font-sans);
   font-weight: 400;
   font-size: 0.875rem; /* 14px */
   line-height: 1;
   letter-spacing: 0.02em;
-  text-transform: none; /* Sentence case across all buttons */
-  height: var(--ds-btn-height);           /* 32px sleek unified height */
-  padding: 0 var(--ds-btn-padding-x);
-  border-radius: var(--ds-radius-md);
-  border: 1px solid transparent;
-  transition: opacity var(--ds-duration-fast) ease,
-              background-color var(--ds-duration-fast) ease,
-              border-color var(--ds-duration-fast) ease,
-              color var(--ds-duration-fast) ease;
-  cursor: pointer;
+  text-transform: none; /* Sentence case */
+  text-decoration: none;
   white-space: nowrap;
-}
-
-.ds-btn:not(.hidden) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--ds-btn-gap);
-}
-
-/* Icon-Only Modifier */
-.ds-btn-icon {
-  padding: 0 var(--ds-btn-padding-x);
-}
-
-/* 1. PRIMARY: Filled Button */
-.ds-btn-filled {
-  background-color: var(--ds-color-ink-primary);
-  color: var(--ds-color-ink-inverse);
-  border-color: var(--ds-color-ink-primary);
-}
-.ds-btn-filled:active {
-  opacity: 0.75;
-}
-
-/* 2. SECONDARY: Outlined Button */
-.ds-btn-outlined {
-  background-color: transparent;
-  color: var(--ds-color-ink-primary);
-  border-color: var(--ds-color-border-strong);
-}
-.ds-btn-outlined:active {
-  background-color: var(--ds-surface-active);
-}
-
-/* 3. SURFACE: Surface Button (Fully rounded pill; circular 32×32 when paired with .ds-btn-icon) */
-.ds-btn-surface {
-  background-color: transparent;
-  color: rgba(20, 20, 20, 0.72);
-  border-color: transparent;
-  border-radius: 9999px;
-}
-.ds-btn-surface.ds-btn-icon {
-  width: var(--ds-btn-height); /* 32px × 32px exact circle */
-  padding: 0;
-}
-.ds-btn-surface:active {
-  background-color: var(--ds-surface-active);
-}
-.ds-btn > span,
-.ds-btn > svg {
-  color: inherit;
-}
-
-/* 4. TONAL: Tonal Button (Style of Social Buttons — translucent surface, fully rounded, floating shadow + slight press) */
-.ds-btn-tonal {
-  --pill-x: 50%;
-  --pill-y: 50%;
-  border-radius: 9999px;
-  background-color: rgba(20, 20, 20, 0.08);
-  border-color: rgba(20, 20, 20, 0.05);
-  color: rgba(20, 20, 20, 0.72);
+  cursor: pointer;
+  position: relative;
+  user-select: none;
   transform: translateY(0) scale(1);
   transition: transform 95ms cubic-bezier(0.2, 0, 0, 1),
               box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -291,26 +254,101 @@
               border-color 180ms ease,
               color 180ms ease;
 }
-.ds-btn-tonal.ds-btn-icon {
-  width: var(--ds-btn-height); /* 32px × 32px exact circle */
+
+/* Master Component 1: Button (Label + Optional Icon Toggle) */
+.ds-btn {
+  padding: 0 var(--ds-btn-padding-x);
+}
+.ds-btn:not(.hidden):not(.is-hidden) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-btn-gap);
+}
+
+/* Master Component 2: IconButton (Exact Circle) */
+.ds-icon-btn {
+  width: var(--ds-control-size);
+  min-width: var(--ds-control-size);
   padding: 0;
 }
-.ds-btn-tonal:active {
+.ds-icon-btn:not(.hidden):not(.is-hidden) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure Tailwind responsive visibility classes (e.g. md:hidden) work seamlessly */
+@media (min-width: 768px) {
+  .ds-btn.md\:hidden,
+  .ds-icon-btn.md\:hidden {
+    display: none !important;
+  }
+}
+
+.ds-btn > span,
+.ds-btn > svg,
+.ds-icon-btn > svg {
+  color: inherit;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.ds-btn > svg,
+.ds-icon-btn > svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Masked Vector Glyphs inside IconButton (Instagram & 500px) */
+.ds-icon-glyph {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  pointer-events: none;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.ds-icon-glyph-ig {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5' ry='5'/%3E%3Cpath d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/%3E%3Cline x1='17.5' y1='6.5' x2='17.51' y2='6.5' stroke-width='2.2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5' ry='5'/%3E%3Cpath d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/%3E%3Cline x1='17.5' y1='6.5' x2='17.51' y2='6.5' stroke-width='2.2'/%3E%3C/svg%3E");
+}
+
+.ds-icon-glyph-500px {
+  width: 18px;
+  height: 18px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
+}
+
+/* Shared Pressed / Active State (Light Surface) */
+.ds-btn:active,
+.ds-icon-btn:active {
   transform: translateY(0.5px) scale(0.96);
   background-color: rgba(20, 20, 20, 0.11);
-  border-color: rgba(20, 20, 20, 0.08);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.12),
-              inset 0 1px 2.5px rgba(0, 0, 0, 0.14);
+  border-color: rgba(20, 20, 20, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(0, 0, 0, 0.16);
 }
-/* Dark/Hero context override for Tonal Button */
-.ds-header-hero .ds-btn-tonal,
-.ds-btn-tonal-hero {
+
+/* --- HERO DARK CONTEXT OVERRIDE (.ds-header-hero) --- */
+.ds-header-hero .ds-btn,
+.ds-header-hero .ds-icon-btn {
   background-color: rgba(255, 255, 255, 0.20);
   border-color: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
-.ds-header-hero .ds-btn-tonal:active,
-.ds-btn-tonal-hero:active {
+
+.ds-header-hero .ds-btn:active,
+.ds-header-hero .ds-icon-btn:active {
   transform: translateY(0.5px) scale(0.96);
   background-color: rgba(255, 255, 255, 0.17);
   border-color: rgba(255, 255, 255, 0.14);
@@ -318,23 +356,15 @@
               inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
 }
 
-/* Mouse Hover States (Strictly scoped to devices with hover capabilities — prevents sticky tap on mobile) */
+/* --- SHARED HOVER PHYSICS (Strictly scoped to fine pointers — zero sticky tap on mobile) --- */
 @media (hover: hover) and (pointer: fine) {
-  .ds-btn-filled:hover {
-    opacity: 0.85;
-  }
-  .ds-btn-outlined:hover {
-    background-color: var(--ds-surface-hover);
-    border-color: var(--ds-color-ink-primary);
-  }
-  .ds-btn-surface:hover {
-    background-color: var(--ds-surface-hover);
-    color: #000000;
-  }
-  .ds-btn-tonal:hover {
+  /* Light Surface Hover: Ink Deepening + White Radial Sheen + Floating Shadow */
+  .ds-btn:hover,
+  .ds-icon-btn:hover {
+    transform: translateY(0) scale(1);
     color: var(--lite-peak);
     background-image: radial-gradient(
-      circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
+      circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       var(--lite-surface-peak) 0%,
       var(--lite-surface-mid) 38%,
       rgba(20, 20, 20, 0.08) 100%
@@ -343,11 +373,14 @@
     box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
                 0 2px 5px -1px rgba(0, 0, 0, 0.11);
   }
-  .ds-header-hero .ds-btn-tonal:hover,
-  .ds-btn-tonal-hero:hover {
+
+  /* Hero Context Hover: Luminous Glass Sheen + Crisp White Glyph + Deep Drop Shadow */
+  .ds-header-hero .ds-btn:hover,
+  .ds-header-hero .ds-icon-btn:hover {
+    transform: translateY(0) scale(1);
     color: #FFFFFF;
     background-image: radial-gradient(
-      circle 36px at var(--pill-x, 50%) var(--pill-y, 50%),
+      circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       rgba(255, 255, 255, 0.48) 0%,
       rgba(255, 255, 255, 0.30) 40%,
       rgba(255, 255, 255, 0.20) 100%
@@ -356,14 +389,21 @@
     box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
                 0 3px 6px -1px rgba(0, 0, 0, 0.30);
   }
+
+  .ds-header-hero .ds-icon-btn:hover .ds-icon-glyph {
+    background-color: transparent;
+    background-image: radial-gradient(
+      circle 22px at var(--spot-x, 50%) var(--spot-y, 50%),
+      #FFFFFF 0%,
+      #FFFFFF 36%,
+      rgba(255, 255, 255, 0.94) 56%,
+      rgba(255, 255, 255, 0.72) 100%
+    );
+  }
 }
 
 /* ============================================================================
    TOP BAR EDITORIAL SLASH MENU ("GALLERY  /  ABOUT ME")
-   - Baseline-aligned with "Alejandro Oropeza" when unscrolled; horizontally
-     centered inside the capsule when in pill mode (.ds-header-frosted)
-   - Cursor-following radial light is ALWAYS bright white (#FFFFFF) and masked
-     strictly to the text glyphs (-webkit-background-clip: text) over resting color
    ============================================================================ */
 
 .ds-menu-nav {
@@ -458,276 +498,41 @@
   color: rgba(20, 20, 20, 0.68);
 }
 
-/* Text-Only Masked Radial Light on Hover (Hero Mode) — ONLY on unselected option.
-   Pure maximum-brightness white (#FFFFFF) at the cursor over resting 0.52 white text. */
-.ds-header-hero .ds-menu-link:not(.is-active):hover .ds-menu-text {
-  background-image: radial-gradient(
-    circle 38px at var(--spot-x, 50%) var(--spot-y, 50%),
-    #FFFFFF 0%,
-    #FFFFFF 30%,
-    rgba(255, 255, 255, 0.92) 52%,
-    rgba(255, 255, 255, 0.52) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/* LIGHT-SURFACE HOVER LIGHT TOKENS (locked)
-   - Menu Links  -> "Soft Silver" light: dark text tints to a light silver grey under the cursor
-   - Icon Buttons (Social Buttons, Header Nav Buttons) -> "Ink Deepening": glyph deepens to full
-     ink while the button surface catches a white sheen */
-:root {
-  --menu-light-peak: rgba(178, 178, 178, 1);
-  --menu-light-mid: rgba(156, 156, 156, 0.96);
-  --lite-peak: rgba(0, 0, 0, 1);
-  --lite-mid: rgba(10, 10, 10, 0.96);
-  --lite-surface-peak: rgba(255, 255, 255, 0.92);
-  --lite-surface-mid: rgba(255, 255, 255, 0.58);
-}
-
-/* Text-Only Masked Radial Light on Hover (Pill Mode / Light Surface) — ONLY on unselected option.
-   Soft Silver light (--menu-light-* tokens) over resting dark text (rgba(20, 20, 20, 0.68)). */
-.ds-header-frosted .ds-menu-link:not(.is-active):hover .ds-menu-text,
-.ds-header-transparent-dark .ds-menu-link:not(.is-active):hover .ds-menu-text {
-  background-image: radial-gradient(
-    circle 38px at var(--spot-x, 50%) var(--spot-y, 50%),
-    var(--menu-light-peak) 0%,
-    var(--menu-light-peak) 30%,
-    var(--menu-light-mid) 50%,
-    rgba(20, 20, 20, 0.68) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/* ============================================================================
-   SOCIAL MEDIA ICON PILLS (Instagram & 500px — Exact 28px Circle)
-   - Cursor-following radial light is ALWAYS bright white (#FFFFFF) over resting color
-   - Hover: Floating drop shadow (NO upward movement)
-   - Active (Pressed): Slight, noticeable physical press (scale(0.96) translateY(0.5px))
-   ============================================================================ */
-
-.ds-social-pill {
-  width: var(--ds-social-size);  /* 48px standardized everywhere */
-  height: var(--ds-social-size); /* 48px standardized everywhere */
-  min-width: var(--ds-social-size);
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border: 1px solid transparent;
-  cursor: pointer;
-  position: relative;
-  transform: translateY(0) scale(1);
-  transition: transform 95ms cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 180ms ease,
-              border-color 180ms ease;
-  --spot-x: 50%;
-  --spot-y: 50%;
-  --pill-x: 50%;
-  --pill-y: 50%;
-}
-
-/* Vector Icon Glyph Masked Strictly to SVG Shape (Instagram / 500px) */
-.ds-social-glyph {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  pointer-events: none;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-}
-
-.ds-social-glyph-ig {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5' ry='5'/%3E%3Cpath d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/%3E%3Cline x1='17.5' y1='6.5' x2='17.51' y2='6.5' stroke-width='2.2'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5' ry='5'/%3E%3Cpath d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/%3E%3Cline x1='17.5' y1='6.5' x2='17.51' y2='6.5' stroke-width='2.2'/%3E%3C/svg%3E");
-}
-
-.ds-social-glyph-500px {
-  width: 18px;
-  height: 18px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
-}
-
-/* --- HERO MODE (White Icon Glyphs on Translucent Circle) --- */
-.ds-header-hero .ds-social-pill {
-  background-color: rgba(255, 255, 255, 0.20);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-.ds-header-hero .ds-social-pill .ds-social-glyph {
-  background-color: rgba(255, 255, 255, 0.62);
-}
-
-/* Active / Pressed (Hero Mode): Slight physical press */
-.ds-header-hero .ds-social-pill:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
-              inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
-}
-
-/* --- WHISPER MIST PILL & TRANSPARENT-DARK MODE (Dark Icon Glyphs) --- */
-.ds-header-frosted .ds-social-pill,
-.ds-header-transparent-dark .ds-social-pill,
-.ds-social-pill-dark {
-  background-color: rgba(20, 20, 20, 0.08);
-  border-color: rgba(20, 20, 20, 0.05);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-.ds-header-frosted .ds-social-pill .ds-social-glyph,
-.ds-header-transparent-dark .ds-social-pill .ds-social-glyph,
-.ds-social-pill-dark .ds-social-glyph {
-  background-color: rgba(20, 20, 20, 0.72);
-}
-
-/* Active / Pressed (Pill Mode / Light Surface) */
-.ds-header-frosted .ds-social-pill:active,
-.ds-header-transparent-dark .ds-social-pill:active,
-.ds-social-pill-dark:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(20, 20, 20, 0.10);
-  border-color: rgba(20, 20, 20, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
-              inset 0 1px 2px rgba(0, 0, 0, 0.16);
-}
-
-/* Mouse Hover States for Social Pills */
 @media (hover: hover) and (pointer: fine) {
-  .ds-header-hero .ds-social-pill:hover {
-    transform: translateY(0) scale(1);
+  .ds-header-hero .ds-menu-link:not(.is-active):hover .ds-menu-text {
     background-image: radial-gradient(
-      circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
-      rgba(255, 255, 255, 0.48) 0%,
-      rgba(255, 255, 255, 0.30) 40%,
-      rgba(255, 255, 255, 0.20) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.26);
-    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
-                0 3px 6px -1px rgba(0, 0, 0, 0.30);
-  }
-
-  .ds-header-hero .ds-social-pill:hover .ds-social-glyph {
-    background-color: transparent;
-    background-image: radial-gradient(
-      circle 20px at var(--spot-x, 50%) var(--spot-y, 50%),
+      circle 38px at var(--spot-x, 50%) var(--spot-y, 50%),
       #FFFFFF 0%,
-      #FFFFFF 36%,
-      rgba(255, 255, 255, 0.94) 56%,
-      rgba(255, 255, 255, 0.62) 100%
+      #FFFFFF 30%,
+      rgba(255, 255, 255, 0.92) 52%,
+      rgba(255, 255, 255, 0.52) 100%
     );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 
-  .ds-header-frosted .ds-social-pill:hover,
-  .ds-header-transparent-dark .ds-social-pill:hover,
-  .ds-social-pill-dark:hover {
-    transform: translateY(0) scale(1);
+  .ds-header-frosted .ds-menu-link:not(.is-active):hover .ds-menu-text,
+  .ds-header-transparent-dark .ds-menu-link:not(.is-active):hover .ds-menu-text {
     background-image: radial-gradient(
-      circle 32px at var(--pill-x, 50%) var(--pill-y, 50%),
-      var(--lite-surface-peak) 0%,
-      var(--lite-surface-mid) 38%,
-      rgba(20, 20, 20, 0.08) 100%
+      circle 38px at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--menu-light-peak) 0%,
+      var(--menu-light-peak) 30%,
+      var(--menu-light-mid) 50%,
+      rgba(20, 20, 20, 0.68) 100%
     );
-    border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-                0 2px 5px -1px rgba(0, 0, 0, 0.11);
-  }
-
-  .ds-header-frosted .ds-social-pill:hover .ds-social-glyph,
-  .ds-header-transparent-dark .ds-social-pill:hover .ds-social-glyph,
-  .ds-social-pill-dark:hover .ds-social-glyph {
-    background-image: none;
-    background-color: var(--lite-peak);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 }
 
 /* ============================================================================
-   MOBILE HAMBURGER BUTTON & FULL-SCREEN OVERLAY MENU
+   MOBILE NAVIGATION OVERLAY & SHEET
    ============================================================================ */
 
-.ds-hamburger-btn {
-  width: var(--ds-social-size);  /* 32px — exactly matches social pills */
-  height: var(--ds-social-size); /* 32px — exactly matches social pills */
-  min-width: var(--ds-social-size);
-  border-radius: 9999px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  position: relative;
-  background: transparent;
-  transform: translateY(0) scale(1);
-  transition: transform 95ms cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 180ms ease,
-              background-color 180ms ease,
-              border-color 180ms ease;
-  --pill-x: 50%;
-  --pill-y: 50%;
-}
-
-.ds-hamburger-line {
-  display: block;
-  width: 14px;
-  height: 1.5px;
-  border-radius: 1px;
-  transition: transform 220ms var(--ds-ease-out-expo),
-              opacity 220ms ease,
-              background-color 180ms ease;
-}
-
-/* Hero Mode (Over dark hero image) */
-.ds-header-hero .ds-hamburger-btn {
-  background-color: rgba(255, 255, 255, 0.20);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-.ds-header-hero .ds-hamburger-line {
-  background-color: rgba(255, 255, 255, 0.85);
-}
-
-/* Frosted / Transparent Dark Mode */
-.ds-header-frosted .ds-hamburger-btn,
-.ds-header-transparent-dark .ds-hamburger-btn {
-  background-color: rgba(20, 20, 20, 0.08);
-  border-color: rgba(20, 20, 20, 0.05);
-}
-.ds-header-frosted .ds-hamburger-line,
-.ds-header-transparent-dark .ds-hamburger-line {
-  background-color: rgba(20, 20, 20, 0.85);
-}
-
-.ds-hamburger-btn:active {
-  transform: translateY(0.5px) scale(0.96);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .ds-header-hero .ds-hamburger-btn:hover {
-    background-color: rgba(255, 255, 255, 0.28);
-  }
-  .ds-header-frosted .ds-hamburger-btn:hover,
-  .ds-header-transparent-dark .ds-hamburger-btn:hover {
-    background-color: rgba(20, 20, 20, 0.12);
-  }
-}
-
-/* Mobile Nav Overlay & Sheet */
 .ds-mobile-nav-overlay {
   position: fixed;
   inset: 0;
@@ -775,8 +580,10 @@
   cursor: pointer;
   transition: opacity 160ms ease;
 }
-.ds-mob-menu-link:hover {
-  opacity: 0.7;
+@media (hover: hover) and (pointer: fine) {
+  .ds-mob-menu-link:hover {
+    opacity: 0.7;
+  }
 }
 .ds-mob-indicator {
   width: 6px;
@@ -791,9 +598,6 @@
 
 /* ============================================================================
    FLOATING HEADER & WHISPER MIST PILL-SHAPED SCROLLED CONTAINER
-   - Unscrolled: Full-width edge-to-edge transparent bar (baseline-aligned)
-   - Scrolled (.ds-header-frosted): Morphs into a lighter Whisper Mist floating
-     pill capsule (border-radius: 9999px) with all content horizontally aligned
    ============================================================================ */
 
 .ds-floating-header {
@@ -808,8 +612,8 @@
   pointer-events: auto;
   width: 100%;
   max-width: 100%;
-  min-height: 2.85rem; /* 45.6px */
-  padding: 0.4rem 0;
+  min-height: 2.85rem;
+  padding: 0.35rem 0;
   border-radius: 9999px;
   border: 1px solid transparent;
   transition: max-width 360ms var(--ds-ease-out-expo),
@@ -848,7 +652,7 @@
 .ds-header-frosted .ds-floating-pill {
   max-width: 62rem;
   margin-top: 0.35rem;
-  padding: 0.4rem 1.25rem;
+  padding: 0.35rem 1.25rem;
   border-radius: 9999px;
   align-items: center !important;
   background: rgba(255, 255, 255, 0.68);
@@ -861,7 +665,6 @@
   color: var(--ds-color-ink-primary);
 }
 
-/* When in Pill Mode (.ds-header-frosted), align all columns (including Showcase left/right stacks) horizontally */
 .ds-header-frosted #hdr-left-col {
   flex-direction: row !important;
   align-items: center !important;
@@ -907,8 +710,8 @@
   background-color: var(--ds-color-stage); /* Strictly Pure Neutral Grey #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: 5rem (80px) top under header, 5.75rem (92px) bottom above floating dock */
-  padding: 5rem 1.25rem 5.75rem 1.25rem;
+  /* Mobile padding: 5.25rem (84px) top under header, 6.25rem (100px) bottom above 48px floating dock */
+  padding: 5.25rem 1.25rem 6.25rem 1.25rem;
 }
 
 @media (min-width: 768px) {
@@ -926,9 +729,7 @@
   border-bottom: 1px solid var(--ds-color-border);
 }
 
-/* SHOWCASE TOP BAR:
-   - Hero / Unscrolled (.is-detail): align Left (Back), Center Row 1 (Photo Title), and Right ('n of n' + Prev/Next) horizontally centered; Row 2 is subtle capitalized author name below
-   - Pill Mode (.ds-header-frosted.is-detail): horizontally centered; only Back, Photo Title, and Prev/Next remain */
+/* SHOWCASE TOP BAR */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
@@ -964,47 +765,8 @@
   display: none !important;
 }
 
-/* HEADER NAV BUTTONS (Back to gallery, Prev / Next) — "Ink Deepening" light, shared with Social Buttons
-   - Rest: muted ink content on a transparent surface
-   - Hover: cursor-following white sheen on the surface, content deepens to full ink, floating shadow
-   - Pressed: slight, noticeable physical press (scale 0.96, 0.5px nudge) */
-.ds-btn-lit {
-  --pill-x: 50%;
-  --pill-y: 50%;
-  color: rgba(20, 20, 20, 0.72);
-  transform: translateY(0) scale(1);
-  transition: transform 95ms cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 180ms ease,
-              border-color 180ms ease,
-              color 180ms ease;
-}
-.ds-btn-lit:hover {
-  color: var(--lite-peak);
-  background-color: rgba(20, 20, 20, 0.06);
-  background-image: radial-gradient(
-    circle 48px at var(--pill-x, 50%) var(--pill-y, 50%),
-    var(--lite-surface-peak) 0%,
-    var(--lite-surface-mid) 38%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-              0 2px 5px -1px rgba(0, 0, 0, 0.11);
-}
-.ds-btn-lit:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(20, 20, 20, 0.10);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.12),
-              inset 0 1px 2.5px rgba(0, 0, 0, 0.14);
-}
-
 /* ============================================================================
-   SITE FOOTER (.ds-footer) — Option 1 · Mirror of the Top Bar
-   - One row: Wordmark (left) · Editorial Slash Menu (center) · Tonal Social Buttons (right)
-   - Thin rule above; muted © line below
-   - Reuses light-surface Menu Link (Soft Silver) + Social Button (Ink Deepening) treatments
-     via .ds-header-transparent-dark
+   SITE FOOTER (.ds-footer)
    ============================================================================ */
 .ds-footer {
   margin-top: 3rem;
@@ -1049,8 +811,6 @@
 
 /* ============================================================================
    PHOTOGRAPHY SHARPNESS & RENDERING FIDELITY
-   - Hardware accelerated composite prevents fractional-pixel blur on large covers
-   - High-quality interpolation across Retina and 4K displays
    ============================================================================ */
 #hero-featured-img {
   width: 100%;
@@ -1079,8 +839,8 @@
   align-items: center;
   justify-content: space-between;
   width: calc(100% - 2rem);
-  max-width: 22rem;
-  padding: 0.3rem 0.45rem;
+  max-width: 23rem;
+  padding: 0.35rem 0.45rem;
   border-radius: 9999px;
   background-color: rgba(250, 250, 250, 0.90);
   backdrop-filter: blur(20px) saturate(140%);
@@ -1098,15 +858,6 @@
   }
 }
 
-.ds-mobile-tonal-back {
-  height: 38px !important;
-  min-height: 38px !important;
-  padding: 0 1.15rem !important;
-  font-size: 0.875rem !important; /* 14px */
-  letter-spacing: 0.02em !important;
-  text-transform: none !important; /* Sentence case: "Gallery" */
-}
-
 .ds-mobile-tonal-counter {
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -1116,12 +867,3 @@
   color: var(--ds-color-ink-secondary);
   user-select: none;
 }
-
-.ds-mobile-tonal-step {
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px !important;
-  border-radius: 9999px !important;
-  padding: 0 !important;
-}
-

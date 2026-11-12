@@ -177,6 +177,201 @@ PROD_EXTRA_HEAD = """  <link rel="icon" type="image/svg+xml" href="favicon.svg" 
   <meta name="twitter:image" content="photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" />"""
 
 
+# ============================================================================
+# MASTER TONAL BUTTON COMPONENT HELPERS (Single Source of Truth)
+# 1. render_button()      -> Tonal Pill Button (.ds-btn) with icon toggle props
+# 2. render_icon_button() -> Tonal Circular Icon Button (.ds-icon-btn)
+# ============================================================================
+
+ICON_MARKUP = {
+    "arrow-left": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+    "arrow-right": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    "menu": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>',
+    "close": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    "instagram": '<span class="ds-icon-glyph ds-icon-glyph-ig"></span>',
+    "500px": '<span class="ds-icon-glyph ds-icon-glyph-500px"></span>',
+}
+
+
+def render_button(
+    label: str,
+    *,
+    icon_left: str | None = None,
+    icon_right: str | None = None,
+    onclick: str | None = None,
+    href: str | None = None,
+    elem_id: str | None = None,
+    aria_label: str | None = None,
+    extra_cls: str = "",
+) -> str:
+    """Master Component 1: Tonal Pill Button (48px/12px Mobile, 40px/8px Desktop)."""
+    classes = " ".join(c for c in ["ds-btn", extra_cls, "focus:outline-none"] if c)
+    attrs = [f'class="{classes}"', 'onmousemove="trackMenuLight(event, this)"']
+    if elem_id:
+        attrs.insert(0, f'id="{elem_id}"')
+    if aria_label:
+        attrs.append(f'aria-label="{aria_label}"')
+
+    parts = []
+    if icon_left:
+        parts.append(ICON_MARKUP[icon_left])
+    parts.append(f"<span>{label}</span>")
+    if icon_right:
+        parts.append(ICON_MARKUP[icon_right])
+    inner = "".join(parts)
+
+    if href:
+        attrs.extend([f'href="{href}"', 'target="_blank"', 'rel="noopener noreferrer"'])
+        return f'<a {" ".join(attrs)}>{inner}</a>'
+    attrs.insert(0, 'type="button"')
+    if onclick:
+        attrs.append(f'onclick="{onclick}"')
+    return f'<button {" ".join(attrs)}>{inner}</button>'
+
+
+def render_icon_button(
+    icon: str,
+    *,
+    onclick: str | None = None,
+    href: str | None = None,
+    elem_id: str | None = None,
+    title: str | None = None,
+    aria_label: str | None = None,
+    extra_attrs: str = "",
+    extra_cls: str = "",
+) -> str:
+    """Master Component 2: Tonal Circular IconButton (48px Mobile, 40px Desktop)."""
+    classes = " ".join(c for c in ["ds-icon-btn", extra_cls, "focus:outline-none"] if c)
+    attrs = [f'class="{classes}"', 'onmousemove="trackMenuLight(event, this)"']
+    if elem_id:
+        attrs.insert(0, f'id="{elem_id}"')
+    if title:
+        attrs.append(f'title="{title}"')
+    if aria_label:
+        attrs.append(f'aria-label="{aria_label}"')
+    if extra_attrs:
+        attrs.append(extra_attrs)
+
+    inner = ICON_MARKUP[icon]
+    if href:
+        attrs.extend([f'href="{href}"', 'target="_blank"', 'rel="noopener noreferrer"'])
+        return f'<a {" ".join(attrs)}>{inner}</a>'
+    attrs.insert(0, 'type="button"')
+    if onclick:
+        attrs.append(f'onclick="{onclick}"')
+    return f'<button {" ".join(attrs)}>{inner}</button>'
+
+
+def build_button_instances(catalog: dict) -> dict[str, str]:
+    ig_url = catalog["site"]["social"]["instagram"].replace("&", "&amp;")
+    px_url = catalog["site"]["social"]["fiveHundredPx"].replace("&", "&amp;")
+    return {
+        # Live Website Instances — Button
+        "__BTN_HDR_BACK__": render_button(
+            "Back to gallery",
+            icon_left="arrow-left",
+            onclick="showView('gallery')",
+            elem_id="hdr-left-back",
+            extra_cls="ds-showcase-back is-hidden",
+        ),
+        "__BTN_PRINT_ORDER__": render_button(
+            "Order print",
+            onclick="triggerPrintOrder(this)",
+            elem_id="detail-print-btn",
+        ),
+        "__BTN_MOB_BACK__": render_button(
+            "Gallery",
+            icon_left="arrow-left",
+            onclick="showView('gallery')",
+            aria_label="Back to gallery",
+        ),
+        # Live Website Instances — IconButton
+        "__IBTN_HDR_IG__": render_icon_button(
+            "instagram",
+            href=ig_url,
+            title="Instagram (@alejandroropeza.photo)",
+            aria_label="Instagram",
+        ),
+        "__IBTN_HDR_500PX__": render_icon_button(
+            "500px",
+            href=px_url,
+            title="500px (Alejandro Oropeza)",
+            aria_label="500px",
+        ),
+        "__IBTN_HDR_MENU__": render_icon_button(
+            "menu",
+            onclick="toggleMobileMenu()",
+            elem_id="hdr-hamburger-btn",
+            aria_label="Toggle navigation menu",
+            extra_attrs='aria-expanded="false"',
+            extra_cls="md:hidden",
+        ),
+        "__IBTN_HDR_PREV__": render_icon_button(
+            "arrow-left",
+            onclick="stepPhoto(-1)",
+            title="Previous photograph",
+            aria_label="Previous photograph",
+        ),
+        "__IBTN_HDR_NEXT__": render_icon_button(
+            "arrow-right",
+            onclick="stepPhoto(1)",
+            title="Next photograph",
+            aria_label="Next photograph",
+        ),
+        "__IBTN_DRAWER_CLOSE__": render_icon_button(
+            "close",
+            onclick="toggleMobileMenu(false)",
+            aria_label="Close menu",
+        ),
+        "__IBTN_DRAWER_IG__": render_icon_button(
+            "instagram",
+            href=ig_url,
+            title="Instagram",
+            aria_label="Instagram",
+        ),
+        "__IBTN_DRAWER_500PX__": render_icon_button(
+            "500px",
+            href=px_url,
+            title="500px",
+            aria_label="500px",
+        ),
+        "__IBTN_MOB_PREV__": render_icon_button(
+            "arrow-left",
+            onclick="stepPhoto(-1)",
+            title="Previous photograph",
+            aria_label="Previous photograph",
+        ),
+        "__IBTN_MOB_NEXT__": render_icon_button(
+            "arrow-right",
+            onclick="stepPhoto(1)",
+            title="Next photograph",
+            aria_label="Next photograph",
+        ),
+        "__IBTN_FOOT_IG__": render_icon_button(
+            "instagram",
+            href=ig_url,
+            title="Instagram (@alejandroropeza.photo)",
+            aria_label="Instagram",
+        ),
+        "__IBTN_FOOT_500PX__": render_icon_button(
+            "500px",
+            href=px_url,
+            title="500px (Alejandro Oropeza)",
+            aria_label="500px",
+        ),
+        # Design System Specimen Instances
+        "__DS_BTN_LABEL_ONLY__": render_button("Order print"),
+        "__DS_BTN_ICON_LEFT__": render_button("Back to gallery", icon_left="arrow-left"),
+        "__DS_BTN_ICON_RIGHT__": render_button("Next photo", icon_right="arrow-right"),
+        "__DS_IBTN_PREV__": render_icon_button("arrow-left", title="Previous"),
+        "__DS_IBTN_NEXT__": render_icon_button("arrow-right", title="Next"),
+        "__DS_IBTN_IG__": render_icon_button("instagram", title="Instagram"),
+        "__DS_IBTN_500PX__": render_icon_button("500px", title="500px"),
+        "__DS_IBTN_MENU__": render_icon_button("menu", title="Menu"),
+        "__DS_IBTN_CLOSE__": render_icon_button("close", title="Close"),
+    }
+
+
 def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = False, is_production: bool = False) -> str:
     hero_height_cls = "h-[450px]" if is_inline_embed else "h-screen"
     stage_height_cls = "h-[450px]" if is_inline_embed else "h-screen"
@@ -190,7 +385,7 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         if is_inline_embed
         else "hidden max-w-5xl mx-auto px-6 sm:px-10 py-12 space-y-8"
     )
-    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 sm:px-6" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-6 sm:px-10"
+    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 sm:px-6" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-4 sm:px-10"
     main_pull_cls = "-mt-[4.5rem]" if is_inline_embed else ""
 
     if is_production:
@@ -205,6 +400,8 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         extra_head = ""
 
     html = HTML_BASE_TEMPLATE
+    for token, rendered in build_button_instances(catalog).items():
+        html = html.replace(token, rendered)
     html = html.replace("/* __DESIGN_SYSTEM_CSS__ */", design_system_css)
     html = html.replace("__CATALOG_JSON__", json.dumps(catalog, ensure_ascii=False))
     html = html.replace("__HERO_HEIGHT_CLS__", hero_height_cls)
@@ -377,23 +574,18 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       <div id="floating-header-pill" class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center">
         
         <!-- COLUMN 1 (LEFT):
-             - On Home / About: "Alejandro Oropeza" (Avenir Medium, baseline-aligned unscrolled, horizontally centered in pill mode)
-             - On Showcase: "← Back to gallery" ONLY -->
+             - On Home / About: "Alejandro Oropeza" (Avenir Medium, horizontally centered with Tonal IconButtons)
+             - On Showcase: Tonal Button "← Back to gallery" -->
         <div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10">
           <button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">
             Alejandro Oropeza
           </button>
-          <button id="hdr-left-back" onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" class="ds-showcase-back is-hidden ds-btn ds-btn-surface ds-btn-lit -ml-2 focus:outline-none">
-            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-            </svg>
-            <span>Back to gallery</span>
-          </button>
+          __BTN_HDR_BACK__
         </div>
 
         <!-- COLUMN 2 (CENTER):
              - On Home / About: Editorial Slash Menu ("GALLERY  /  ABOUT ME")
-             - On Showcase: Row 1 subtle "Alejandro Oropeza" (hidden in pill mode), Row 2 Photo Title (.ds-h2) -->
+             - On Showcase: Photo Title (.ds-h2) + subtle "Alejandro Oropeza" -->
         <div class="justify-self-center z-10">
           <nav id="header-menu-nav" class="ds-menu-nav">
             <button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none">
@@ -413,37 +605,22 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
 
         <!-- COLUMN 3 (RIGHT):
-             - On Home / About: 40px Circular Social Media Pills + Mobile Hamburger Button
-             - On Showcase: Subtle "n of n" counter to the left of circular Prev/Next Surface Icon Buttons -->
+             - On Home / About: Tonal Circular IconButtons (Instagram, 500px, Mobile Menu)
+             - On Showcase: "n of n" counter + Tonal Circular Prev/Next IconButtons -->
         <div id="hdr-right-col" class="justify-self-end self-center z-10">
           <div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">
-            <a href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" class="ds-social-pill focus:outline-none">
-              <span class="ds-social-glyph ds-social-glyph-ig"></span>
-            </a>
-            <a href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" class="ds-social-pill focus:outline-none">
-              <span class="ds-social-glyph ds-social-glyph-500px"></span>
-            </a>
-            <button id="hdr-hamburger-btn" type="button" onclick="toggleMobileMenu()" class="ds-hamburger-btn md:hidden focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false">
-              <span class="ds-hamburger-line"></span>
-              <span class="ds-hamburger-line"></span>
-            </button>
+            __IBTN_HDR_IG__
+            __IBTN_HDR_500PX__
+            __IBTN_HDR_MENU__
           </div>
 
           <div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">
             <span id="hdr-photo-counter" class="whitespace-nowrap">
               1 of 10
             </span>
-            <div class="flex items-center gap-1 -mr-2">
-              <button onclick="stepPhoto(-1)" title="Previous photograph" onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit focus:outline-none">
-                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-                </svg>
-              </button>
-              <button onclick="stepPhoto(1)" title="Next photograph" onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit focus:outline-none">
-                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                </svg>
-              </button>
+            <div class="flex items-center gap-1.5">
+              __IBTN_HDR_PREV__
+              __IBTN_HDR_NEXT__
             </div>
           </div>
         </div>
@@ -455,12 +632,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <div id="mobile-nav-overlay" class="ds-mobile-nav-overlay" onclick="if(event.target===this) toggleMobileMenu(false)">
       <div class="ds-mobile-nav-sheet">
         <div class="flex items-center justify-between pb-4 border-b border-[var(--ds-color-border)]">
-          <span class="ds-brand-name text-sm">Alejandro Oropeza</span>
-          <button onclick="toggleMobileMenu(false)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit w-10 h-10 focus:outline-none" aria-label="Close menu">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
+          <span class="ds-brand-name">Alejandro Oropeza</span>
+          __IBTN_DRAWER_CLOSE__
         </div>
         <nav class="flex flex-col py-6 space-y-2">
           <button onclick="mobileNavTo('gallery')" id="mob-nav-gallery" class="ds-mob-menu-link is-active focus:outline-none">
@@ -475,12 +648,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="pt-4 border-t border-[var(--ds-color-border)] flex items-center justify-between">
           <span class="ds-label text-[10px]">CONNECT</span>
           <div class="flex items-center gap-2.5">
-            <a href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="ds-social-pill ds-social-pill-dark" title="Instagram">
-              <span class="ds-social-glyph ds-social-glyph-ig"></span>
-            </a>
-            <a href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer" class="ds-social-pill ds-social-pill-dark" title="500px">
-              <span class="ds-social-glyph ds-social-glyph-500px"></span>
-            </a>
+            __IBTN_DRAWER_IG__
+            __IBTN_DRAWER_500PX__
           </div>
         </div>
       </div>
@@ -536,19 +705,17 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
         <div id="detail-spec-table" class="mt-3"></div>
 
-        <!-- Optional Print Shop Hook (Uses Primary Filled Button .ds-btn-filled) -->
+        <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
         <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
           <div>
             <span class="ds-label block">ARCHIVAL PRINT</span>
             <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
           </div>
-          <button onclick="triggerPrintOrder(this)" id="detail-print-btn" class="ds-btn ds-btn-filled">
-            <span>Order Print</span>
-          </button>
+          __BTN_PRINT_ORDER__
         </div>
 
         <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-        <div class="mt-5 pb-16 md:pb-4">
+        <div class="mt-5 pb-20 md:pb-4">
           <h3 class="ds-h3 text-center">DESCRIPTION</h3>
           <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
         </div>
@@ -556,24 +723,11 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
       <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only) -->
       <nav id="mobile-showcase-bar" class="ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation">
-        <button onclick="showView('gallery')" class="ds-btn ds-btn-tonal ds-mobile-tonal-back focus:outline-none" aria-label="Back to gallery">
-          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-          </svg>
-          <span>Gallery</span>
-        </button>
+        __BTN_MOB_BACK__
         <span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>
         <div class="flex items-center gap-1.5">
-          <button onclick="stepPhoto(-1)" title="Previous photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Previous photograph">
-            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-            </svg>
-          </button>
-          <button onclick="stepPhoto(1)" title="Next photograph" class="ds-btn ds-btn-tonal ds-btn-icon ds-mobile-tonal-step focus:outline-none" aria-label="Next photograph">
-            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </button>
+          __IBTN_MOB_PREV__
+          __IBTN_MOB_NEXT__
         </div>
       </nav>
 
@@ -587,7 +741,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       <div id="about-specs" class="mt-4 pt-2" style="border-top: 1px solid var(--ds-color-border);"></div>
     </section>
 
-    <!-- SITE FOOTER (Option 1 · Mirror of the Top Bar): Wordmark · Menu · Social Buttons, thin rule above, muted © below -->
+    <!-- SITE FOOTER (Option 1 · Mirror of the Top Bar): Wordmark · Menu · Tonal IconButtons, thin rule above, muted © below -->
     <footer id="site-footer" class="ds-footer ds-header-transparent-dark">
       <div class="ds-footer-row">
         <button onclick="showView('gallery')" class="ds-brand-name ds-footer-brand text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button>
@@ -601,12 +755,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </button>
         </nav>
         <div class="ds-footer-social">
-          <a href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" class="ds-social-pill focus:outline-none">
-            <span class="ds-social-glyph ds-social-glyph-ig"></span>
-          </a>
-          <a href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" class="ds-social-pill focus:outline-none">
-            <span class="ds-social-glyph ds-social-glyph-500px"></span>
-          </a>
+          __IBTN_FOOT_IG__
+          __IBTN_FOOT_500PX__
         </div>
       </div>
       <p class="ds-footer-copy">© 2026 Alejandro Oropeza</p>
@@ -627,129 +777,48 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </p>
     </div>
 
-    <!-- 1. BUTTON SYSTEM MATRIX (Primary Filled, Secondary Outlined, Surface Navigation/Tools, Tonal Social/Ambient) -->
+    <!-- 1. UNIFIED TONAL BUTTON ARCHITECTURE (Button + IconButton) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Button Component System (4 Types × 4 Icon/Label Configurations)</h2>
-      <div class="space-y-3 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
+      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Button System (2 Master Components · Responsive 48px M / 40px D)</h2>
+      <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
-        <!-- TYPE A: PRIMARY — FILLED BUTTONS -->
-        <div class="pb-3" style="border-bottom: 1px solid var(--ds-color-border);">
-          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-            <span class="ds-value font-medium">Primary — Filled Button (<code>.ds-btn-filled</code>)</span>
-            <span class="ds-label">Recommended Use: Primary Actions (e.g., Order Print, Submit)</span>
+        <!-- MASTER COMPONENT 1: BUTTON (.ds-btn) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Master Component 1 — Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
+            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (8px side padding) · Optional icon toggle</span>
           </div>
-          <div class="flex flex-wrap items-center gap-2.5">
-            <!-- Label Only -->
-            <button class="ds-btn ds-btn-filled"><span>Primary Action</span></button>
-            <!-- Icon Left + Label -->
-            <button class="ds-btn ds-btn-filled">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              <span>Icon Left</span>
-            </button>
-            <!-- Label + Icon Right -->
-            <button class="ds-btn ds-btn-filled">
-              <span>Icon Right</span>
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-            <!-- Icon Button (Only Icon) -->
-            <button class="ds-btn ds-btn-filled ds-btn-icon" title="Filled Icon Button">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
+          <div class="flex flex-wrap items-center gap-3">
+            __DS_BTN_LABEL_ONLY__
+            __DS_BTN_ICON_LEFT__
+            __DS_BTN_ICON_RIGHT__
           </div>
         </div>
 
-        <!-- TYPE B: SECONDARY — OUTLINED BUTTONS -->
-        <div class="pb-3" style="border-bottom: 1px solid var(--ds-color-border);">
-          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-            <span class="ds-value font-medium">Secondary — Outlined Button (<code>.ds-btn-outlined</code>)</span>
-            <span class="ds-label">Recommended Use: Secondary Actions (e.g., Filter, Cancel, Secondary CTA)</span>
+        <!-- MASTER COMPONENT 2: ICON BUTTON (.ds-icon-btn) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Master Component 2 — Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
+            <span class="ds-label">Mobile: 48px × 48px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
           </div>
-          <div class="flex flex-wrap items-center gap-2.5">
-            <!-- Label Only -->
-            <button class="ds-btn ds-btn-outlined"><span>Secondary Action</span></button>
-            <!-- Icon Left + Label -->
-            <button class="ds-btn ds-btn-outlined">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              <span>Icon Left</span>
-            </button>
-            <!-- Label + Icon Right -->
-            <button class="ds-btn ds-btn-outlined">
-              <span>Icon Right</span>
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-            <!-- Icon Button (Only Icon) -->
-            <button class="ds-btn ds-btn-outlined ds-btn-icon" title="Outlined Icon Button">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
+          <div class="flex flex-wrap items-center gap-3">
+            __DS_IBTN_PREV__
+            __DS_IBTN_NEXT__
+            __DS_IBTN_IG__
+            __DS_IBTN_500PX__
+            __DS_IBTN_MENU__
+            __DS_IBTN_CLOSE__
           </div>
         </div>
 
-        <!-- TYPE C: SURFACE — SURFACE BUTTONS (Fully Rounded Pill / Circular Icon Button) -->
-        <div class="pb-3" style="border-bottom: 1px solid var(--ds-color-border);">
-          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-            <span class="ds-value font-medium">Surface — Surface Button (<code>.ds-btn-surface</code>)</span>
-            <span class="ds-label">Recommended Use: Navigation &amp; Other Tools (fully rounded pill; circular 28×28 icon buttons, e.g., Back to gallery, Prev / Next)</span>
-          </div>
-          <div class="flex flex-wrap items-center gap-2.5">
-            <!-- Label Only -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-lit"><span>Surface Tool</span></button>
-            <!-- Icon Left + Label (Used by Back to gallery) -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-lit">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              <span>Back to gallery</span>
-            </button>
-            <!-- Label + Icon Right -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-lit">
-              <span>Next Photo</span>
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-            <!-- Icon Button (Circular 28×28 — Used by Prev / Next controls) -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit" title="Previous">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            </button>
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-surface ds-btn-icon ds-btn-lit" title="Next">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- TYPE D: TONAL — TONAL BUTTONS (Style of Social Buttons) -->
-        <div>
-          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-            <span class="ds-value font-medium">Tonal — Tonal Button (<code>.ds-btn-tonal</code> / <code>.ds-social-pill</code>)</span>
-            <span class="ds-label">Recommended Use: Social &amp; Ambient Floating Actions (translucent fill, fully rounded, Cursor Light + Float + Press)</span>
-          </div>
-          <div class="flex flex-wrap items-center gap-2.5">
-            <!-- Label Only -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-tonal"><span>Tonal Action</span></button>
-            <!-- Icon Left + Label -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-tonal">
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              <span>Icon Left</span>
-            </button>
-            <!-- Label + Icon Right -->
-            <button onmousemove="trackMenuLight(event, this)" class="ds-btn ds-btn-tonal">
-              <span>Icon Right</span>
-              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-            <!-- Icon Button (Only Icon — e.g., Social Buttons: Instagram & 500px) -->
-            <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill ds-social-pill-dark focus:outline-none" title="Instagram (Tonal Icon Button)">
-              <span class="ds-social-glyph ds-social-glyph-ig"></span>
-            </button>
-            <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill ds-social-pill-dark focus:outline-none" title="500px (Tonal Icon Button)">
-              <span class="ds-social-glyph ds-social-glyph-500px"></span>
-            </button>
-          </div>
-        </div>
-
-        <!-- TOP BAR & WHISPER MIST PILL + CURSOR LIGHT -->
-        <div class="pt-3 space-y-2.5" style="border-top: 1px solid var(--ds-color-border);">
+        <!-- TOP BAR & WHISPER MIST PILL + DARK/LIGHT CONTEXT ADAPTATION -->
+        <div class="space-y-2.5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
-            <span class="ds-value font-medium">Top Bar &amp; Whisper Mist Pill (<code>.ds-floating-pill</code>, <code>.ds-menu-link</code>, <code>.ds-social-pill</code>)</span>
-            <span class="ds-label">Hero: white light · Pill: Soft Silver light on Menu Links, Ink Deepening on Icon Buttons (<code>.ds-social-pill</code>, <code>.ds-btn-lit</code>) · Floating shadow · Slight press</span>
+            <span class="ds-value font-medium">Automatic Context Adaptation (Hero Dark Glass vs. Light Surface)</span>
+            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Whisper Mist surface</span>
           </div>
           <!-- Hero State Specimen -->
-          <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-baseline content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
+          <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
             <span class="ds-brand-name justify-self-start" style="color: #FFFFFF;">Alejandro Oropeza</span>
             <nav class="ds-menu-nav justify-self-center">
               <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
@@ -761,12 +830,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
               </button>
             </nav>
             <div class="flex items-center gap-2 justify-self-end self-center">
-              <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill focus:outline-none" title="Instagram">
-                <span class="ds-social-glyph ds-social-glyph-ig"></span>
-              </button>
-              <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill focus:outline-none" title="500px">
-                <span class="ds-social-glyph ds-social-glyph-500px"></span>
-              </button>
+              __DS_IBTN_IG__
+              __DS_IBTN_500PX__
             </div>
           </div>
           <!-- Scrolled Whisper Mist Pill Specimen -->
@@ -783,12 +848,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
                 </button>
               </nav>
               <div class="flex items-center gap-2 justify-self-end self-center">
-                <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill focus:outline-none" title="Instagram">
-                  <span class="ds-social-glyph ds-social-glyph-ig"></span>
-                </button>
-                <button type="button" onmousemove="trackMenuLight(event, this)" class="ds-social-pill focus:outline-none" title="500px">
-                  <span class="ds-social-glyph ds-social-glyph-500px"></span>
-                </button>
+                __DS_IBTN_IG__
+                __DS_IBTN_500PX__
               </div>
             </div>
           </div>
@@ -798,32 +859,28 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="pt-3 space-y-2.5" style="border-top: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Site Footer (<code>.ds-footer</code>)</span>
-            <span class="ds-label">Mirror of the Top Bar · Wordmark · Menu · Tonal Social Buttons · Thin rule above · Muted ©</span>
+            <span class="ds-label">Mirror of the Top Bar · Wordmark · Menu · Tonal IconButtons · Thin rule above · Muted ©</span>
           </div>
           <div class="rounded overflow-hidden" style="background-color: var(--ds-color-canvas);">
             <footer class="ds-footer ds-header-transparent-dark ds-footer-specimen">
-      <div class="ds-footer-row">
-        <button class="ds-brand-name ds-footer-brand text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button>
-        <nav class="ds-menu-nav ds-footer-menu">
-          <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
-            <span class="ds-menu-text">GALLERY</span>
-          </button>
-          <span class="ds-menu-sep">/</span>
-          <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none">
-            <span class="ds-menu-text">ABOUT ME</span>
-          </button>
-        </nav>
-        <div class="ds-footer-social">
-          <button type="button" onmousemove="trackMenuLight(event, this)" title="Instagram" class="ds-social-pill focus:outline-none">
-            <span class="ds-social-glyph ds-social-glyph-ig"></span>
-          </button>
-          <button type="button" onmousemove="trackMenuLight(event, this)" title="500px" class="ds-social-pill focus:outline-none">
-            <span class="ds-social-glyph ds-social-glyph-500px"></span>
-          </button>
-        </div>
-      </div>
-      <p class="ds-footer-copy">© 2026 Alejandro Oropeza</p>
-    </footer>
+              <div class="ds-footer-row">
+                <button class="ds-brand-name ds-footer-brand text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button>
+                <nav class="ds-menu-nav ds-footer-menu">
+                  <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
+                    <span class="ds-menu-text">GALLERY</span>
+                  </button>
+                  <span class="ds-menu-sep">/</span>
+                  <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none">
+                    <span class="ds-menu-text">ABOUT ME</span>
+                  </button>
+                </nav>
+                <div class="ds-footer-social">
+                  __DS_IBTN_IG__
+                  __DS_IBTN_500PX__
+                </div>
+              </div>
+              <p class="ds-footer-copy">© 2026 Alejandro Oropeza</p>
+            </footer>
           </div>
         </div>
       </div>
@@ -907,12 +964,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     const scrollViewport = document.getElementById('scroll-viewport');
     const floatingHeader = document.getElementById('floating-header');
 
-    /* Cursor-Following Radial Light Illumination Handler for Menu Links & Social Media Pills */
+    /* Cursor-Following Radial Light Illumination Handler for Menu Links & Tonal Buttons */
     function trackMenuLight(e, el) {
       const pillRect = el.getBoundingClientRect();
       el.style.setProperty('--pill-x', `${e.clientX - pillRect.left}px`);
       el.style.setProperty('--pill-y', `${e.clientY - pillRect.top}px`);
-      const targetEl = el.querySelector('.ds-menu-text, .ds-social-glyph') || el;
+      const targetEl = el.querySelector('.ds-menu-text, .ds-icon-glyph') || el;
       const rect = targetEl.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -1192,7 +1249,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       printHook.classList.toggle('hidden', !showPrint);
       if (showPrint && p.print) {
         document.getElementById('detail-print-meta').textContent = `${p.print.dimensions} · ${p.print.price}`;
-        document.getElementById('detail-print-btn').innerHTML = `<span>Order Print · ${p.print.price}</span>`;
+        document.getElementById('detail-print-btn').innerHTML = `<span>Order print · ${p.print.price}</span>`;
       }
     }
 
@@ -1322,7 +1379,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     function triggerPrintOrder(btn) {
       const prev = btn.innerHTML;
-      btn.innerHTML = "<span>✓ Redirecting to Print Partner...</span>";
+      btn.innerHTML = "<span>✓ Redirecting to print partner...</span>";
       setTimeout(() => { btn.innerHTML = prev; }, 1400);
     }
 

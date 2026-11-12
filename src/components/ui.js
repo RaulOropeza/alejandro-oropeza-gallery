@@ -8,11 +8,12 @@
  */
 
 export const Icons = {
-  arrowLeft: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
-  arrowRight: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
-  externalLink: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
-  instagram: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
-  fiveHundredPx: `<svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><text x="12" y="15.2" text-anchor="middle" font-family="'Avenir', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="8.2" letter-spacing="-0.3">500</text></svg>`
+  arrowLeft: `<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+  arrowRight: `<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  menu: `<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>`,
+  close: `<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  instagram: `<span class="ds-icon-glyph ds-icon-glyph-ig"></span>`,
+  fiveHundredPx: `<span class="ds-icon-glyph ds-icon-glyph-500px"></span>`
 };
 
 /**
@@ -41,55 +42,58 @@ export function Text({ variant = 'body', tag = 'p', text, className = '', id = '
 }
 
 /**
- * Unified Button Component
- * Variants:
- *   - 'filled'   (Primary: recommended for primary actions)
- *   - 'outlined' (Secondary: recommended for secondary actions)
- *   - 'surface'  (Surface: recommended for navigation & other tools)
+ * Master Component 1: Tonal Button (.ds-btn)
+ * Responsive sizing:
+ *   - Mobile (< 768px): 48px high, 12px horizontal padding
+ *   - Desktop (>= 768px): 40px high, 8px horizontal padding
  */
 export function Button({
-  variant = 'filled',
   label = '',
-  icon = '',
-  iconPosition = 'left',
+  iconLeft = '',
+  iconRight = '',
   onClick = '',
-  title = '',
+  href = '',
+  ariaLabel = '',
   className = '',
   id = ''
 }) {
-  const variantMap = {
-    filled: 'ds-btn-filled',
-    primary: 'ds-btn-filled',
-    outlined: 'ds-btn-outlined',
-    secondary: 'ds-btn-outlined',
-    surface: 'ds-btn-surface'
-  };
-  const vClass = variantMap[variant] || 'ds-btn-filled';
-  const isIconOnly = Boolean(icon && !label);
-  const iconOnlyClass = isIconOnly ? 'ds-btn-icon' : '';
+  const classes = ['ds-btn', className, 'focus:outline-none'].filter(Boolean).join(' ');
   const idAttr = id ? `id="${id}"` : '';
-  const clickAttr = onClick ? `onclick="${onClick}"` : '';
-  const titleAttr = title ? `title="${title}"` : '';
+  const ariaAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
+  const innerHtml = `${iconLeft}<span>${label}</span>${iconRight}`;
 
-  let innerHtml = '';
-  if (isIconOnly) {
-    innerHtml = icon;
-  } else if (icon && iconPosition === 'right') {
-    innerHtml = `<span>${label}</span>${icon}`;
-  } else if (icon) {
-    innerHtml = `${icon}<span>${label}</span>`;
-  } else {
-    innerHtml = `<span>${label}</span>`;
+  if (href) {
+    return `<a ${idAttr} href="${href}" target="_blank" rel="noopener noreferrer" ${ariaAttr} onmousemove="trackMenuLight(event, this)" class="${classes}">${innerHtml}</a>`;
   }
-
-  return `<button ${idAttr} ${clickAttr} ${titleAttr} class="ds-btn ${vClass} ${iconOnlyClass} ${className} focus:outline-none">${innerHtml}</button>`;
+  const clickAttr = onClick ? `onclick="${onClick}"` : '';
+  return `<button type="button" ${idAttr} ${clickAttr} ${ariaAttr} onmousemove="trackMenuLight(event, this)" class="${classes}">${innerHtml}</button>`;
 }
 
 /**
- * Social Media Circular Pill Button (Instagram & 500px)
+ * Master Component 2: Tonal Circular IconButton (.ds-icon-btn)
+ * Responsive sizing:
+ *   - Mobile (< 768px): 48px × 48px circle
+ *   - Desktop (>= 768px): 40px × 40px circle
  */
-export function SocialPill({ href = '#', title = '', icon = '', className = '' }) {
-  return `<a href="${href}" target="_blank" rel="noopener noreferrer" title="${title}" class="ds-social-pill ${className} focus:outline-none">${icon}</a>`;
+export function IconButton({
+  icon = '',
+  onClick = '',
+  href = '',
+  title = '',
+  ariaLabel = '',
+  className = '',
+  id = ''
+}) {
+  const classes = ['ds-icon-btn', className, 'focus:outline-none'].filter(Boolean).join(' ');
+  const idAttr = id ? `id="${id}"` : '';
+  const titleAttr = title ? `title="${title}"` : '';
+  const ariaAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
+
+  if (href) {
+    return `<a ${idAttr} href="${href}" target="_blank" rel="noopener noreferrer" ${titleAttr} ${ariaAttr} onmousemove="trackMenuLight(event, this)" class="${classes}">${icon}</a>`;
+  }
+  const clickAttr = onClick ? `onclick="${onClick}"` : '';
+  return `<button type="button" ${idAttr} ${clickAttr} ${titleAttr} ${ariaAttr} onmousemove="trackMenuLight(event, this)" class="${classes}">${icon}</button>`;
 }
 
 /**
