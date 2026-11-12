@@ -3,7 +3,7 @@
 This directory (`dist/`) contains the complete, self-contained production build ready for 1-click deployment.
 
 - **Initial HTML size:** ~38 KB (loads instantly)
-- **Images:** High-resolution 2048px JPEGs in `photos/` loaded on demand with lazy-loading
+- **Images:** Full-resolution JPEGs in `photos/` (6000×4000 cover masters) + crisp 1600px Lanczos gallery thumbnails in `photos/thumbs/`
 - **Routing:** Client-side hash routing (`#/photo/:id`, `#/about`, `#/gallery`) with full browser Back/Forward support
 - **Social Metadata:** Open Graph, Twitter cards, and SVG favicon pre-configured
 - **Hosting:** 100% static — zero servers or databases required (100% free hosting)

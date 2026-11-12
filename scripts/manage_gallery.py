@@ -69,6 +69,7 @@ def extract_exif_metadata(img_path: Path) -> dict:
 def ensure_public_photos(catalog: dict):
     PUBLIC_PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
     b64_map = {}
+    b64_thumb_map = {}
     for p in catalog["photos"]:
         fname = p["file"]
         src_candidates = [
@@ -85,10 +86,28 @@ def ensure_public_photos(catalog: dict):
             shutil.copy2(found, dest)
 
         im = Image.open(dest)
+        icc = im.info.get("icc_profile")
+        save_kwargs = {"format": "JPEG", "optimize": True}
+        if icc:
+            save_kwargs["icc_profile"] = icc
+
+        # Inline preview copy (3200px max edge for crisp Retina rendering inside single-file artifact)
+        preview_im = im.copy()
+        if max(preview_im.size) > 3200:
+            preview_im.thumbnail((3200, 3200), Image.Resampling.LANCZOS)
         buf = io.BytesIO()
-        im.save(buf, format="JPEG", quality=90, optimize=True)
+        preview_im.save(buf, quality=92, **save_kwargs)
         b64_map[p["id"]] = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
-    return b64_map
+
+        # Crisp Lanczos gallery thumbnail copy (1200px max edge)
+        thumb_im = im.copy()
+        if max(thumb_im.size) > 1200:
+            thumb_im.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
+        tbuf = io.BytesIO()
+        thumb_im.save(tbuf, quality=88, **save_kwargs)
+        b64_thumb_map[p["id"]] = "data:image/jpeg;base64," + base64.b64encode(tbuf.getvalue()).decode("ascii")
+
+    return b64_map, b64_thumb_map
 
 
 def cmd_add(args):
@@ -513,11 +532,22 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         mode_switcher_bar = DEV_SWITCHER_BAR
         extra_head = ""
 
+    hero_landscape = next(
+        (p for p in catalog["photos"] if p["id"] == catalog["site"].get("heroPhotoId")),
+        catalog["photos"][0],
+    )
+    hero_portrait = next(
+        (p for p in catalog["photos"] if p.get("orientation") == "portrait"),
+        hero_landscape,
+    )
+
     html = HTML_BASE_TEMPLATE
     for token, rendered in build_button_instances(catalog).items():
         html = html.replace(token, rendered)
     html = html.replace("/* __DESIGN_SYSTEM_CSS__ */", design_system_css)
     html = html.replace("__CATALOG_JSON__", json.dumps(catalog, ensure_ascii=False))
+    html = html.replace("__HERO_MOBILE_SRCSET__", hero_portrait.get("src", ""))
+    html = html.replace("__HERO_DESKTOP_SRC__", hero_landscape.get("src", ""))
     html = html.replace("__HERO_HEIGHT_CLS__", hero_height_cls)
     html = html.replace("__STAGE_HEIGHT_CLS__", stage_height_cls)
     html = html.replace("__SHELL_CLS__", shell_cls)
@@ -534,20 +564,32 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
 def build_production(design_system_css: str, catalog: dict):
     dist_dir = ROOT_DIR / "dist"
     dist_photos_dir = dist_dir / "photos"
-    dist_photos_dir.mkdir(parents=True, exist_ok=True)
+    dist_thumbs_dir = dist_photos_dir / "thumbs"
+    dist_thumbs_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Copy all 10 high-resolution photos to dist/photos/
+    # 1. Copy untouched full-resolution originals to dist/photos/ & generate 1600px Lanczos gallery thumbnails
     for p in catalog["photos"]:
         fname = p["file"]
-        src = PUBLIC_PHOTOS_DIR / fname
+        src = PUBLIC_PHOTOS_DIR / "hi-res" / fname
         if not src.exists():
-            src = PUBLIC_PHOTOS_DIR / "hi-res" / fname
+            src = PUBLIC_PHOTOS_DIR / fname
         shutil.copy2(src, dist_photos_dir / fname)
 
-    # 2. Build production catalog with relative photo paths (zero base64 overhead!)
+        im = Image.open(src)
+        icc = im.info.get("icc_profile")
+        thumb_im = im.copy()
+        if max(thumb_im.size) > 1600:
+            thumb_im.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+        save_kwargs = {"format": "JPEG", "quality": 90, "optimize": True}
+        if icc:
+            save_kwargs["icc_profile"] = icc
+        thumb_im.save(dist_thumbs_dir / fname, **save_kwargs)
+
+    # 2. Build production catalog with relative full-res & thumbnail paths (zero base64 overhead!)
     prod_catalog = json.loads(json.dumps(catalog))
     for p in prod_catalog["photos"]:
         p["src"] = f"photos/{p['file']}"
+        p["thumbSrc"] = f"photos/thumbs/{p['file']}"
 
     # 3. Build dist/index.html (clean live site without dev bar, ~38KB initial HTML)
     prod_html = build_html(design_system_css, prod_catalog, is_inline_embed=False, is_production=True)
@@ -590,7 +632,7 @@ def build_production(design_system_css: str, catalog: dict):
 This directory (`dist/`) contains the complete, self-contained production build ready for 1-click deployment.
 
 - **Initial HTML size:** ~38 KB (loads instantly)
-- **Images:** High-resolution 2048px JPEGs in `photos/` loaded on demand with lazy-loading
+- **Images:** Full-resolution JPEGs in `photos/` (6000×4000 cover masters) + crisp 1600px Lanczos gallery thumbnails in `photos/thumbs/`
 - **Routing:** Client-side hash routing (`#/photo/:id`, `#/about`, `#/gallery`) with full browser Back/Forward support
 - **Social Metadata:** Open Graph, Twitter cards, and SVG favicon pre-configured
 - **Hosting:** 100% static — zero servers or databases required (100% free hosting)
@@ -642,9 +684,10 @@ def cmd_build(_args):
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         catalog = json.load(f)
 
-    b64_map = ensure_public_photos(catalog)
+    b64_map, b64_thumb_map = ensure_public_photos(catalog)
     for p in catalog["photos"]:
         p["src"] = b64_map[p["id"]]
+        p["thumbSrc"] = b64_thumb_map[p["id"]]
 
     # 1. Root index.html (local dev / preview server)
     full_html = build_html(design_system_css, catalog, is_inline_embed=False, is_production=False)
@@ -721,8 +764,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       <!-- Full-Viewport-Height Main Image: Non-clickable, responsive picture (portrait photo on mobile, landscape on desktop) -->
       <section id="hero-banner" class="relative w-full __HERO_HEIGHT_CLS__ overflow-hidden" style="background-color: var(--ds-color-ink-primary);">
         <picture id="hero-picture" class="w-full h-full block">
-          <source id="hero-source-mobile" media="(max-width: 767px)" srcset="" />
-          <img id="hero-featured-img" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
+          <source id="hero-source-mobile" media="(max-width: 767px)" srcset="__HERO_MOBILE_SRCSET__" />
+          <img id="hero-featured-img" src="__HERO_DESKTOP_SRC__" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
         </picture>
         <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);"></div>
         <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0) 100%);">
@@ -1155,8 +1198,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     function renderGallery() {
       const heroMobileSource = document.getElementById('hero-source-mobile');
       const heroFeaturedImg = document.getElementById('hero-featured-img');
-      if (heroMobileSource) heroMobileSource.srcset = heroPortrait.src;
-      if (heroFeaturedImg) heroFeaturedImg.src = heroLandscape.src;
+      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== heroPortrait.src) {
+        heroMobileSource.srcset = heroPortrait.src;
+      }
+      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== heroLandscape.src) {
+        heroFeaturedImg.src = heroLandscape.src;
+      }
       updateHeroForViewport();
 
       document.getElementById('gallery-intro-h1').textContent = CATALOG.site.introHeading;
@@ -1179,7 +1226,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           items.forEach(({ photo, idx }) => {
             html += `
               <div onclick="openPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56">
-                <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+                <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
           });
@@ -1189,7 +1236,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           items.forEach(({ photo, idx }) => {
             html += `
               <div onclick="openPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-44 sm:h-52">
-                <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+                <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
           });

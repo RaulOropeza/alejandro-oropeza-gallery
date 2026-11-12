@@ -925,15 +925,11 @@
   object-fit: cover;
   object-position: center;
   image-rendering: auto;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 #detail-img {
   border-radius: var(--ds-radius-sm); /* 4px */
   image-rendering: auto;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 /* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
