@@ -4,6 +4,46 @@
    Modifying any token in :root automatically cascades across all pages.
    ============================================================================ */
 
+/* ============================================================================
+   SELF-HOSTED CROSS-DEVICE WEB FONTS (100% Identical Across Android, iOS, Mac & Windows)
+   - Jost (300–400): Geometric Futura architecture for uppercase Display Headlines
+   - Nunito Sans (300–500): Geometric-humanist Avenir proportions for Brand, UI & Body
+   ============================================================================ */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 300 400;
+  font-display: swap;
+  src: url('fonts/jost-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 300 400;
+  font-display: swap;
+  src: url('fonts/jost-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 300 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('fonts/nunito-sans-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 300 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('fonts/nunito-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   /* 1. COLOR TOKENS (Strictly Pure Neutral Achromatic R=G=B) */
   --ds-color-canvas: #FFFFFF;
@@ -36,16 +76,17 @@
   --lite-surface-peak: rgba(255, 255, 255, 0.92);
   --lite-surface-mid: rgba(255, 255, 255, 0.58);
 
-  /* 3. TYPOGRAPHY FAMILY TOKENS */
-  /* Titles: Always Futura, Never Bold (300 or 400 weight only) */
-  --ds-font-display: 'Futura', 'Futura PT', 'Century Gothic', 'URW Gothic', 'Avant Garde', sans-serif;
-  /* Brand Name, Menu, Body, Labels, Buttons, Technical Specs: Always Avenir */
-  --ds-font-sans: 'Avenir', 'Avenir Next', 'Montserrat', 'Century Gothic', sans-serif;
+  /* 3. TYPOGRAPHY FAMILY TOKENS (Self-Hosted Web Fonts -> Identical Across All Devices) */
+  /* Titles: Geometric Futura Display ('Jost' self-hosted webfont, 300 & 400 weight only — Never Bold) */
+  --ds-font-display: 'Jost', 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
+  /* Brand Name, Menu, Body, Labels, Buttons, Technical Specs: Geometric-Humanist Avenir Sans ('Nunito Sans' self-hosted webfont) */
+  --ds-font-sans: 'Nunito Sans', 'Avenir', 'Avenir Next', 'Century Gothic', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
      - Mobile (< 768px): 56px high (12px side padding) buttons & 56px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
+  --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
@@ -66,6 +107,7 @@
 @media (min-width: 768px) {
   :root {
     --ds-header-height: 4.25rem;         /* 68px desktop floating header height (keeps header buttons in place) */
+    --ds-header-pad-x: 2.5rem;           /* 40px (5 × 8px) desktop header side padding */
     --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
     --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
     --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
@@ -739,10 +781,61 @@
 
 .ds-floating-header {
   height: var(--ds-header-height);
+  padding-left: var(--ds-header-pad-x);
+  padding-right: var(--ds-header-pad-x);
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+/* Top-bar horizontal social icons: Desktop only (>= 768px) */
+.ds-desktop-social {
+  display: none !important;
+}
+@media (min-width: 768px) {
+  .ds-desktop-social {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5rem; /* 8px */
+  }
+}
+
+/* Mobile vertical social stack: Aligned directly below Menu button, fades out on scroll */
+.ds-mobile-social-stack {
+  position: absolute;
+  top: calc((var(--ds-header-height) + var(--ds-control-size)) / 2 + 0.5rem);
+  right: calc(var(--ds-header-pad-x) + 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 220ms ease,
+              transform 220ms var(--ds-ease-out-expo),
+              visibility 220ms ease;
+}
+
+.ds-floating-header.ds-header-frosted .ds-mobile-social-stack {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-0.5rem); /* -8px subtle upward glide on fade-out */
+}
+
+.ds-mobile-social-stack.is-hidden,
+.ds-floating-header.is-detail .ds-mobile-social-stack {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .ds-mobile-social-stack {
+    display: none !important;
+  }
 }
 
 .ds-floating-pill {
@@ -788,7 +881,7 @@
 .ds-header-frosted .ds-floating-pill {
   max-width: 62rem;
   margin-top: 0.35rem;
-  padding: 0.35rem 1.25rem;
+  padding: 0.35rem 0.45rem 0.35rem 1.25rem;
   align-items: center !important;
   background: var(--ds-pill-bg);
   backdrop-filter: var(--ds-pill-blur);

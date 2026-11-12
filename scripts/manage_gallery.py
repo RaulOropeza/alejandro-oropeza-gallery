@@ -28,6 +28,7 @@ ROOT_DIR = Path("/home/antigravity/alejandro-oropeza-gallery")
 CSS_PATH = ROOT_DIR / "src" / "styles" / "design-system.css"
 DATA_PATH = ROOT_DIR / "src" / "data" / "photos.json"
 PUBLIC_PHOTOS_DIR = ROOT_DIR / "public" / "photos"
+PUBLIC_FONTS_DIR = ROOT_DIR / "public" / "fonts"
 INDEX_HTML_PATH = ROOT_DIR / "index.html"
 ARTIFACT_HTML_PATH = Path(
     "/home/antigravity/.gemini/jetski/brain/v1/default/jetski_remote_agents_3p/face751d-8bf6-461a-95f9-87e2341e2540/alejandro_oropeza_site_and_design_system.html"
@@ -181,7 +182,9 @@ DEV_SWITCHER_BAR = """  <!-- ===================================================
     </div>
   </div>"""
 
-PROD_EXTRA_HEAD = """  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+PROD_EXTRA_HEAD = """  <link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="canonical" href="https://alejandrooropeza.com/" />
   <!-- Open Graph / Social Sharing Metadata -->
   <meta property="og:type" content="website" />
@@ -414,7 +417,10 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             "</div>"
         ),
         right_html=(
-            f'<div id="header-main-nav" class="flex items-center justify-end gap-2">{ibtn_hdr_ig}{ibtn_hdr_500px}{ibtn_hdr_menu}</div>'
+            f'<div id="header-main-nav" class="flex items-center justify-end gap-2">'
+            f'<div class="ds-desktop-social">{ibtn_hdr_ig}{ibtn_hdr_500px}</div>'
+            f"{ibtn_hdr_menu}"
+            f"</div>"
             f'<div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2">'
             f'<span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span>'
             f'<div class="flex items-center gap-2">{ibtn_hdr_prev}{ibtn_hdr_next}</div>'
@@ -424,6 +430,27 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         left_id="hdr-left-col",
         right_id="hdr-right-col",
         extra_cls="ds-floating-pill",
+    )
+
+    # Mobile Home Vertical Social Stack (Aligned directly below Menu button, fades out on scroll)
+    ibtn_mob_hero_ig = render_icon_button(
+        "instagram",
+        href=ig_url,
+        elem_id="mob-hero-ig-btn",
+        title="Instagram (@alejandroropeza.photo)",
+        aria_label="Instagram",
+    )
+    ibtn_mob_hero_500px = render_icon_button(
+        "500px",
+        href=px_url,
+        elem_id="mob-hero-500px-btn",
+        title="500px (Alejandro Oropeza)",
+        aria_label="500px",
+    )
+    mobile_social_stack = (
+        f'<div id="mobile-social-stack" class="ds-mobile-social-stack ds-header-hero" aria-label="Social links">'
+        f"{ibtn_mob_hero_ig}{ibtn_mob_hero_500px}"
+        f"</div>"
     )
 
     # Mobile Bottom Showcase Pill Instance
@@ -466,8 +493,9 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
     )
 
     return {
-        # Standardized Pill Instances
+        # Standardized Pill Instances & Mobile Hero Social Stack
         "__PILL_TOP_HEADER__": top_header_pill,
+        "__MOBILE_SOCIAL_STACK__": mobile_social_stack,
         "__PILL_MOB_SHOWCASE__": mob_showcase_pill,
         # Live Website Instances — Button
         "__BTN_PRINT_ORDER__": render_button(
@@ -562,9 +590,10 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         if is_inline_embed
         else "hidden max-w-5xl mx-auto px-6 sm:px-10 py-12 space-y-8"
     )
-    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 sm:px-6" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-4 md:px-10"
-    main_pull_cls = "-mt-[4.5rem]" if is_inline_embed else ""
+    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 md:px-10" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-4 md:px-10"
+    main_pull_cls = "-mt-[5rem]" if is_inline_embed else ""
 
+    effective_css = design_system_css
     if is_production:
         body_cls = "bg-[var(--ds-color-canvas)] text-[var(--foreground)] antialiased p-0 m-0"
         shell_style = "background-color: var(--ds-color-canvas); color: var(--ds-color-ink-primary); border: none;"
@@ -575,6 +604,13 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         shell_style = "background-color: var(--ds-color-canvas); color: var(--ds-color-ink-primary); border: 1px solid var(--ds-color-border); border-top: none;"
         mode_switcher_bar = DEV_SWITCHER_BAR
         extra_head = ""
+        if PUBLIC_FONTS_DIR.exists():
+            for woff_path in PUBLIC_FONTS_DIR.glob("*.woff2"):
+                b64_font = base64.b64encode(woff_path.read_bytes()).decode("ascii")
+                effective_css = effective_css.replace(
+                    f"fonts/{woff_path.name}",
+                    f"data:font/woff2;base64,{b64_font}",
+                )
 
     hero_landscape = next(
         (p for p in catalog["photos"] if p["id"] == catalog["site"].get("heroPhotoId")),
@@ -588,7 +624,7 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
     html = HTML_BASE_TEMPLATE
     for token, rendered in build_button_instances(catalog).items():
         html = html.replace(token, rendered)
-    html = html.replace("/* __DESIGN_SYSTEM_CSS__ */", design_system_css)
+    html = html.replace("/* __DESIGN_SYSTEM_CSS__ */", effective_css)
     html = html.replace("__CATALOG_JSON__", json.dumps(catalog, ensure_ascii=False))
     html = html.replace("__HERO_MOBILE_SRCSET__", hero_portrait.get("src", ""))
     html = html.replace("__HERO_DESKTOP_SRC__", hero_landscape.get("src", ""))
@@ -609,7 +645,14 @@ def build_production(design_system_css: str, catalog: dict):
     dist_dir = ROOT_DIR / "dist"
     dist_photos_dir = dist_dir / "photos"
     dist_thumbs_dir = dist_photos_dir / "thumbs"
+    dist_fonts_dir = dist_dir / "fonts"
     dist_thumbs_dir.mkdir(parents=True, exist_ok=True)
+    dist_fonts_dir.mkdir(parents=True, exist_ok=True)
+
+    # 0. Copy self-hosted cross-device WOFF2 web fonts to dist/fonts/
+    if PUBLIC_FONTS_DIR.exists():
+        for woff_path in PUBLIC_FONTS_DIR.glob("*.woff2"):
+            shutil.copy2(woff_path, dist_fonts_dir / woff_path.name)
 
     # 1. Copy untouched full-resolution originals to dist/photos/ & generate 1600px Lanczos gallery thumbnails
     for p in catalog["photos"]:
@@ -776,6 +819,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero __HEADER_POS_CLS__">
       __PILL_TOP_HEADER__
+      __MOBILE_SOCIAL_STACK__
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -1069,39 +1113,39 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     <!-- 2. TYPOGRAPHY HIERARCHY -->
     <div>
-      <h2 class="ds-h3 mb-2.5">2. Typography Hierarchy (Futura Non-Bold + Avenir)</h2>
+      <h2 class="ds-h3 mb-2.5">2. Typography Hierarchy (Self-Hosted Cross-Device WOFF2: Jost / Futura + Nunito Sans / Avenir)</h2>
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Futura Light (300) · Uppercase · +0.04em</span>
+            <span class="ds-label block">.ds-h1 · Jost / Futura Light (300) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
           <code class="text-xs text-neutral-500">26px M · 30px D / 300</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Futura Regular (400) · Uppercase · +0.05em</span>
+            <span class="ds-label block">.ds-h2 · Jost / Futura Regular (400) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
           <code class="text-xs text-neutral-500">20px M · 24px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Futura Regular (400) · Uppercase · +0.12em</span>
+            <span class="ds-label block">.ds-h3 · Jost / Futura Regular (400) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
           <code class="text-xs text-neutral-500">14px M · 15px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-brand-name · Avenir Medium (500) · +0.02em · Center-Aligned</span>
+            <span class="ds-label block">.ds-brand-name · Nunito Sans / Avenir Medium (500) · +0.02em · Center-Aligned</span>
             <span class="ds-brand-name mt-0.5 block">Alejandro Oropeza</span>
           </div>
           <code class="text-xs text-neutral-500">18px / 500</code>
         </div>
         <div class="ds-spec-row" style="border-bottom: none;">
           <div>
-            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Avenir</span>
+            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Nunito Sans / Avenir</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
           <code class="text-xs text-neutral-500">16px / 300–400</code>
@@ -1900,7 +1944,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const brandName = document.getElementById('hdr-brand-name');
       const hamburgerBtn = document.getElementById('hdr-hamburger-btn');
       const mobShowcaseBar = document.getElementById('mobile-showcase-bar');
+      const mobSocialStack = document.getElementById('mobile-social-stack');
       floatingHeader.classList.toggle('is-detail', view === 'detail');
+      if (mobSocialStack) mobSocialStack.classList.toggle('is-hidden', view !== 'gallery');
 
       if (view === 'detail') {
         menuNav.classList.add('is-hidden');
