@@ -505,7 +505,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px (Alejandro Oropeza)",
             aria_label="500px",
         ),
-        # Live Website Instances — Stage Visualizer Trigger (Surface) & Popup Visualizer Close (Frosted Tonal)
+        # Live Website Instances — Stage Visualizer Trigger (Surface) & Popup Visualizer Close (Standard Tonal)
         "__SIBTN_STAGE_VISUALIZER__": render_surface_icon_button(
             "fullscreen",
             onclick="openVisualizer()",
@@ -932,14 +932,14 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             __DS_BTN_LABEL_ONLY__
@@ -965,7 +965,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px × 48px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
+            <span class="ds-label">Mobile: 56px × 56px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             __DS_IBTN_PREV__

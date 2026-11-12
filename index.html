@@ -56,11 +56,11 @@
   --ds-font-sans: 'Avenir', 'Avenir Next', 'Montserrat', 'Century Gothic', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
-     - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
+     - Mobile (< 768px): 56px high (12px side padding) buttons & 56px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
-  --ds-header-height: 4.5rem;          /* 72px (9 × 8px) — Accommodates 48px mobile controls comfortably */
+  --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
-  --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
+  --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
@@ -271,7 +271,7 @@
                                           appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
-     - Mobile (< 768px): 48px height / diameter, 12px horizontal padding on .ds-btn
+     - Mobile (< 768px): 56px height / diameter, 12px horizontal padding on .ds-btn
      - Desktop (>= 768px): 40px height / diameter, 16px horizontal padding on .ds-btn
    ============================================================================ */
 
@@ -904,11 +904,17 @@
 
 /* Showcase Stage: Light Neutral Grey (#F2F2F2) */
 .ds-showcase-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 144px + safe-area bottom (clears pill + fullscreen button) */
-  padding: var(--ds-showcase-title-band) 1.5rem calc(9rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 160px + safe-area bottom (clears 56px pill + fullscreen button) */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(10rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
@@ -919,13 +925,15 @@
 }
 
 /* Bottom-Right Stage Fullscreen Visualizer Trigger (Surface IconButton) */
+.ds-icon-btn.ds-stage-visualizer-btn,
 .ds-stage-visualizer-btn {
   position: absolute;
   right: 1rem; /* 16px */
-  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); /* 88px — sits cleanly above mobile bottom pill */
+  bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); /* 96px — sits cleanly above mobile bottom pill */
   z-index: 20;
 }
 @media (min-width: 768px) {
+  .ds-icon-btn.ds-stage-visualizer-btn,
   .ds-stage-visualizer-btn {
     right: 1.5rem; /* 24px */
     bottom: 1rem;  /* 16px */
@@ -1214,11 +1222,6 @@
   bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px — bottom-right on mobile */
   right: 1rem; /* 16px */
   z-index: 210;
-  background-color: var(--ds-pill-bg);
-  backdrop-filter: var(--ds-pill-blur);
-  -webkit-backdrop-filter: var(--ds-pill-blur);
-  border-color: var(--ds-pill-border);
-  box-shadow: var(--ds-pill-shadow);
 }
 
 @media (min-width: 768px) {
@@ -1420,14 +1423,14 @@
 
     <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
@@ -1453,7 +1456,7 @@
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
-            <span class="ds-label">Mobile: 48px × 48px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
+            <span class="ds-label">Mobile: 56px × 56px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
