@@ -112,7 +112,7 @@
      - Desktop (>= 768px): 40px high (20px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
-  --ds-showcase-title-band: 7.5rem;    /* 120px (15 × 8px) — Gives generous clearance below 2-line mobile titles */
+  --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Original mobile spacing for single-line titles */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
   --ds-btn-padding-x: 16px;            /* Mobile default: 16px side padding (+4px per side) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
@@ -886,29 +886,30 @@ h1.ds-brand-name {
   }
 }
 
-/* Mobile vertical social stack: Aligned directly below Menu pill, fades out on scroll */
+/* Mobile vertical social stack: Lives inside the vertical pill below Menu button, collapses on scroll */
 .ds-mobile-social-stack {
-  position: absolute;
-  top: calc((var(--ds-header-height) + var(--ds-control-size)) / 2 + 0.35rem + 0.5rem);
-  right: calc(var(--ds-header-pad-x) + 0.35rem + 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem; /* 8px */
+  margin-top: 0.5rem; /* 8px below Menu button */
+  max-height: 8.5rem;
+  overflow: hidden;
   pointer-events: auto;
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  transition: opacity 220ms ease,
-              transform 220ms var(--ds-ease-out-expo),
-              visibility 220ms ease;
+  transition: max-height 280ms var(--ds-ease-out-expo),
+              margin-top 280ms var(--ds-ease-out-expo),
+              opacity 200ms ease,
+              visibility 200ms ease;
 }
 
 .ds-floating-header.ds-header-frosted .ds-mobile-social-stack {
+  max-height: 0;
+  margin-top: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(-0.5rem); /* -8px subtle upward glide on fade-out */
 }
 
 .ds-mobile-social-stack.is-hidden,
@@ -976,17 +977,21 @@ h1.ds-brand-name {
 }
 
 /* Mobile Top Bar (< 768px):
-   - Menu pill is in pill mode by default even at top scroll
-   - On scroll down, glides to bottom-right thumb reach */
+   - Menu + social icons live in a vertical frosted pill at top-right
+   - On scroll down, social icons collapse & menu pill stays at top-right */
 @media (max-width: 767px) {
   #hdr-brand-name {
     display: none !important;
   }
   .ds-floating-header:not(.is-detail) {
+    height: auto;
+    padding-top: 0.75rem; /* 12px top clearance */
+    align-items: flex-start;
     justify-content: flex-end;
   }
   .ds-floating-header:not(.is-detail) .ds-floating-pill {
     display: inline-flex !important;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: auto;
@@ -1001,6 +1006,11 @@ h1.ds-brand-name {
     box-shadow: var(--ds-pill-shadow);
     color: var(--ds-color-ink-primary);
   }
+  .ds-floating-header:not(.is-detail) #header-main-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
   .ds-floating-header:not(.is-detail) .ds-floating-pill .ds-icon-btn {
     background-color: rgba(20, 20, 20, 0.08);
     border-color: rgba(20, 20, 20, 0.05);
@@ -1009,9 +1019,6 @@ h1.ds-brand-name {
   .ds-floating-header:not(.is-detail) #hdr-left-col,
   .ds-floating-header:not(.is-detail) #floating-header-pill > div:nth-child(2) {
     display: none !important;
-  }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) {
-    transform: translateY(calc(var(--app-viewport-height, 100dvh) - var(--ds-header-height) - 0.5rem - env(safe-area-inset-bottom, 0px)));
   }
   .ds-floating-header.is-detail .ds-floating-pill {
     border-radius: 0;
@@ -1143,8 +1150,14 @@ h1.ds-brand-name {
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 120px top, 24px sides, 184px + safe-area bottom (keeps Fullscreen closer to image than bottom bar) */
+  /* Mobile padding (all multiples of 8): 104px top (original for 1-line), 24px sides, 184px + safe-area bottom */
   padding: var(--ds-showcase-title-band) 1.5rem calc(11.5rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+}
+
+@media (max-width: 767px) {
+  #view-detail.is-multiline-title .ds-showcase-stage {
+    padding-top: 7.5rem; /* 120px (15 × 8px) — extra clearance ONLY when title wraps to 2 lines */
+  }
 }
 
 @media (min-width: 768px) {
@@ -1491,8 +1504,7 @@ h1.ds-brand-name {
 
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 md:px-10">
-      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
-      <div id="mobile-social-stack" class="ds-mobile-social-stack ds-header-hero" aria-label="Social links"><a id="mob-hero-ig-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a id="mob-hero-500px-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div>
+      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button><div id="mobile-social-stack" class="ds-mobile-social-stack" aria-label="Social links"><a id="mob-hero-ig-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a id="mob-hero-500px-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -2692,6 +2704,13 @@ h1.ds-brand-name {
       _applyOpenPhoto(idx);
     }
 
+    function syncShowcaseTitlePadding() {
+      const titleEl = document.getElementById('hdr-photo-title');
+      if (!titleEl || !detailStage) return;
+      const isMultiline = titleEl.offsetHeight > 38;
+      detailStage.classList.toggle('is-multiline-title', isMultiline);
+    }
+
     function _applyOpenPhoto(idx) {
       if (currentView === 'gallery' && savedGalleryScroll === null) {
         captureGalleryScroll();
@@ -2703,6 +2722,7 @@ h1.ds-brand-name {
       _applyView('detail');
 
       document.getElementById('hdr-photo-title').textContent = p.title;
+      syncShowcaseTitlePadding();
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
       const mobCounter = document.getElementById('mob-photo-counter');
       if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;

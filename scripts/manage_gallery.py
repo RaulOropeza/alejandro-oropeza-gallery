@@ -398,6 +398,27 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         aria_label="Next photograph",
     )
 
+    # Mobile Home Vertical Social Stack (Lives inside the vertical menu pill, collapses on scroll)
+    ibtn_mob_hero_ig = render_icon_button(
+        "instagram",
+        href=ig_url,
+        elem_id="mob-hero-ig-btn",
+        title="Instagram (@alejandroropeza.photo)",
+        aria_label="Instagram",
+    )
+    ibtn_mob_hero_500px = render_icon_button(
+        "500px",
+        href=px_url,
+        elem_id="mob-hero-500px-btn",
+        title="500px (Alejandro Oropeza)",
+        aria_label="500px",
+    )
+    mobile_social_stack = (
+        f'<div id="mobile-social-stack" class="ds-mobile-social-stack" aria-label="Social links">'
+        f"{ibtn_mob_hero_ig}{ibtn_mob_hero_500px}"
+        f"</div>"
+    )
+
     # Top Header Pill Instance
     top_header_pill = render_pill(
         left_html=(
@@ -419,6 +440,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             f'<div id="header-main-nav" class="flex items-center justify-end gap-2">'
             f'<div class="ds-desktop-social">{ibtn_hdr_ig}{ibtn_hdr_500px}</div>'
             f"{ibtn_hdr_menu}"
+            f"{mobile_social_stack}"
             f"</div>"
             f'<div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2">'
             f'<span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span>'
@@ -429,27 +451,6 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         left_id="hdr-left-col",
         right_id="hdr-right-col",
         extra_cls="ds-floating-pill",
-    )
-
-    # Mobile Home Vertical Social Stack (Aligned directly below Menu button, fades out on scroll)
-    ibtn_mob_hero_ig = render_icon_button(
-        "instagram",
-        href=ig_url,
-        elem_id="mob-hero-ig-btn",
-        title="Instagram (@alejandroropeza.photo)",
-        aria_label="Instagram",
-    )
-    ibtn_mob_hero_500px = render_icon_button(
-        "500px",
-        href=px_url,
-        elem_id="mob-hero-500px-btn",
-        title="500px (Alejandro Oropeza)",
-        aria_label="500px",
-    )
-    mobile_social_stack = (
-        f'<div id="mobile-social-stack" class="ds-mobile-social-stack ds-header-hero" aria-label="Social links">'
-        f"{ibtn_mob_hero_ig}{ibtn_mob_hero_500px}"
-        f"</div>"
     )
 
     # Mobile Bottom Showcase Pill Instance
@@ -818,7 +819,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero __HEADER_POS_CLS__">
       __PILL_TOP_HEADER__
-      __MOBILE_SOCIAL_STACK__
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -2018,6 +2018,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       _applyOpenPhoto(idx);
     }
 
+    function syncShowcaseTitlePadding() {
+      const titleEl = document.getElementById('hdr-photo-title');
+      if (!titleEl || !detailStage) return;
+      const isMultiline = titleEl.offsetHeight > 38;
+      detailStage.classList.toggle('is-multiline-title', isMultiline);
+    }
+
     function _applyOpenPhoto(idx) {
       if (currentView === 'gallery' && savedGalleryScroll === null) {
         captureGalleryScroll();
@@ -2029,6 +2036,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       _applyView('detail');
 
       document.getElementById('hdr-photo-title').textContent = p.title;
+      syncShowcaseTitlePadding();
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
       const mobCounter = document.getElementById('mob-photo-counter');
       if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;
