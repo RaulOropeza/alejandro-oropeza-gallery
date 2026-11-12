@@ -828,8 +828,8 @@
 
 .ds-gallery-section {
   box-sizing: border-box;
-  /* Mobile (all multiples of 8): 64px top, 24px sides, 64px bottom */
-  padding: 4rem 1.5rem 4rem 1.5rem;
+  /* Mobile (all multiples of 8): 64px top, 16px sides (original), 64px bottom */
+  padding: 4rem 1rem 4rem 1rem;
 }
 @media (min-width: 768px) {
   .ds-gallery-section {
@@ -894,14 +894,28 @@
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 96px + safe-area bottom */
-  padding: var(--ds-showcase-title-band) 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 144px + safe-area bottom (clears pill + fullscreen button) */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(9rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 56px bottom */
-    padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 64px bottom */
+    padding: var(--ds-showcase-title-band) 2.5rem 4rem 2.5rem;
+  }
+}
+
+/* Bottom-Right Stage Fullscreen Visualizer Trigger (Surface IconButton) */
+.ds-stage-visualizer-btn {
+  position: absolute;
+  right: 1rem; /* 16px */
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); /* 88px — sits cleanly above mobile bottom pill */
+  z-index: 20;
+}
+@media (min-width: 768px) {
+  .ds-stage-visualizer-btn {
+    right: 1.5rem; /* 24px */
+    bottom: 1rem;  /* 16px */
   }
 }
 
@@ -1108,3 +1122,75 @@
   color: var(--ds-color-ink-secondary);
   user-select: none;
 }
+
+/* ============================================================================
+   FULLSCREEN PHOTO VISUALIZER (.ds-visualizer)
+   Minimalist fullscreen view showing ONLY the photograph and Close button.
+   ============================================================================ */
+.ds-visualizer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Mobile padding (all multiples of 8): 72px top clears 48px close button, 16px sides, 24px bottom */
+  padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--ds-duration-fast) ease,
+              visibility var(--ds-duration-fast) ease;
+}
+
+.ds-visualizer:fullscreen,
+.ds-visualizer:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+}
+
+@media (min-width: 768px) {
+  .ds-visualizer {
+    /* Desktop padding (all multiples of 8): 24px top/bottom, 72px sides (clears 40px close button) */
+    padding: 1.5rem 4.5rem;
+  }
+}
+
+.ds-visualizer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#visualizer-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--ds-radius-sm); /* 4px */
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+  image-rendering: auto;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.ds-visualizer-close-btn {
+  position: absolute;
+  top: calc(1rem + env(safe-area-inset-top, 0px)); /* 16px */
+  right: 1rem; /* 16px */
+  z-index: 210;
+}
+
+@media (min-width: 768px) {
+  .ds-visualizer-close-btn {
+    top: 1.5rem;   /* 24px */
+    right: 1.5rem; /* 24px */
+  }
+}
+

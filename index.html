@@ -838,8 +838,8 @@
 
 .ds-gallery-section {
   box-sizing: border-box;
-  /* Mobile (all multiples of 8): 64px top, 24px sides, 64px bottom */
-  padding: 4rem 1.5rem 4rem 1.5rem;
+  /* Mobile (all multiples of 8): 64px top, 16px sides (original), 64px bottom */
+  padding: 4rem 1rem 4rem 1rem;
 }
 @media (min-width: 768px) {
   .ds-gallery-section {
@@ -904,14 +904,28 @@
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 96px + safe-area bottom */
-  padding: var(--ds-showcase-title-band) 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 144px + safe-area bottom (clears pill + fullscreen button) */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(9rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 56px bottom */
-    padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 64px bottom */
+    padding: var(--ds-showcase-title-band) 2.5rem 4rem 2.5rem;
+  }
+}
+
+/* Bottom-Right Stage Fullscreen Visualizer Trigger (Surface IconButton) */
+.ds-stage-visualizer-btn {
+  position: absolute;
+  right: 1rem; /* 16px */
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); /* 88px — sits cleanly above mobile bottom pill */
+  z-index: 20;
+}
+@media (min-width: 768px) {
+  .ds-stage-visualizer-btn {
+    right: 1.5rem; /* 24px */
+    bottom: 1rem;  /* 16px */
   }
 }
 
@@ -1119,6 +1133,78 @@
   user-select: none;
 }
 
+/* ============================================================================
+   FULLSCREEN PHOTO VISUALIZER (.ds-visualizer)
+   Minimalist fullscreen view showing ONLY the photograph and Close button.
+   ============================================================================ */
+.ds-visualizer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Mobile padding (all multiples of 8): 72px top clears 48px close button, 16px sides, 24px bottom */
+  padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--ds-duration-fast) ease,
+              visibility var(--ds-duration-fast) ease;
+}
+
+.ds-visualizer:fullscreen,
+.ds-visualizer:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+}
+
+@media (min-width: 768px) {
+  .ds-visualizer {
+    /* Desktop padding (all multiples of 8): 24px top/bottom, 72px sides (clears 40px close button) */
+    padding: 1.5rem 4.5rem;
+  }
+}
+
+.ds-visualizer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#visualizer-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--ds-radius-sm); /* 4px */
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+  image-rendering: auto;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.ds-visualizer-close-btn {
+  position: absolute;
+  top: calc(1rem + env(safe-area-inset-top, 0px)); /* 16px */
+  right: 1rem; /* 16px */
+  z-index: 210;
+}
+
+@media (min-width: 768px) {
+  .ds-visualizer-close-btn {
+    top: 1.5rem;   /* 24px */
+    right: 1.5rem; /* 24px */
+  }
+}
+
+
   </style>
 </head>
 <body class="bg-transparent text-[var(--foreground)] antialiased p-0 sm:p-2 select-none" style="margin: 0;">
@@ -1202,7 +1288,7 @@
       </section>
 
       <!-- Gallery Grid Section (All spacing values strict multiples of 8px) -->
-      <div class="ds-gallery-section px-6 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
+      <div class="ds-gallery-section px-4 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
         <div class="ds-gallery-intro max-w-2xl mx-auto text-center mb-16 md:mb-20">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
           <p id="gallery-intro-body" class="ds-body mt-4 md:mt-6"></p>
@@ -1220,6 +1306,8 @@
         <div class="w-full h-full flex items-center justify-center">
           <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
+        <!-- Bottom-Right Fullscreen Visualizer Trigger (Surface IconButton) -->
+        <button type="button" id="stage-visualizer-btn" class="ds-icon-btn ds-btn-surface ds-stage-visualizer-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="View fullscreen" aria-label="View fullscreen" onclick="openVisualizer()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
       </div>
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
@@ -1284,6 +1372,12 @@
 
   </div>
 
+  <!-- FULLSCREEN PHOTO VISUALIZER (Shows ONLY the photograph & Close button) -->
+  <div id="photo-visualizer" class="ds-visualizer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fullscreen photograph visualizer">
+    <img id="visualizer-img" decoding="sync" alt="Fullscreen Photograph" />
+    <button type="button" id="visualizer-close-btn" class="ds-icon-btn ds-btn-surface ds-visualizer-close-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close fullscreen" aria-label="Close fullscreen" onclick="closeVisualizer()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+
   <!-- =========================================================================
        MODE 2: LIVING DESIGN SYSTEM & COMPONENT LIBRARY (/design-system)
        ========================================================================= -->
@@ -1337,6 +1431,7 @@
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
@@ -1353,6 +1448,7 @@
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
@@ -1825,6 +1921,94 @@
       }
     }
 
+    const visualizerEl = document.getElementById('photo-visualizer');
+    const visualizerImg = document.getElementById('visualizer-img');
+    let isVisualizerOpen = false;
+    let visualizerLoadToken = 0;
+
+    function syncVisualizerPhoto(p) {
+      if (!p || !visualizerImg) return;
+      const vToken = ++visualizerLoadToken;
+      const thumbUrl = p.thumbSrc || p.src;
+      const fullUrl = p.src;
+      const fullEntry = decodedFullCache.get(fullUrl);
+      const thumbEntry = decodedThumbCache.get(thumbUrl);
+
+      visualizerImg.alt = p.title;
+      if (fullEntry && fullEntry.ready) {
+        visualizerImg.style.opacity = '1';
+        if (visualizerImg.getAttribute('src') !== fullUrl) {
+          visualizerImg.src = fullUrl;
+        }
+      } else if (thumbEntry && thumbEntry.ready) {
+        visualizerImg.style.opacity = '1';
+        if (visualizerImg.getAttribute('src') !== thumbUrl) {
+          visualizerImg.src = thumbUrl;
+        }
+        if (fullUrl !== thumbUrl) {
+          preloadFull(fullUrl, true).then((ok) => {
+            if (ok && isVisualizerOpen && visualizerLoadToken === vToken) {
+              visualizerImg.src = fullUrl;
+            }
+          });
+        }
+      } else {
+        visualizerImg.src = (detailImg && detailImg.getAttribute('src')) || thumbUrl;
+        visualizerImg.style.opacity = '1';
+        if (fullUrl !== visualizerImg.getAttribute('src')) {
+          preloadFull(fullUrl, true).then((ok) => {
+            if (ok && isVisualizerOpen && visualizerLoadToken === vToken) {
+              visualizerImg.src = fullUrl;
+            }
+          });
+        }
+      }
+    }
+
+    function openVisualizer() {
+      const p = PHOTOS[currentIdx];
+      if (!p || !visualizerEl) return;
+      isVisualizerOpen = true;
+      syncVisualizerPhoto(p);
+      visualizerEl.classList.add('is-open');
+      visualizerEl.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      try {
+        const reqFs = visualizerEl.requestFullscreen || visualizerEl.webkitRequestFullscreen;
+        if (reqFs && !document.fullscreenElement && !document.webkitFullscreenElement) {
+          const pFs = reqFs.call(visualizerEl);
+          if (pFs && typeof pFs.catch === 'function') pFs.catch(() => {});
+        }
+      } catch (_) {}
+    }
+
+    function closeVisualizer(fromFullscreenExit = false) {
+      if (!isVisualizerOpen || !visualizerEl) return;
+      isVisualizerOpen = false;
+      visualizerEl.classList.remove('is-open');
+      visualizerEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+
+      if (!fromFullscreenExit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        try {
+          const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+          if (exitFs) {
+            const pEx = exitFs.call(document);
+            if (pEx && typeof pEx.catch === 'function') pEx.catch(() => {});
+          }
+        } catch (_) {}
+      }
+    }
+
+    const _onFsChange = () => {
+      if (isVisualizerOpen && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        closeVisualizer(true);
+      }
+    };
+    document.addEventListener('fullscreenchange', _onFsChange);
+    document.addEventListener('webkitfullscreenchange', _onFsChange);
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
@@ -1834,6 +2018,9 @@
     }
 
     function _applyView(view) {
+      if (view !== 'detail' && isVisualizerOpen) {
+        closeVisualizer();
+      }
       const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
@@ -1991,6 +2178,10 @@
         }
       }
 
+      if (isVisualizerOpen) {
+        syncVisualizerPhoto(p);
+      }
+
       // Preload & decode adjacent Prev / Next photos so stepping is instantaneous
       const nextIdx = (idx + 1) % PHOTOS.length;
       const prevIdx = (idx - 1 + PHOTOS.length) % PHOTOS.length;
@@ -2058,7 +2249,7 @@
 
     if (detailStage) {
       detailStage.addEventListener('touchstart', (e) => {
-        if (currentView !== 'detail' || e.touches.length !== 1) return;
+        if (currentView !== 'detail' || isVisualizerOpen || e.touches.length !== 1) return;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchCurrentX = touchStartX;
@@ -2107,8 +2298,13 @@
       }, { passive: true });
     }
 
-    // Keyboard Navigation for Desktop Showcase
+    // Keyboard Navigation for Desktop Showcase & Fullscreen Visualizer
     window.addEventListener('keydown', (e) => {
+      if (isVisualizerOpen && e.key === 'Escape') {
+        e.preventDefault();
+        closeVisualizer();
+        return;
+      }
       if (currentView === 'detail') {
         if (e.key === 'ArrowRight' || e.key === 'Right') {
           stepPhoto(1);

@@ -207,6 +207,7 @@ ICON_MARKUP = {
     "arrow-right": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
     "menu": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>',
     "close": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    "fullscreen": '<svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>',
     "instagram": '<span class="ds-icon-glyph ds-icon-glyph-ig"></span>',
     "500px": '<span class="ds-icon-glyph ds-icon-glyph-500px"></span>',
 }
@@ -504,6 +505,23 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px (Alejandro Oropeza)",
             aria_label="500px",
         ),
+        # Live Website Instances — Surface IconButton (Showcase Stage Fullscreen & Visualizer Close)
+        "__SIBTN_STAGE_VISUALIZER__": render_surface_icon_button(
+            "fullscreen",
+            onclick="openVisualizer()",
+            elem_id="stage-visualizer-btn",
+            title="View fullscreen",
+            aria_label="View fullscreen",
+            extra_cls="ds-stage-visualizer-btn",
+        ),
+        "__SIBTN_VISUALIZER_CLOSE__": render_surface_icon_button(
+            "close",
+            onclick="closeVisualizer()",
+            elem_id="visualizer-close-btn",
+            title="Close fullscreen",
+            aria_label="Close fullscreen",
+            extra_cls="ds-visualizer-close-btn",
+        ),
         # Design System Specimen Instances — Tonal
         "__DS_BTN_LABEL_ONLY__": render_button("Order print"),
         "__DS_BTN_ICON_LEFT__": render_button("Back to gallery", icon_left="arrow-left"),
@@ -514,6 +532,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         "__DS_IBTN_500PX__": ds_ibtn_500px,
         "__DS_IBTN_MENU__": render_icon_button("menu", title="Menu"),
         "__DS_IBTN_CLOSE__": render_icon_button("close", title="Close"),
+        "__DS_IBTN_FULLSCREEN__": render_icon_button("fullscreen", title="Fullscreen"),
         # Design System Specimen Instances — Surface (No resting background; Tonal background + animation on hover)
         "__DS_SBTN_LABEL_ONLY__": render_surface_button("Order print"),
         "__DS_SBTN_ICON_LEFT__": render_surface_button("Back to gallery", icon_left="arrow-left"),
@@ -524,6 +543,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         "__DS_SIBTN_500PX__": render_surface_icon_button("500px", title="500px"),
         "__DS_SIBTN_MENU__": render_surface_icon_button("menu", title="Menu"),
         "__DS_SIBTN_CLOSE__": render_surface_icon_button("close", title="Close"),
+        "__DS_SIBTN_FULLSCREEN__": render_surface_icon_button("fullscreen", title="Fullscreen"),
         "__DS_PILL_HEADER__": ds_pill_header,
         "__DS_PILL_MOB_DOCK__": ds_pill_mob_dock,
     }
@@ -804,7 +824,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </section>
 
       <!-- Gallery Grid Section (All spacing values strict multiples of 8px) -->
-      <div class="ds-gallery-section px-6 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
+      <div class="ds-gallery-section px-4 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
         <div class="ds-gallery-intro max-w-2xl mx-auto text-center mb-16 md:mb-20">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
           <p id="gallery-intro-body" class="ds-body mt-4 md:mt-6"></p>
@@ -822,6 +842,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="w-full h-full flex items-center justify-center">
           <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
+        <!-- Bottom-Right Fullscreen Visualizer Trigger (Surface IconButton) -->
+        __SIBTN_STAGE_VISUALIZER__
       </div>
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
@@ -886,6 +908,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
   </div>
 
+  <!-- FULLSCREEN PHOTO VISUALIZER (Shows ONLY the photograph & Close button) -->
+  <div id="photo-visualizer" class="ds-visualizer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fullscreen photograph visualizer">
+    <img id="visualizer-img" decoding="sync" alt="Fullscreen Photograph" />
+    __SIBTN_VISUALIZER_CLOSE__
+  </div>
+
   <!-- =========================================================================
        MODE 2: LIVING DESIGN SYSTEM & COMPONENT LIBRARY (/design-system)
        ========================================================================= -->
@@ -939,6 +967,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <div class="flex flex-wrap items-center gap-3">
             __DS_IBTN_PREV__
             __DS_IBTN_NEXT__
+            __DS_IBTN_FULLSCREEN__
             __DS_IBTN_IG__
             __DS_IBTN_500PX__
             __DS_IBTN_MENU__
@@ -955,6 +984,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <div class="flex flex-wrap items-center gap-3">
             __DS_SIBTN_PREV__
             __DS_SIBTN_NEXT__
+            __DS_SIBTN_FULLSCREEN__
             __DS_SIBTN_IG__
             __DS_SIBTN_500PX__
             __DS_SIBTN_MENU__
@@ -1427,6 +1457,94 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    const visualizerEl = document.getElementById('photo-visualizer');
+    const visualizerImg = document.getElementById('visualizer-img');
+    let isVisualizerOpen = false;
+    let visualizerLoadToken = 0;
+
+    function syncVisualizerPhoto(p) {
+      if (!p || !visualizerImg) return;
+      const vToken = ++visualizerLoadToken;
+      const thumbUrl = p.thumbSrc || p.src;
+      const fullUrl = p.src;
+      const fullEntry = decodedFullCache.get(fullUrl);
+      const thumbEntry = decodedThumbCache.get(thumbUrl);
+
+      visualizerImg.alt = p.title;
+      if (fullEntry && fullEntry.ready) {
+        visualizerImg.style.opacity = '1';
+        if (visualizerImg.getAttribute('src') !== fullUrl) {
+          visualizerImg.src = fullUrl;
+        }
+      } else if (thumbEntry && thumbEntry.ready) {
+        visualizerImg.style.opacity = '1';
+        if (visualizerImg.getAttribute('src') !== thumbUrl) {
+          visualizerImg.src = thumbUrl;
+        }
+        if (fullUrl !== thumbUrl) {
+          preloadFull(fullUrl, true).then((ok) => {
+            if (ok && isVisualizerOpen && visualizerLoadToken === vToken) {
+              visualizerImg.src = fullUrl;
+            }
+          });
+        }
+      } else {
+        visualizerImg.src = (detailImg && detailImg.getAttribute('src')) || thumbUrl;
+        visualizerImg.style.opacity = '1';
+        if (fullUrl !== visualizerImg.getAttribute('src')) {
+          preloadFull(fullUrl, true).then((ok) => {
+            if (ok && isVisualizerOpen && visualizerLoadToken === vToken) {
+              visualizerImg.src = fullUrl;
+            }
+          });
+        }
+      }
+    }
+
+    function openVisualizer() {
+      const p = PHOTOS[currentIdx];
+      if (!p || !visualizerEl) return;
+      isVisualizerOpen = true;
+      syncVisualizerPhoto(p);
+      visualizerEl.classList.add('is-open');
+      visualizerEl.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      try {
+        const reqFs = visualizerEl.requestFullscreen || visualizerEl.webkitRequestFullscreen;
+        if (reqFs && !document.fullscreenElement && !document.webkitFullscreenElement) {
+          const pFs = reqFs.call(visualizerEl);
+          if (pFs && typeof pFs.catch === 'function') pFs.catch(() => {});
+        }
+      } catch (_) {}
+    }
+
+    function closeVisualizer(fromFullscreenExit = false) {
+      if (!isVisualizerOpen || !visualizerEl) return;
+      isVisualizerOpen = false;
+      visualizerEl.classList.remove('is-open');
+      visualizerEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+
+      if (!fromFullscreenExit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        try {
+          const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+          if (exitFs) {
+            const pEx = exitFs.call(document);
+            if (pEx && typeof pEx.catch === 'function') pEx.catch(() => {});
+          }
+        } catch (_) {}
+      }
+    }
+
+    const _onFsChange = () => {
+      if (isVisualizerOpen && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        closeVisualizer(true);
+      }
+    };
+    document.addEventListener('fullscreenchange', _onFsChange);
+    document.addEventListener('webkitfullscreenchange', _onFsChange);
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
@@ -1436,6 +1554,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     function _applyView(view) {
+      if (view !== 'detail' && isVisualizerOpen) {
+        closeVisualizer();
+      }
       const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
@@ -1593,6 +1714,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         }
       }
 
+      if (isVisualizerOpen) {
+        syncVisualizerPhoto(p);
+      }
+
       // Preload & decode adjacent Prev / Next photos so stepping is instantaneous
       const nextIdx = (idx + 1) % PHOTOS.length;
       const prevIdx = (idx - 1 + PHOTOS.length) % PHOTOS.length;
@@ -1660,7 +1785,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     if (detailStage) {
       detailStage.addEventListener('touchstart', (e) => {
-        if (currentView !== 'detail' || e.touches.length !== 1) return;
+        if (currentView !== 'detail' || isVisualizerOpen || e.touches.length !== 1) return;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchCurrentX = touchStartX;
@@ -1709,8 +1834,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }, { passive: true });
     }
 
-    // Keyboard Navigation for Desktop Showcase
+    // Keyboard Navigation for Desktop Showcase & Fullscreen Visualizer
     window.addEventListener('keydown', (e) => {
+      if (isVisualizerOpen && e.key === 'Escape') {
+        e.preventDefault();
+        closeVisualizer();
+        return;
+      }
       if (currentView === 'detail') {
         if (e.key === 'ArrowRight' || e.key === 'Right') {
           stepPhoto(1);
