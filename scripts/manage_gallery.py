@@ -752,7 +752,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Alejandro Oropeza — Photo gallery</title>
   <meta name="description" content="Alejandro Oropeza — Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
   <!-- __EXTRA_HEAD__ -->
@@ -1137,6 +1140,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     let currentIdx = 0;
     let currentView = 'gallery';
+    let isVisualizerOpen = false;
     let printShopPreview = CATALOG.site.printShopGlobalEnabled || false;
 
     const scrollViewport = document.getElementById('scroll-viewport');
@@ -1215,11 +1219,16 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       // Ignore pinch-zoom scaling so zooming a photograph never resizes the stage
       if (vv && Math.abs(vv.scale - 1) > 0.02) return;
       const vh = getVisibleViewportHeight();
+      const offsetTop = vv ? Math.max(0, vv.offsetTop) : 0;
       if (vh > 0) {
         document.documentElement.style.setProperty('--app-viewport-height', `${Math.round(vh)}px`);
+        document.documentElement.style.setProperty('--app-viewport-offset-top', `${Math.round(offsetTop)}px`);
       }
       if (currentView === 'detail' && window.innerWidth < 768) {
         updateMobileDockPosition();
+      }
+      if (typeof isVisualizerOpen !== 'undefined' && isVisualizerOpen) {
+        layoutVisualizerFit();
       }
     }
 
@@ -1251,6 +1260,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     window.addEventListener('orientationchange', syncViewportHeight, { passive: true });
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', syncViewportHeight, { passive: true });
+      window.visualViewport.addEventListener('scroll', syncViewportHeight, { passive: true });
     }
 
     const heroLandscapeIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
@@ -1459,7 +1469,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     const visualizerEl = document.getElementById('photo-visualizer');
     const visualizerImg = document.getElementById('visualizer-img');
-    let isVisualizerOpen = false;
     let visualizerLoadToken = 0;
     let visCurrentPhotoId = null;
 
@@ -1619,24 +1628,67 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       layoutVisualizerFit();
     }
 
+    function isMobileVisualizerDevice() {
+      return window.matchMedia('(max-width: 767px)').matches;
+    }
+
     function openVisualizer() {
       const p = PHOTOS[currentIdx];
       if (!p || !visualizerEl) return;
+      const isMob = isMobileVisualizerDevice();
       isVisualizerOpen = true;
       visualizerEl.classList.add('is-open');
       visualizerEl.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+      if (!isMob) {
+        document.body.style.overflow = 'hidden';
+      }
       syncVisualizerPhoto(p, true);
+
+      // On mobile only, request fullscreen with navigationUI:'hide' to collapse the browser bar
+      // where supported (Android Chrome/Firefox/Edge & iPadOS), while keeping desktop strictly in-window.
+      if (isMob && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        try {
+          if (typeof visualizerEl.requestFullscreen === 'function') {
+            const pFs = visualizerEl.requestFullscreen({ navigationUI: 'hide' });
+            if (pFs && typeof pFs.catch === 'function') pFs.catch(() => {});
+          } else if (typeof visualizerEl.webkitRequestFullscreen === 'function') {
+            visualizerEl.webkitRequestFullscreen();
+          }
+        } catch (_) {}
+      }
     }
 
-    function closeVisualizer() {
+    function closeVisualizer(fromFullscreenExit = false) {
       if (!isVisualizerOpen || !visualizerEl) return;
       isVisualizerOpen = false;
       visualizerEl.classList.remove('is-open', 'is-zoomed', 'is-dragging');
       visualizerEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       resetVisualizerZoom(false);
+
+      if (!fromFullscreenExit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        try {
+          const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+          if (exitFs) {
+            const pEx = exitFs.call(document);
+            if (pEx && typeof pEx.catch === 'function') pEx.catch(() => {});
+          }
+        } catch (_) {}
+      }
     }
+
+    const _onMobileFsChange = () => {
+      syncViewportHeight();
+      if (isVisualizerOpen) {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          closeVisualizer(true);
+        } else {
+          layoutVisualizerFit();
+        }
+      }
+    };
+    document.addEventListener('fullscreenchange', _onMobileFsChange);
+    document.addEventListener('webkitfullscreenchange', _onMobileFsChange);
 
     // Desktop Mouse / Wheel & Mobile Touch Zoom + Pan for Popup Visualizer
     if (visualizerEl) {
