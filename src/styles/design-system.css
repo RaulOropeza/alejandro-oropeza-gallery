@@ -45,12 +45,13 @@
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
      - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
-  --ds-header-height: 4.5rem;          /* 72px — Accommodates 48px mobile controls comfortably */
-  --ds-showcase-title-band: 6.5rem;    /* 104px — Positions mobile showcase title/author comfortably lower */
+  --ds-header-height: 4.5rem;          /* 72px (9 × 8px) — Accommodates 48px mobile controls comfortably */
+  --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
-  --ds-btn-gap: 0.4rem;                /* 6.4px space between icon and label inside buttons */
-  --ds-grid-gap: 0.625rem;             /* 10px gallery grid gutter */
+  --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
+  --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
+  --ds-gallery-max-width: 72rem;       /* 1152px (144 × 8px) desktop gallery grid max-width */
   --ds-radius-sm: 0.25rem;             /* 4px photo frame corner radius */
   --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 
@@ -65,9 +66,10 @@
 @media (min-width: 768px) {
   :root {
     --ds-header-height: 4.25rem;         /* 68px desktop floating header height (keeps header buttons in place) */
-    --ds-showcase-title-band: 9.75rem;   /* 156px desktop title+author band (~52px equal space above & below) */
+    --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
     --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
     --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
+    --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
 
@@ -821,8 +823,51 @@
 }
 
 /* ============================================================================
-   GALLERY THUMBNAIL, SHOWCASE STAGE (WHITE) & DETAILS SECTION (GREY)
+   GALLERY GRID, THUMBNAILS, SHOWCASE STAGE (LIGHT GREY) & DETAILS (WHITE)
    ============================================================================ */
+
+.ds-gallery-section {
+  box-sizing: border-box;
+  /* Mobile (all multiples of 8): 64px top, 24px sides, 64px bottom */
+  padding: 4rem 1.5rem 4rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .ds-gallery-section {
+    /* Desktop (all multiples of 8): 80px top, 40px sides, 96px bottom */
+    padding: 5rem 2.5rem 6rem 2.5rem;
+  }
+}
+
+.ds-gallery-intro {
+  max-width: 42rem; /* 672px (84 × 8px) */
+  margin: 0 auto 4rem auto; /* 64px (8 × 8px) bottom margin on mobile */
+  text-align: center;
+}
+.ds-gallery-intro .ds-body {
+  margin-top: 1rem; /* 16px (2 × 8px) on mobile */
+}
+@media (min-width: 768px) {
+  .ds-gallery-intro {
+    margin-bottom: 5rem; /* 80px (10 × 8px) bottom margin on desktop */
+  }
+  .ds-gallery-intro .ds-body {
+    margin-top: 1.5rem; /* 24px (3 × 8px) on desktop */
+  }
+}
+
+.ds-gallery-grid {
+  width: 100%;
+  max-width: var(--ds-gallery-max-width); /* 1152px (144 × 8px) on desktop */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-grid-gap); /* 8px mobile / 16px desktop */
+}
+
+.ds-gallery-row {
+  gap: var(--ds-grid-gap); /* 8px mobile / 16px desktop */
+}
 
 .ds-thumb-card {
   background-color: var(--ds-color-placeholder);
@@ -844,42 +889,79 @@
   }
 }
 
-/* Showcase Stage: Pure White (#FFFFFF) */
+/* Showcase Stage: Light Neutral Grey (#F2F2F2) */
 .ds-showcase-stage {
-  background-color: var(--ds-color-canvas); /* #FFFFFF */
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: matches --ds-showcase-title-band (104px) top, bottom clears floating pill + safe area */
-  padding: var(--ds-showcase-title-band) 1.25rem calc(6.25rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
+  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 96px + safe-area bottom */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding: matches --ds-showcase-title-band (156px) top so title+author has equal ~52px space above & below */
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 56px bottom */
     padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
   }
 }
 
-/* Showcase Details Band Below Stage: Pure Neutral Grey (#F2F2F2) */
+/* Showcase Details Band Below Stage: Pure White (#FFFFFF) */
 .ds-showcase-details {
-  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  background-color: var(--ds-color-canvas); /* #FFFFFF */
   width: 100%;
+}
+
+.ds-showcase-details-inner {
+  box-sizing: border-box;
+  max-width: 28rem; /* 448px (56 × 8px) */
+  margin: 0 auto;
+  /* Mobile (all multiples of 8): 64px top, 32px sides, 112px bottom */
+  padding: 4rem 2rem 7rem 2rem;
+}
+@media (min-width: 768px) {
+  .ds-showcase-details-inner {
+    /* Desktop (all multiples of 8): 80px top & bottom, 32px sides */
+    padding: 5rem 2rem;
+  }
+}
+
+#detail-spec-table {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+}
+
+#detail-print-hook {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+  padding-top: 1rem; /* 16px (2 × 8px) */
+  border-top: 1px solid var(--ds-color-border);
+}
+
+.ds-showcase-desc {
+  margin-top: 3rem; /* 48px (6 × 8px) on mobile between Photo details & Description */
+  text-align: center;
+}
+.ds-showcase-desc .ds-body {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .ds-showcase-desc {
+    margin-top: 4rem; /* 64px (8 × 8px) on desktop between Photo details & Description */
+  }
 }
 
 .ds-spec-row {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  padding: 0.5rem 0; /* 8px */
+  gap: 1rem; /* 16px (2 × 8px) */
+  padding: 0.5rem 0; /* 8px (1 × 8px) */
   border-bottom: 1px solid var(--ds-color-border);
 }
-
-/* Slightly stronger pure-grey divider on #F2F2F2 background for crisp contrast */
-.ds-showcase-details .ds-spec-row {
-  border-bottom-color: var(--ds-color-border-strong);
+.ds-spec-row .ds-label {
+  flex-shrink: 0;
 }
-.ds-showcase-details #detail-print-hook {
-  border-top-color: var(--ds-color-border-strong) !important;
+.ds-spec-row .ds-value {
+  text-align: right;
 }
 
 /* SHOWCASE TOP BAR:
@@ -901,11 +983,11 @@
   align-items: center;
   justify-content: center;
   width: max-content;
-  max-width: calc(100vw - 2rem);
+  max-width: calc(100vw - 3rem); /* 48px (6 × 8px) horizontal clearance */
 }
 @media (min-width: 768px) {
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
-    max-width: calc(100vw - 24rem);
+    max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
@@ -919,7 +1001,7 @@
   letter-spacing: 0.03em;
   text-transform: capitalize;
   color: var(--ds-color-ink-muted);
-  margin-top: 0.2rem;
+  margin-top: 0.5rem; /* 8px (1 × 8px) */
 }
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
@@ -942,19 +1024,19 @@
    ============================================================================ */
 .ds-footer {
   margin-top: 0;
-  padding: 1.5rem 1rem 1.25rem;
+  padding: 1.5rem 1.5rem; /* 24px (3 × 8px) */
   border-top: 1px solid var(--ds-color-border);
   background-color: var(--ds-color-canvas);
   color: var(--ds-color-ink-primary);
 }
-@media (min-width: 640px) {
-  .ds-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+@media (min-width: 768px) {
+  .ds-footer { padding-left: 2.5rem; padding-right: 2.5rem; } /* 40px (5 × 8px) */
 }
 .ds-footer-row {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem; /* 16px */
 }
 .ds-footer-brand { justify-self: start; color: var(--ds-color-ink-primary); }
 .ds-footer-menu  { justify-self: center; }
@@ -962,10 +1044,10 @@
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem; /* 8px */
 }
 .ds-footer-copy {
-  margin: 1rem 0 0;
+  margin: 1rem 0 0; /* 16px */
   text-align: center;
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -978,7 +1060,7 @@
 
 /* Small screens: stack Wordmark, Menu, Social Buttons centered */
 @media (max-width: 560px) {
-  .ds-footer-row { grid-template-columns: 1fr; justify-items: center; gap: 0.9rem; }
+  .ds-footer-row { grid-template-columns: 1fr; justify-items: center; gap: 1rem; }
   .ds-footer-brand, .ds-footer-menu, .ds-footer-social { justify-self: center; }
 }
 
@@ -1001,12 +1083,12 @@
 /* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
 .ds-mobile-showcase-bar {
   position: fixed;
-  bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px (2 × 8px) */
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: calc(100% - 2rem);
-  max-width: 23rem;
+  width: calc(100% - 2rem); /* 32px (4 × 8px) total side clearance */
+  max-width: 23rem; /* 368px (46 × 8px) */
   pointer-events: auto;
   transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
 }

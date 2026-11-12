@@ -413,10 +413,10 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             "</div>"
         ),
         right_html=(
-            f'<div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">{ibtn_hdr_ig}{ibtn_hdr_500px}{ibtn_hdr_menu}</div>'
-            f'<div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">'
+            f'<div id="header-main-nav" class="flex items-center justify-end gap-2">{ibtn_hdr_ig}{ibtn_hdr_500px}{ibtn_hdr_menu}</div>'
+            f'<div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2">'
             f'<span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span>'
-            f'<div class="flex items-center gap-1.5">{ibtn_hdr_prev}{ibtn_hdr_next}</div>'
+            f'<div class="flex items-center gap-2">{ibtn_hdr_prev}{ibtn_hdr_next}</div>'
             f"</div>"
         ),
         elem_id="floating-header-pill",
@@ -429,7 +429,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
     mob_showcase_pill = render_pill(
         left_html=btn_mob_back,
         center_html='<span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>',
-        right_html=f'<div class="flex items-center gap-1.5">{ibtn_mob_prev}{ibtn_mob_next}</div>',
+        right_html=f'<div class="flex items-center gap-2">{ibtn_mob_prev}{ibtn_mob_next}</div>',
         tag="nav",
         elem_id="mobile-showcase-bar",
         aria_label="Photo navigation",
@@ -459,7 +459,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
     ds_pill_mob_dock = render_pill(
         left_html=render_button("Gallery", icon_left="arrow-left"),
         center_html='<span class="ds-mobile-tonal-counter">2 of 10</span>',
-        right_html=f'<div class="flex items-center gap-1.5">{ds_ibtn_prev}{ds_ibtn_next}</div>',
+        right_html=f'<div class="flex items-center gap-2">{ds_ibtn_prev}{ds_ibtn_next}</div>',
         controls_inset=True,
         extra_cls="mx-auto w-full max-w-[23rem]",
     )
@@ -538,11 +538,11 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         else "relative ds-viewport-min-height w-full"
     )
     ds_shell_cls = (
-        "hidden w-full max-h-[450px] overflow-y-auto rounded-b-xl p-5 space-y-6"
+        "hidden w-full max-h-[450px] overflow-y-auto rounded-b-xl p-6 space-y-6"
         if is_inline_embed
         else "hidden max-w-5xl mx-auto px-6 sm:px-10 py-12 space-y-8"
     )
-    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 sm:px-6" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-4 sm:px-10"
+    header_pos_cls = "sticky top-0 left-0 right-0 z-50 px-4 sm:px-6" if is_inline_embed else "fixed top-0 left-0 right-0 z-50 px-4 md:px-10"
     main_pull_cls = "-mt-[4.5rem]" if is_inline_embed else ""
 
     if is_production:
@@ -803,13 +803,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
       </section>
 
-      <!-- Gallery Grid Section -->
-      <div class="px-4 sm:px-6 pt-8 pb-16">
-        <div class="max-w-2xl mb-5">
+      <!-- Gallery Grid Section (All spacing values strict multiples of 8px) -->
+      <div class="ds-gallery-section px-6 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
+        <div class="ds-gallery-intro max-w-2xl mx-auto text-center mb-16 md:mb-20">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
-          <p id="gallery-intro-body" class="ds-body mt-1"></p>
+          <p id="gallery-intro-body" class="ds-body mt-4 md:mt-6"></p>
         </div>
-        <div id="gallery-rows-container" class="space-y-2.5"></div>
+        <div id="gallery-rows-container" class="ds-gallery-grid"></div>
       </div>
 
     </main>
@@ -817,24 +817,24 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <!-- VIEW 2: PHOTO SHOWCASE PAGE -->
     <section id="view-detail" class="hidden __MAIN_PULL_CLS__">
       
-      <!-- Dynamic-Viewport-Height Pure White Photo Stage (.ds-showcase-stage) -->
+      <!-- Dynamic-Viewport-Height Light Neutral Grey Photo Stage (.ds-showcase-stage) -->
       <div class="ds-showcase-stage relative w-full __STAGE_HEIGHT_CLS__ flex items-center justify-center overflow-hidden">
         <div class="w-full h-full flex items-center justify-center">
-          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
+          <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
       </div>
 
-      <!-- Pure Neutral Grey Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
+      <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
       <div class="ds-showcase-details">
-        <div class="max-w-md mx-auto px-4 py-8">
-          <div class="text-center">
+        <div class="ds-showcase-details-inner max-w-md mx-auto px-8 pt-16 pb-28 md:px-8 md:py-20">
+          <div style="text-align: center;" class="text-center">
             <h2 class="ds-h3">Photo details</h2>
           </div>
 
-          <div id="detail-spec-table" class="mt-3"></div>
+          <div id="detail-spec-table" class="mt-4"></div>
 
           <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
-          <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border-strong);">
+          <div id="detail-print-hook" class="hidden mt-4 pt-4 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
             <div>
               <span class="ds-label block">ARCHIVAL PRINT</span>
               <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
@@ -843,9 +843,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </div>
 
           <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-          <div class="mt-5 pb-20 md:pb-4">
+          <div class="ds-showcase-desc mt-12 md:mt-16">
             <h3 class="ds-h3 text-center">DESCRIPTION</h3>
-            <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+            <p id="dt-desc" class="ds-body mt-4 text-center"></p>
           </div>
         </div>
       </div>
@@ -856,11 +856,11 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     </section>
 
     <!-- VIEW 3: ABOUT ME PAGE -->
-    <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-4 sm:px-6 pb-16 max-w-xl mx-auto">
+    <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-6 sm:px-8 pb-16 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
-      <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
-      <p id="about-bio" class="ds-body mt-2.5"></p>
-      <div id="about-specs" class="mt-4 pt-2" style="border-top: 1px solid var(--ds-color-border);"></div>
+      <h1 id="about-heading" class="ds-brand-name mt-2">Alejandro Oropeza</h1>
+      <p id="about-bio" class="ds-body mt-4"></p>
+      <div id="about-specs" class="mt-6 pt-4" style="border-top: 1px solid var(--ds-color-border);"></div>
     </section>
 
     <!-- SITE FOOTER (Option 1 · Mirror of the Top Bar): Wordmark · Menu · Tonal IconButtons, thin rule above, muted © below -->
@@ -1279,20 +1279,20 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         const items = rowsMap[rowKey];
         const allPortraits = items.length === 4 && items.every(i => i.photo.orientation === 'portrait');
         if (allPortraits) {
-          html += `<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">`;
+          html += `<div class="grid grid-cols-2 sm:grid-cols-4 ds-gallery-row">`;
           items.forEach(({ photo, idx }) => {
             html += `
-              <div onclick="openPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56">
+              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56 md:h-64">
                 <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
           });
           html += `</div>`;
         } else {
-          html += `<div class="flex flex-col sm:flex-row gap-2.5">`;
+          html += `<div class="flex flex-col sm:flex-row ds-gallery-row">`;
           items.forEach(({ photo, idx }) => {
             html += `
-              <div onclick="openPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-44 sm:h-52">
+              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-48 sm:h-52 md:h-60">
                 <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
@@ -1313,6 +1313,94 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       `).join('');
     }
 
+    // =========================================================================
+    // ZERO-LAG PHOTO PRELOADING & DECODED BITMAP CACHE
+    // Keeps all lightweight 1600px thumbnails decoded in memory + an LRU window
+    // of 4 full-resolution masters so Next/Prev switches in 0ms without ever
+    // leaving the previous photograph lingering on screen.
+    // =========================================================================
+    const detailStage = document.getElementById('view-detail');
+    const detailImg = document.getElementById('detail-img');
+    const decodedThumbCache = new Map();
+    const decodedFullCache = new Map();
+    const MAX_PINNED_FULL = 4;
+    let detailLoadToken = 0;
+
+    function _loadAndDecode(cacheMap, url, highPriority = false, maxEntries = 0) {
+      if (!url) return Promise.resolve(false);
+      if (cacheMap.has(url)) {
+        const existing = cacheMap.get(url);
+        if (maxEntries > 0) {
+          cacheMap.delete(url);
+          cacheMap.set(url, existing);
+        }
+        return existing.promise;
+      }
+      if (maxEntries > 0 && cacheMap.size >= maxEntries) {
+        const oldestKey = cacheMap.keys().next().value;
+        if (oldestKey !== undefined) cacheMap.delete(oldestKey);
+      }
+      const img = new Image();
+      img.decoding = 'async';
+      if (highPriority && 'fetchPriority' in img) {
+        img.fetchPriority = 'high';
+      }
+      const entry = { img, ready: false, promise: null };
+      entry.promise = new Promise((resolve) => {
+        let settled = false;
+        const finish = (ok) => {
+          if (settled) return;
+          settled = true;
+          entry.ready = ok;
+          resolve(ok);
+        };
+        const decodeNow = () => {
+          if (typeof img.decode === 'function') {
+            img.decode().then(() => finish(true)).catch(() => finish(img.naturalWidth > 0));
+          } else {
+            finish(true);
+          }
+        };
+        img.onload = decodeNow;
+        img.onerror = () => finish(false);
+        img.src = url;
+        if (img.complete && img.naturalWidth > 0) {
+          decodeNow();
+        }
+      });
+      cacheMap.set(url, entry);
+      return entry.promise;
+    }
+
+    function preloadThumb(url, highPriority = false) {
+      return _loadAndDecode(decodedThumbCache, url, highPriority, 0);
+    }
+
+    function preloadFull(url, highPriority = false) {
+      return _loadAndDecode(decodedFullCache, url, highPriority, MAX_PINNED_FULL);
+    }
+
+    function warmPhoto(idx) {
+      const p = PHOTOS[idx];
+      if (!p) return;
+      preloadThumb(p.thumbSrc || p.src, true);
+      preloadFull(p.src, false);
+    }
+
+    function warmAllGalleryThumbsIdle() {
+      let nextIdx = 0;
+      const worker = () => {
+        if (nextIdx >= PHOTOS.length) return;
+        const p = PHOTOS[nextIdx++];
+        preloadThumb(p.thumbSrc || p.src, false).finally(worker);
+      };
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          for (let c = 0; c < 3; c++) worker();
+        }, 32);
+      });
+    }
+
     let savedGalleryScroll = null;
 
     function captureGalleryScroll() {
@@ -1324,13 +1412,25 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    function navigateHash(target, mode = 'push') {
+      if (window.location.hash === target) return true;
+      try {
+        if (mode === 'replace') {
+          window.history.replaceState(null, '', target);
+        } else {
+          window.history.pushState(null, '', target);
+        }
+        return true;
+      } catch (_) {
+        window.location.hash = target;
+        return false;
+      }
+    }
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
-        if (window.location.hash !== target) {
-          window.location.hash = target;
-          return;
-        }
+        if (!navigateHash(target, 'push')) return;
       }
       _applyView(view);
     }
@@ -1407,17 +1507,15 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
-    function openPhoto(idx, push = true) {
+    function openPhoto(idx, historyMode = 'push') {
       captureGalleryScroll();
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;
-      if (push) {
+      if (historyMode) {
         const target = '#/photo/' + p.id;
-        if (window.location.hash !== target) {
-          window.location.hash = target;
-          return;
-        }
+        const mode = historyMode === 'replace' ? 'replace' : 'push';
+        if (!navigateHash(target, mode)) return;
       }
       _applyOpenPhoto(idx);
     }
@@ -1436,7 +1534,72 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
       const mobCounter = document.getElementById('mob-photo-counter');
       if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;
-      document.getElementById('detail-img').src = p.src;
+
+      const token = ++detailLoadToken;
+      const thumbUrl = p.thumbSrc || p.src;
+      const fullUrl = p.src;
+      const fullEntry = decodedFullCache.get(fullUrl);
+      const thumbEntry = decodedThumbCache.get(thumbUrl);
+
+      if (detailImg) {
+        detailImg.style.transition = 'none';
+        detailImg.style.transform = 'translateX(0)';
+        detailImg.alt = p.title;
+
+        if (fullEntry && fullEntry.ready) {
+          detailImg.style.opacity = '1';
+          if (detailImg.getAttribute('src') !== fullUrl) {
+            detailImg.src = fullUrl;
+          }
+          detailImg.dataset.photoId = p.id;
+        } else if (thumbEntry && thumbEntry.ready) {
+          detailImg.style.opacity = '1';
+          if (detailImg.getAttribute('src') !== thumbUrl) {
+            detailImg.src = thumbUrl;
+          }
+          detailImg.dataset.photoId = p.id;
+          if (fullUrl !== thumbUrl) {
+            preloadFull(fullUrl, true).then((ok) => {
+              if (ok && detailLoadToken === token) {
+                detailImg.src = fullUrl;
+              }
+            });
+          }
+        } else {
+          // Cold cache miss: clear previous bitmap immediately so old photo never lingers
+          if (detailImg.dataset.photoId !== p.id) {
+            detailImg.style.opacity = '0';
+            detailImg.removeAttribute('src');
+            detailImg.dataset.photoId = p.id;
+          }
+          preloadThumb(thumbUrl, true).then((ok) => {
+            if (detailLoadToken !== token) return;
+            if (ok && detailImg.getAttribute('src') !== fullUrl) {
+              detailImg.src = thumbUrl;
+              detailImg.style.opacity = '1';
+            }
+            if (fullUrl !== thumbUrl) {
+              preloadFull(fullUrl, true).then((fullOk) => {
+                if (fullOk && detailLoadToken === token) {
+                  detailImg.src = fullUrl;
+                  detailImg.style.opacity = '1';
+                }
+              });
+            } else if (!ok) {
+              detailImg.src = fullUrl;
+              detailImg.style.opacity = '1';
+            }
+          });
+        }
+      }
+
+      // Preload & decode adjacent Prev / Next photos so stepping is instantaneous
+      const nextIdx = (idx + 1) % PHOTOS.length;
+      const prevIdx = (idx - 1 + PHOTOS.length) % PHOTOS.length;
+      preloadThumb(PHOTOS[nextIdx].thumbSrc || PHOTOS[nextIdx].src, true);
+      preloadThumb(PHOTOS[prevIdx].thumbSrc || PHOTOS[prevIdx].src, true);
+      preloadFull(PHOTOS[nextIdx].src, false);
+      preloadFull(PHOTOS[prevIdx].src, false);
 
       const specRows = [
         { label: 'LOCATION & YEAR', value: p.location },
@@ -1481,10 +1644,11 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('popstate', handleRoute);
 
     function stepPhoto(dir) {
       const next = (currentIdx + dir + PHOTOS.length) % PHOTOS.length;
-      openPhoto(next);
+      openPhoto(next, 'replace');
     }
 
     // Touch Swiping in Fullscreen Lightbox View
@@ -1493,9 +1657,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     let touchCurrentX = 0;
     let touchStartTime = 0;
     let isTouchSwiping = false;
-
-    const detailStage = document.getElementById('view-detail');
-    const detailImg = document.getElementById('detail-img');
 
     if (detailStage) {
       detailStage.addEventListener('touchstart', (e) => {
@@ -1580,10 +1741,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     function togglePrintShop(enabled) {
       printShopPreview = enabled;
       if (currentView === 'detail') {
-        openPhoto(currentIdx);
+        openPhoto(currentIdx, 'replace');
       } else {
         switchMode('website');
-        openPhoto(currentIdx);
+        openPhoto(currentIdx, 'push');
       }
     }
 
@@ -1594,6 +1755,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     renderGallery();
+    warmAllGalleryThumbsIdle();
     if (window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/gallery') {
       handleRoute();
     } else {

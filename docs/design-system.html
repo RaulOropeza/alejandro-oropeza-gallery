@@ -67,12 +67,13 @@
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
      - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
-  --ds-header-height: 4.5rem;          /* 72px — Accommodates 48px mobile controls comfortably */
-  --ds-showcase-title-band: 6.5rem;    /* 104px — Positions mobile showcase title/author comfortably lower */
+  --ds-header-height: 4.5rem;          /* 72px (9 × 8px) — Accommodates 48px mobile controls comfortably */
+  --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
-  --ds-btn-gap: 0.4rem;                /* 6.4px space between icon and label inside buttons */
-  --ds-grid-gap: 0.625rem;             /* 10px gallery grid gutter */
+  --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
+  --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
+  --ds-gallery-max-width: 72rem;       /* 1152px (144 × 8px) desktop gallery grid max-width */
   --ds-radius-sm: 0.25rem;             /* 4px photo frame corner radius */
   --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 
@@ -87,9 +88,10 @@
 @media (min-width: 768px) {
   :root {
     --ds-header-height: 4.25rem;         /* 68px desktop floating header height (keeps header buttons in place) */
-    --ds-showcase-title-band: 9.75rem;   /* 156px desktop title+author band (~52px equal space above & below) */
+    --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
     --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
     --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
+    --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
 
@@ -843,8 +845,51 @@
 }
 
 /* ============================================================================
-   GALLERY THUMBNAIL, SHOWCASE STAGE (WHITE) & DETAILS SECTION (GREY)
+   GALLERY GRID, THUMBNAILS, SHOWCASE STAGE (LIGHT GREY) & DETAILS (WHITE)
    ============================================================================ */
+
+.ds-gallery-section {
+  box-sizing: border-box;
+  /* Mobile (all multiples of 8): 64px top, 24px sides, 64px bottom */
+  padding: 4rem 1.5rem 4rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .ds-gallery-section {
+    /* Desktop (all multiples of 8): 80px top, 40px sides, 96px bottom */
+    padding: 5rem 2.5rem 6rem 2.5rem;
+  }
+}
+
+.ds-gallery-intro {
+  max-width: 42rem; /* 672px (84 × 8px) */
+  margin: 0 auto 4rem auto; /* 64px (8 × 8px) bottom margin on mobile */
+  text-align: center;
+}
+.ds-gallery-intro .ds-body {
+  margin-top: 1rem; /* 16px (2 × 8px) on mobile */
+}
+@media (min-width: 768px) {
+  .ds-gallery-intro {
+    margin-bottom: 5rem; /* 80px (10 × 8px) bottom margin on desktop */
+  }
+  .ds-gallery-intro .ds-body {
+    margin-top: 1.5rem; /* 24px (3 × 8px) on desktop */
+  }
+}
+
+.ds-gallery-grid {
+  width: 100%;
+  max-width: var(--ds-gallery-max-width); /* 1152px (144 × 8px) on desktop */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-grid-gap); /* 8px mobile / 16px desktop */
+}
+
+.ds-gallery-row {
+  gap: var(--ds-grid-gap); /* 8px mobile / 16px desktop */
+}
 
 .ds-thumb-card {
   background-color: var(--ds-color-placeholder);
@@ -866,42 +911,79 @@
   }
 }
 
-/* Showcase Stage: Pure White (#FFFFFF) */
+/* Showcase Stage: Light Neutral Grey (#F2F2F2) */
 .ds-showcase-stage {
-  background-color: var(--ds-color-canvas); /* #FFFFFF */
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: matches --ds-showcase-title-band (104px) top, bottom clears floating pill + safe area */
-  padding: var(--ds-showcase-title-band) 1.25rem calc(6.25rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
+  /* Mobile padding (all multiples of 8): 104px top, 24px sides, 96px + safe-area bottom */
+  padding: var(--ds-showcase-title-band) 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding: matches --ds-showcase-title-band (156px) top so title+author has equal ~52px space above & below */
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 56px bottom */
     padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
   }
 }
 
-/* Showcase Details Band Below Stage: Pure Neutral Grey (#F2F2F2) */
+/* Showcase Details Band Below Stage: Pure White (#FFFFFF) */
 .ds-showcase-details {
-  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  background-color: var(--ds-color-canvas); /* #FFFFFF */
   width: 100%;
+}
+
+.ds-showcase-details-inner {
+  box-sizing: border-box;
+  max-width: 28rem; /* 448px (56 × 8px) */
+  margin: 0 auto;
+  /* Mobile (all multiples of 8): 64px top, 32px sides, 112px bottom */
+  padding: 4rem 2rem 7rem 2rem;
+}
+@media (min-width: 768px) {
+  .ds-showcase-details-inner {
+    /* Desktop (all multiples of 8): 80px top & bottom, 32px sides */
+    padding: 5rem 2rem;
+  }
+}
+
+#detail-spec-table {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+}
+
+#detail-print-hook {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+  padding-top: 1rem; /* 16px (2 × 8px) */
+  border-top: 1px solid var(--ds-color-border);
+}
+
+.ds-showcase-desc {
+  margin-top: 3rem; /* 48px (6 × 8px) on mobile between Photo details & Description */
+  text-align: center;
+}
+.ds-showcase-desc .ds-body {
+  margin-top: 1rem; /* 16px (2 × 8px) */
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .ds-showcase-desc {
+    margin-top: 4rem; /* 64px (8 × 8px) on desktop between Photo details & Description */
+  }
 }
 
 .ds-spec-row {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  padding: 0.5rem 0; /* 8px */
+  gap: 1rem; /* 16px (2 × 8px) */
+  padding: 0.5rem 0; /* 8px (1 × 8px) */
   border-bottom: 1px solid var(--ds-color-border);
 }
-
-/* Slightly stronger pure-grey divider on #F2F2F2 background for crisp contrast */
-.ds-showcase-details .ds-spec-row {
-  border-bottom-color: var(--ds-color-border-strong);
+.ds-spec-row .ds-label {
+  flex-shrink: 0;
 }
-.ds-showcase-details #detail-print-hook {
-  border-top-color: var(--ds-color-border-strong) !important;
+.ds-spec-row .ds-value {
+  text-align: right;
 }
 
 /* SHOWCASE TOP BAR:
@@ -923,11 +1005,11 @@
   align-items: center;
   justify-content: center;
   width: max-content;
-  max-width: calc(100vw - 2rem);
+  max-width: calc(100vw - 3rem); /* 48px (6 × 8px) horizontal clearance */
 }
 @media (min-width: 768px) {
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
-    max-width: calc(100vw - 24rem);
+    max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
@@ -941,7 +1023,7 @@
   letter-spacing: 0.03em;
   text-transform: capitalize;
   color: var(--ds-color-ink-muted);
-  margin-top: 0.2rem;
+  margin-top: 0.5rem; /* 8px (1 × 8px) */
 }
 #hdr-photo-counter {
   font-family: var(--ds-font-sans);
@@ -964,19 +1046,19 @@
    ============================================================================ */
 .ds-footer {
   margin-top: 0;
-  padding: 1.5rem 1rem 1.25rem;
+  padding: 1.5rem 1.5rem; /* 24px (3 × 8px) */
   border-top: 1px solid var(--ds-color-border);
   background-color: var(--ds-color-canvas);
   color: var(--ds-color-ink-primary);
 }
-@media (min-width: 640px) {
-  .ds-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+@media (min-width: 768px) {
+  .ds-footer { padding-left: 2.5rem; padding-right: 2.5rem; } /* 40px (5 × 8px) */
 }
 .ds-footer-row {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem; /* 16px */
 }
 .ds-footer-brand { justify-self: start; color: var(--ds-color-ink-primary); }
 .ds-footer-menu  { justify-self: center; }
@@ -984,10 +1066,10 @@
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem; /* 8px */
 }
 .ds-footer-copy {
-  margin: 1rem 0 0;
+  margin: 1rem 0 0; /* 16px */
   text-align: center;
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -1000,7 +1082,7 @@
 
 /* Small screens: stack Wordmark, Menu, Social Buttons centered */
 @media (max-width: 560px) {
-  .ds-footer-row { grid-template-columns: 1fr; justify-items: center; gap: 0.9rem; }
+  .ds-footer-row { grid-template-columns: 1fr; justify-items: center; gap: 1rem; }
   .ds-footer-brand, .ds-footer-menu, .ds-footer-social { justify-self: center; }
 }
 
@@ -1023,12 +1105,12 @@
 /* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
 .ds-mobile-showcase-bar {
   position: fixed;
-  bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px (2 × 8px) */
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: calc(100% - 2rem);
-  max-width: 23rem;
+  width: calc(100% - 2rem); /* 32px (4 × 8px) total side clearance */
+  max-width: 23rem; /* 368px (46 × 8px) */
   pointer-events: auto;
   transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
 }
@@ -1061,8 +1143,8 @@
   <div id="scroll-viewport" class="hidden relative ds-viewport-min-height w-full" style="background-color: var(--ds-color-canvas); color: var(--ds-color-ink-primary); border: none;">
 
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
-    <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 sm:px-10">
-      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span><span id="hdr-showcase-author">Alejandro Oropeza</span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
+    <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 md:px-10">
+      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span><span id="hdr-showcase-author">Alejandro Oropeza</span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -1113,13 +1195,13 @@
         </div>
       </section>
 
-      <!-- Gallery Grid Section -->
-      <div class="px-4 sm:px-6 pt-8 pb-16">
-        <div class="max-w-2xl mb-5">
+      <!-- Gallery Grid Section (All spacing values strict multiples of 8px) -->
+      <div class="ds-gallery-section px-6 md:px-10 pt-16 pb-16 md:pt-20 md:pb-24">
+        <div class="ds-gallery-intro max-w-2xl mx-auto text-center mb-16 md:mb-20">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
-          <p id="gallery-intro-body" class="ds-body mt-1"></p>
+          <p id="gallery-intro-body" class="ds-body mt-4 md:mt-6"></p>
         </div>
-        <div id="gallery-rows-container" class="space-y-2.5"></div>
+        <div id="gallery-rows-container" class="ds-gallery-grid"></div>
       </div>
 
     </main>
@@ -1127,24 +1209,24 @@
     <!-- VIEW 2: PHOTO SHOWCASE PAGE -->
     <section id="view-detail" class="hidden ">
       
-      <!-- Dynamic-Viewport-Height Pure White Photo Stage (.ds-showcase-stage) -->
+      <!-- Dynamic-Viewport-Height Light Neutral Grey Photo Stage (.ds-showcase-stage) -->
       <div class="ds-showcase-stage relative w-full ds-viewport-height flex items-center justify-center overflow-hidden">
         <div class="w-full h-full flex items-center justify-center">
-          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
+          <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
       </div>
 
-      <!-- Pure Neutral Grey Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
+      <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
       <div class="ds-showcase-details">
-        <div class="max-w-md mx-auto px-4 py-8">
-          <div class="text-center">
+        <div class="ds-showcase-details-inner max-w-md mx-auto px-8 pt-16 pb-28 md:px-8 md:py-20">
+          <div style="text-align: center;" class="text-center">
             <h2 class="ds-h3">Photo details</h2>
           </div>
 
-          <div id="detail-spec-table" class="mt-3"></div>
+          <div id="detail-spec-table" class="mt-4"></div>
 
           <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
-          <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border-strong);">
+          <div id="detail-print-hook" class="hidden mt-4 pt-4 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
             <div>
               <span class="ds-label block">ARCHIVAL PRINT</span>
               <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
@@ -1153,24 +1235,24 @@
           </div>
 
           <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-          <div class="mt-5 pb-20 md:pb-4">
+          <div class="ds-showcase-desc mt-12 md:mt-16">
             <h3 class="ds-h3 text-center">DESCRIPTION</h3>
-            <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+            <p id="dt-desc" class="ds-body mt-4 text-center"></p>
           </div>
         </div>
       </div>
 
       <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only — Standardized .ds-pill Instance) -->
-      <nav id="mobile-showcase-bar" class="ds-pill ds-pill-controls ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></nav>
+      <nav id="mobile-showcase-bar" class="ds-pill ds-pill-controls ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></nav>
 
     </section>
 
     <!-- VIEW 3: ABOUT ME PAGE -->
-    <section id="view-about" class="hidden  pt-24 px-4 sm:px-6 pb-16 max-w-xl mx-auto">
+    <section id="view-about" class="hidden  pt-24 px-6 sm:px-8 pb-16 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
-      <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
-      <p id="about-bio" class="ds-body mt-2.5"></p>
-      <div id="about-specs" class="mt-4 pt-2" style="border-top: 1px solid var(--ds-color-border);"></div>
+      <h1 id="about-heading" class="ds-brand-name mt-2">Alejandro Oropeza</h1>
+      <p id="about-bio" class="ds-body mt-4"></p>
+      <div id="about-specs" class="mt-6 pt-4" style="border-top: 1px solid var(--ds-color-border);"></div>
     </section>
 
     <!-- SITE FOOTER (Option 1 · Mirror of the Top Bar): Wordmark · Menu · Tonal IconButtons, thin rule above, muted © below -->
@@ -1280,7 +1362,7 @@
           </div>
           <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
             <div class="ds-pill mx-auto w-full"><div class="flex items-center justify-start justify-self-start z-10"><span class="ds-brand-name">Alejandro Oropeza</span></div><div class="justify-self-center z-10"><nav class="ds-menu-nav"><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button></div></div></div>
-            <div class="ds-pill ds-pill-controls mx-auto w-full max-w-[23rem]"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span class="ds-mobile-tonal-counter">2 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div>
+            <div class="ds-pill ds-pill-controls mx-auto w-full max-w-[23rem]"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span class="ds-mobile-tonal-counter">2 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div>
           </div>
         </div>
 
@@ -1589,20 +1671,20 @@
         const items = rowsMap[rowKey];
         const allPortraits = items.length === 4 && items.every(i => i.photo.orientation === 'portrait');
         if (allPortraits) {
-          html += `<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">`;
+          html += `<div class="grid grid-cols-2 sm:grid-cols-4 ds-gallery-row">`;
           items.forEach(({ photo, idx }) => {
             html += `
-              <div onclick="openPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56">
+              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56 md:h-64">
                 <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
           });
           html += `</div>`;
         } else {
-          html += `<div class="flex flex-col sm:flex-row gap-2.5">`;
+          html += `<div class="flex flex-col sm:flex-row ds-gallery-row">`;
           items.forEach(({ photo, idx }) => {
             html += `
-              <div onclick="openPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-44 sm:h-52">
+              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-48 sm:h-52 md:h-60">
                 <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
               </div>
             `;
@@ -1623,6 +1705,94 @@
       `).join('');
     }
 
+    // =========================================================================
+    // ZERO-LAG PHOTO PRELOADING & DECODED BITMAP CACHE
+    // Keeps all lightweight 1600px thumbnails decoded in memory + an LRU window
+    // of 4 full-resolution masters so Next/Prev switches in 0ms without ever
+    // leaving the previous photograph lingering on screen.
+    // =========================================================================
+    const detailStage = document.getElementById('view-detail');
+    const detailImg = document.getElementById('detail-img');
+    const decodedThumbCache = new Map();
+    const decodedFullCache = new Map();
+    const MAX_PINNED_FULL = 4;
+    let detailLoadToken = 0;
+
+    function _loadAndDecode(cacheMap, url, highPriority = false, maxEntries = 0) {
+      if (!url) return Promise.resolve(false);
+      if (cacheMap.has(url)) {
+        const existing = cacheMap.get(url);
+        if (maxEntries > 0) {
+          cacheMap.delete(url);
+          cacheMap.set(url, existing);
+        }
+        return existing.promise;
+      }
+      if (maxEntries > 0 && cacheMap.size >= maxEntries) {
+        const oldestKey = cacheMap.keys().next().value;
+        if (oldestKey !== undefined) cacheMap.delete(oldestKey);
+      }
+      const img = new Image();
+      img.decoding = 'async';
+      if (highPriority && 'fetchPriority' in img) {
+        img.fetchPriority = 'high';
+      }
+      const entry = { img, ready: false, promise: null };
+      entry.promise = new Promise((resolve) => {
+        let settled = false;
+        const finish = (ok) => {
+          if (settled) return;
+          settled = true;
+          entry.ready = ok;
+          resolve(ok);
+        };
+        const decodeNow = () => {
+          if (typeof img.decode === 'function') {
+            img.decode().then(() => finish(true)).catch(() => finish(img.naturalWidth > 0));
+          } else {
+            finish(true);
+          }
+        };
+        img.onload = decodeNow;
+        img.onerror = () => finish(false);
+        img.src = url;
+        if (img.complete && img.naturalWidth > 0) {
+          decodeNow();
+        }
+      });
+      cacheMap.set(url, entry);
+      return entry.promise;
+    }
+
+    function preloadThumb(url, highPriority = false) {
+      return _loadAndDecode(decodedThumbCache, url, highPriority, 0);
+    }
+
+    function preloadFull(url, highPriority = false) {
+      return _loadAndDecode(decodedFullCache, url, highPriority, MAX_PINNED_FULL);
+    }
+
+    function warmPhoto(idx) {
+      const p = PHOTOS[idx];
+      if (!p) return;
+      preloadThumb(p.thumbSrc || p.src, true);
+      preloadFull(p.src, false);
+    }
+
+    function warmAllGalleryThumbsIdle() {
+      let nextIdx = 0;
+      const worker = () => {
+        if (nextIdx >= PHOTOS.length) return;
+        const p = PHOTOS[nextIdx++];
+        preloadThumb(p.thumbSrc || p.src, false).finally(worker);
+      };
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          for (let c = 0; c < 3; c++) worker();
+        }, 32);
+      });
+    }
+
     let savedGalleryScroll = null;
 
     function captureGalleryScroll() {
@@ -1634,13 +1804,25 @@
       }
     }
 
+    function navigateHash(target, mode = 'push') {
+      if (window.location.hash === target) return true;
+      try {
+        if (mode === 'replace') {
+          window.history.replaceState(null, '', target);
+        } else {
+          window.history.pushState(null, '', target);
+        }
+        return true;
+      } catch (_) {
+        window.location.hash = target;
+        return false;
+      }
+    }
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
-        if (window.location.hash !== target) {
-          window.location.hash = target;
-          return;
-        }
+        if (!navigateHash(target, 'push')) return;
       }
       _applyView(view);
     }
@@ -1717,17 +1899,15 @@
       }
     }
 
-    function openPhoto(idx, push = true) {
+    function openPhoto(idx, historyMode = 'push') {
       captureGalleryScroll();
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;
-      if (push) {
+      if (historyMode) {
         const target = '#/photo/' + p.id;
-        if (window.location.hash !== target) {
-          window.location.hash = target;
-          return;
-        }
+        const mode = historyMode === 'replace' ? 'replace' : 'push';
+        if (!navigateHash(target, mode)) return;
       }
       _applyOpenPhoto(idx);
     }
@@ -1746,7 +1926,72 @@
       document.getElementById('hdr-photo-counter').textContent = `${idx + 1} of ${PHOTOS.length}`;
       const mobCounter = document.getElementById('mob-photo-counter');
       if (mobCounter) mobCounter.textContent = `${idx + 1} of ${PHOTOS.length}`;
-      document.getElementById('detail-img').src = p.src;
+
+      const token = ++detailLoadToken;
+      const thumbUrl = p.thumbSrc || p.src;
+      const fullUrl = p.src;
+      const fullEntry = decodedFullCache.get(fullUrl);
+      const thumbEntry = decodedThumbCache.get(thumbUrl);
+
+      if (detailImg) {
+        detailImg.style.transition = 'none';
+        detailImg.style.transform = 'translateX(0)';
+        detailImg.alt = p.title;
+
+        if (fullEntry && fullEntry.ready) {
+          detailImg.style.opacity = '1';
+          if (detailImg.getAttribute('src') !== fullUrl) {
+            detailImg.src = fullUrl;
+          }
+          detailImg.dataset.photoId = p.id;
+        } else if (thumbEntry && thumbEntry.ready) {
+          detailImg.style.opacity = '1';
+          if (detailImg.getAttribute('src') !== thumbUrl) {
+            detailImg.src = thumbUrl;
+          }
+          detailImg.dataset.photoId = p.id;
+          if (fullUrl !== thumbUrl) {
+            preloadFull(fullUrl, true).then((ok) => {
+              if (ok && detailLoadToken === token) {
+                detailImg.src = fullUrl;
+              }
+            });
+          }
+        } else {
+          // Cold cache miss: clear previous bitmap immediately so old photo never lingers
+          if (detailImg.dataset.photoId !== p.id) {
+            detailImg.style.opacity = '0';
+            detailImg.removeAttribute('src');
+            detailImg.dataset.photoId = p.id;
+          }
+          preloadThumb(thumbUrl, true).then((ok) => {
+            if (detailLoadToken !== token) return;
+            if (ok && detailImg.getAttribute('src') !== fullUrl) {
+              detailImg.src = thumbUrl;
+              detailImg.style.opacity = '1';
+            }
+            if (fullUrl !== thumbUrl) {
+              preloadFull(fullUrl, true).then((fullOk) => {
+                if (fullOk && detailLoadToken === token) {
+                  detailImg.src = fullUrl;
+                  detailImg.style.opacity = '1';
+                }
+              });
+            } else if (!ok) {
+              detailImg.src = fullUrl;
+              detailImg.style.opacity = '1';
+            }
+          });
+        }
+      }
+
+      // Preload & decode adjacent Prev / Next photos so stepping is instantaneous
+      const nextIdx = (idx + 1) % PHOTOS.length;
+      const prevIdx = (idx - 1 + PHOTOS.length) % PHOTOS.length;
+      preloadThumb(PHOTOS[nextIdx].thumbSrc || PHOTOS[nextIdx].src, true);
+      preloadThumb(PHOTOS[prevIdx].thumbSrc || PHOTOS[prevIdx].src, true);
+      preloadFull(PHOTOS[nextIdx].src, false);
+      preloadFull(PHOTOS[prevIdx].src, false);
 
       const specRows = [
         { label: 'LOCATION & YEAR', value: p.location },
@@ -1791,10 +2036,11 @@
     }
 
     window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('popstate', handleRoute);
 
     function stepPhoto(dir) {
       const next = (currentIdx + dir + PHOTOS.length) % PHOTOS.length;
-      openPhoto(next);
+      openPhoto(next, 'replace');
     }
 
     // Touch Swiping in Fullscreen Lightbox View
@@ -1803,9 +2049,6 @@
     let touchCurrentX = 0;
     let touchStartTime = 0;
     let isTouchSwiping = false;
-
-    const detailStage = document.getElementById('view-detail');
-    const detailImg = document.getElementById('detail-img');
 
     if (detailStage) {
       detailStage.addEventListener('touchstart', (e) => {
@@ -1890,10 +2133,10 @@
     function togglePrintShop(enabled) {
       printShopPreview = enabled;
       if (currentView === 'detail') {
-        openPhoto(currentIdx);
+        openPhoto(currentIdx, 'replace');
       } else {
         switchMode('website');
-        openPhoto(currentIdx);
+        openPhoto(currentIdx, 'push');
       }
     }
 
@@ -1904,6 +2147,7 @@
     }
 
     renderGallery();
+    warmAllGalleryThumbsIdle();
     if (window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/gallery') {
       handleRoute();
     } else {
