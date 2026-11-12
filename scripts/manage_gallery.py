@@ -532,13 +532,13 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px (Alejandro Oropeza)",
             aria_label="500px",
         ),
-        # Live Website Instances — Stage Visualizer Trigger (Surface) & Popup Visualizer Close (Standard Tonal)
-        "__SIBTN_STAGE_VISUALIZER__": render_surface_icon_button(
-            "fullscreen",
+        # Live Website Instances — Stage Visualizer Trigger (Surface Button) & Popup Visualizer Close (Standard Tonal)
+        "__SIBTN_STAGE_VISUALIZER__": render_surface_button(
+            "Fullscreen",
+            icon_left="fullscreen",
             onclick="openVisualizer()",
             elem_id="stage-visualizer-btn",
-            title="Open zoomable view",
-            aria_label="Open zoomable view",
+            aria_label="Open zoomable fullscreen view",
             extra_cls="ds-stage-visualizer-btn",
         ),
         "__SIBTN_VISUALIZER_CLOSE__": render_icon_button(
@@ -1129,7 +1129,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <span class="ds-label block">.ds-h2 · Jost Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">24px M · 26px D / 500</code>
+          <code class="text-xs text-neutral-500">24px M (500) · 26px D (400)</code>
         </div>
         <div class="ds-spec-row">
           <div>

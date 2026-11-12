@@ -179,6 +179,7 @@
 }
 @media (min-width: 768px) {
   .ds-h2 {
+    font-weight: 400; /* 100 weight lighter on desktop */
     font-size: 1.625rem; /* 26px on desktop unscrolled (+2px) */
   }
   /* Switch H2 to 22px (+2px) when in scrolled pill mode on desktop showcase */
@@ -1121,19 +1122,31 @@ h1.ds-brand-name {
   }
 }
 
-/* Bottom-Right Stage Fullscreen Visualizer Trigger (Surface IconButton) */
-.ds-icon-btn.ds-stage-visualizer-btn,
+/* Stage Fullscreen Visualizer Trigger (Surface Button: centered on mobile, bottom-right on desktop) */
+.ds-btn.ds-stage-visualizer-btn,
 .ds-stage-visualizer-btn {
   position: absolute;
-  right: 1rem; /* 16px */
-  bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); /* 96px — sits cleanly above mobile bottom pill */
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); /* 88px — sits cleanly above mobile bottom pill */
   z-index: 20;
 }
+.ds-btn.ds-stage-visualizer-btn:active,
+.ds-stage-visualizer-btn:active {
+  transform: translateX(-50%) translateY(0.5px) scale(0.96);
+}
 @media (min-width: 768px) {
-  .ds-icon-btn.ds-stage-visualizer-btn,
+  .ds-btn.ds-stage-visualizer-btn,
   .ds-stage-visualizer-btn {
+    left: auto;
     right: 1.5rem; /* 24px */
     bottom: 1rem;  /* 16px */
+    transform: translateY(0) scale(1);
+  }
+  .ds-btn.ds-stage-visualizer-btn:active,
+  .ds-stage-visualizer-btn:active {
+    transform: translateY(0.5px) scale(0.96);
   }
 }
 
@@ -1197,8 +1210,8 @@ h1.ds-brand-name {
 }
 
 /* SHOWCASE TOP BAR:
-   Keep header buttons in their standard top-bar position while centering
-   ONLY the unscrolled title + author block within --ds-showcase-title-band */
+   Keep header buttons in their standard top-bar position while anchoring
+   the unscrolled title block on mobile at line 1 so 2-line titles grow downward */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
@@ -1207,18 +1220,21 @@ h1.ds-brand-name {
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
   position: absolute;
-  top: calc(var(--ds-showcase-title-band) / 2);
+  top: calc(var(--ds-showcase-title-band) / 2 - 0.915rem);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: max-content;
   max-width: calc(100vw - 3rem); /* 48px (6 × 8px) horizontal clearance */
 }
 @media (min-width: 768px) {
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+    top: calc(var(--ds-showcase-title-band) / 2);
+    transform: translate(-50%, -50%);
+    justify-content: center;
     max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
@@ -1536,7 +1552,7 @@ h1.ds-brand-name {
           <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
         <!-- Bottom-Right Fullscreen Visualizer Trigger (Surface IconButton) -->
-        <button type="button" id="stage-visualizer-btn" class="ds-icon-btn ds-btn-surface ds-stage-visualizer-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Open zoomable view" aria-label="Open zoomable view" onclick="openVisualizer()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+        <button type="button" id="stage-visualizer-btn" class="ds-btn ds-btn-surface ds-stage-visualizer-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Open zoomable fullscreen view" onclick="openVisualizer()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><span>Fullscreen</span></button>
       </div>
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
@@ -1773,7 +1789,7 @@ h1.ds-brand-name {
             <span class="ds-label block">.ds-h2 · Jost Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">24px M · 26px D / 500</code>
+          <code class="text-xs text-neutral-500">24px M (500) · 26px D (400)</code>
         </div>
         <div class="ds-spec-row">
           <div>
