@@ -19,7 +19,13 @@
   --ds-color-ink-label: #8C8C8C;
   --ds-color-ink-inverse: #FFFFFF;
 
-  /* 2. FROSTED GLASS & LIGHT-SURFACE HOVER TOKENS */
+  /* 2. FROSTED GLASS, STANDARDIZED FLOATING PILL & LIGHT-SURFACE HOVER TOKENS */
+  --ds-pill-bg: rgba(255, 255, 255, 0.68);
+  --ds-pill-blur: blur(14px) saturate(140%);
+  --ds-pill-border: rgba(255, 255, 255, 0.78);
+  --ds-pill-shadow: 0 0 0 1px rgba(20, 20, 20, 0.08),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+                    0 6px 20px -4px rgba(0, 0, 0, 0.08);
   --ds-surface-frosted: rgba(255, 255, 255, 0.76);
   --ds-border-frosted: rgba(20, 20, 20, 0.08);
   --ds-blur-frosted: blur(16px) saturate(140%);
@@ -40,12 +46,12 @@
      - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 4.5rem;          /* 72px — Accommodates 48px mobile controls comfortably */
-  --ds-showcase-header-height: 6.5rem; /* 104px — Positions mobile showcase title/author comfortably lower */
+  --ds-showcase-title-band: 6.5rem;    /* 104px — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
   --ds-btn-gap: 0.4rem;                /* 6.4px space between icon and label inside buttons */
   --ds-grid-gap: 0.625rem;             /* 10px gallery grid gutter */
-  --ds-radius-sm: 0.125rem;            /* 2px photo frame corner radius */
+  --ds-radius-sm: 0.25rem;             /* 4px photo frame corner radius */
   --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 
   /* 5. MOTION & ANIMATION TOKENS */
@@ -58,11 +64,26 @@
 
 @media (min-width: 768px) {
   :root {
-    --ds-header-height: 4.25rem;           /* 68px desktop floating header height */
-    --ds-showcase-header-height: 7.75rem;  /* 124px desktop showcase band (equal space above & below title+author) */
-    --ds-control-size: 40px;               /* Desktop: 40px height / diameter */
-    --ds-btn-padding-x: 16px;              /* Desktop: 16px side padding */
+    --ds-header-height: 4.25rem;         /* 68px desktop floating header height (keeps header buttons in place) */
+    --ds-showcase-title-band: 9.75rem;   /* 156px desktop title+author band (~52px equal space above & below) */
+    --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
+    --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
   }
+}
+
+/* Browser & Phone Agnostic Dynamic Viewport Sizing (accounts for top/bottom mobile search bars) */
+.ds-viewport-height {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  height: var(--app-viewport-height, 100dvh);
+}
+
+.ds-viewport-min-height {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  min-height: var(--app-viewport-height, 100dvh);
 }
 
 /* ============================================================================
@@ -94,10 +115,15 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
+  transition: font-size 240ms var(--ds-ease-out-expo);
 }
 @media (min-width: 768px) {
   .ds-h2 {
-    font-size: 1.5rem; /* 24px on desktop */
+    font-size: 1.5rem; /* 24px on desktop unscrolled */
+  }
+  /* Switch H2 to 20px when in scrolled pill mode on desktop showcase */
+  .ds-header-frosted.is-detail .ds-h2 {
+    font-size: 1.25rem; /* 20px */
   }
 }
 
@@ -604,7 +630,43 @@
 }
 
 /* ============================================================================
-   FLOATING HEADER & WHISPER MIST PILL-SHAPED SCROLLED CONTAINER
+   MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill)
+   Shared frosted capsule surface used by both the Top Scrolled Header Pill
+   and the Mobile Bottom Showcase Pill (instanced via render_pill()).
+   ============================================================================ */
+
+.ds-pill {
+  box-sizing: border-box;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-pill-bg);
+  backdrop-filter: var(--ds-pill-blur);
+  -webkit-backdrop-filter: var(--ds-pill-blur);
+  border: 1px solid var(--ds-pill-border);
+  box-shadow: var(--ds-pill-shadow);
+  color: var(--ds-color-ink-primary);
+  padding: 0.35rem 1.25rem;
+}
+
+.ds-pill:not(.hidden):not(.is-hidden) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  align-content: center;
+}
+
+/* Concentric button-end inset when left & right slots hold circular/pill buttons */
+.ds-pill-controls {
+  padding: 0.35rem 0.45rem;
+}
+
+@media (min-width: 768px) {
+  .ds-pill.md\:hidden {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   FLOATING HEADER & STANDARDIZED SCROLLED PILL CONTAINER
    ============================================================================ */
 
 .ds-floating-header {
@@ -613,7 +675,6 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  transition: height 320ms var(--ds-ease-out-expo);
 }
 
 .ds-floating-pill {
@@ -621,9 +682,6 @@
   width: 100%;
   max-width: 100%;
   min-height: 2.85rem;
-  padding: 0.35rem 0;
-  border-radius: 9999px;
-  border: 1px solid transparent;
   transition: max-width 360ms var(--ds-ease-out-expo),
               padding 360ms var(--ds-ease-out-expo),
               margin-top 360ms var(--ds-ease-out-expo),
@@ -638,9 +696,10 @@
 
 /* State 1: Scrolled all the way up on Home Page (Over Hero Image, White Text, No Pill Box) */
 .ds-header-hero .ds-floating-pill {
+  padding: 0.35rem 0;
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
   box-shadow: none;
   color: var(--ds-color-ink-inverse);
@@ -648,29 +707,34 @@
 
 /* State 2: Scrolled all the way up on Showcase / About (No background, Dark Text, No Pill Box) */
 .ds-header-transparent-dark .ds-floating-pill {
+  padding: 0.35rem 0;
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
   box-shadow: none;
   color: var(--ds-color-ink-primary);
 }
 
-/* State 3: Scrolled on Any Page — Lighter Whisper Mist Pill with Horizontal Center Alignment */
+/* State 3: Scrolled on Any Page — Standardized Floating Pill (.ds-pill tokens) */
 .ds-header-frosted .ds-floating-pill {
   max-width: 62rem;
   margin-top: 0.35rem;
   padding: 0.35rem 1.25rem;
-  border-radius: 9999px;
   align-items: center !important;
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  box-shadow: 0 0 0 1px rgba(20, 20, 20, 0.08),
-              inset 0 1px 0 rgba(255, 255, 255, 0.85),
-              0 6px 20px -4px rgba(0, 0, 0, 0.08);
+  background: var(--ds-pill-bg);
+  backdrop-filter: var(--ds-pill-blur);
+  -webkit-backdrop-filter: var(--ds-pill-blur);
+  border: 1px solid var(--ds-pill-border);
+  box-shadow: var(--ds-pill-shadow);
   color: var(--ds-color-ink-primary);
+}
+
+/* Concentric button padding when Desktop Showcase header morphs into pill mode */
+@media (min-width: 768px) {
+  .ds-header-frosted.is-detail .ds-floating-pill {
+    padding: 0.35rem 0.45rem;
+  }
 }
 
 .ds-header-frosted #hdr-left-col {
@@ -691,12 +755,12 @@
 }
 
 /* ============================================================================
-   GALLERY THUMBNAIL & SPEC TABLE PATTERNS
+   GALLERY THUMBNAIL, SHOWCASE STAGE (WHITE) & DETAILS SECTION (GREY)
    ============================================================================ */
 
 .ds-thumb-card {
   background-color: var(--ds-color-placeholder);
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--ds-radius-sm); /* 4px */
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -714,19 +778,26 @@
   }
 }
 
+/* Showcase Stage: Pure White (#FFFFFF) */
 .ds-showcase-stage {
-  background-color: var(--ds-color-stage); /* Strictly Pure Neutral Grey #F2F2F2 */
+  background-color: var(--ds-color-canvas); /* #FFFFFF */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: matches --ds-showcase-header-height (104px) top, 6.25rem (100px) bottom above 48px floating dock */
-  padding: var(--ds-showcase-header-height) 1.25rem 6.25rem 1.25rem;
+  /* Mobile padding: matches --ds-showcase-title-band (104px) top, bottom clears floating pill + safe area */
+  padding: var(--ds-showcase-title-band) 1.25rem calc(6.25rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding: matches --ds-showcase-header-height (124px) top so title+author block has equal space to page top & image top */
-    padding: var(--ds-showcase-header-height) 2.5rem 3.5rem 2.5rem;
+    /* Desktop padding: matches --ds-showcase-title-band (156px) top so title+author has equal ~52px space above & below */
+    padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
   }
+}
+
+/* Showcase Details Band Below Stage: Pure Neutral Grey (#F2F2F2) */
+.ds-showcase-details {
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  width: 100%;
 }
 
 .ds-spec-row {
@@ -737,15 +808,39 @@
   border-bottom: 1px solid var(--ds-color-border);
 }
 
-/* SHOWCASE TOP BAR */
-.ds-floating-header.is-detail:not(.ds-header-frosted) {
-  height: var(--ds-showcase-header-height);
+/* Slightly stronger pure-grey divider on #F2F2F2 background for crisp contrast */
+.ds-showcase-details .ds-spec-row {
+  border-bottom-color: var(--ds-color-border-strong);
 }
+.ds-showcase-details #detail-print-hook {
+  border-top-color: var(--ds-color-border-strong) !important;
+}
+
+/* SHOWCASE TOP BAR:
+   Keep header buttons in their standard top-bar position while centering
+   ONLY the unscrolled title + author block within --ds-showcase-title-band */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-right-col {
   align-self: center;
+}
+.ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+  position: absolute;
+  top: calc(var(--ds-showcase-title-band) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+}
+@media (min-width: 768px) {
+  .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+    max-width: calc(100vw - 24rem);
+  }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
   line-height: 1.22;
@@ -780,9 +875,10 @@
    SITE FOOTER (.ds-footer)
    ============================================================================ */
 .ds-footer {
-  margin-top: 3rem;
+  margin-top: 0;
   padding: 1.5rem 1rem 1.25rem;
   border-top: 1px solid var(--ds-color-border);
+  background-color: var(--ds-color-canvas);
   color: var(--ds-color-ink-primary);
 }
 @media (min-width: 640px) {
@@ -821,7 +917,7 @@
 }
 
 /* ============================================================================
-   PHOTOGRAPHY SHARPNESS & RENDERING FIDELITY
+   PHOTOGRAPHY SHARPNESS, CORNER RADIUS & RENDERING FIDELITY
    ============================================================================ */
 #hero-featured-img {
   width: 100%;
@@ -834,31 +930,21 @@
 }
 
 #detail-img {
+  border-radius: var(--ds-radius-sm); /* 4px */
   image-rendering: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
-/* Floating Bottom Showcase Navigation Dock (Mobile Only) */
+/* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
 .ds-mobile-showcase-bar {
   position: fixed;
   bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: calc(100% - 2rem);
   max-width: 23rem;
-  padding: 0.35rem 0.45rem;
-  border-radius: 9999px;
-  background-color: rgba(250, 250, 250, 0.90);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(20, 20, 20, 0.08);
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.18),
-              0 2px 6px -1px rgba(0, 0, 0, 0.06);
   pointer-events: auto;
   transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
 }

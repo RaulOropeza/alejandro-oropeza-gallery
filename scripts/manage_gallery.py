@@ -262,62 +262,186 @@ def render_icon_button(
     return f'<button {" ".join(attrs)}>{inner}</button>'
 
 
+def render_pill(
+    left_html: str,
+    center_html: str,
+    right_html: str,
+    *,
+    tag: str = "div",
+    elem_id: str | None = None,
+    aria_label: str | None = None,
+    controls_inset: bool = False,
+    left_id: str | None = None,
+    right_id: str | None = None,
+    extra_cls: str = "",
+    extra_style: str = "",
+) -> str:
+    """Master Component 3: Standardized Floating Pill (.ds-pill)."""
+    classes = " ".join(
+        c for c in ["ds-pill", "ds-pill-controls" if controls_inset else "", extra_cls] if c
+    )
+    attrs = [f'class="{classes}"']
+    if elem_id:
+        attrs.insert(0, f'id="{elem_id}"')
+    if aria_label:
+        attrs.append(f'aria-label="{aria_label}"')
+    if extra_style:
+        attrs.append(f'style="{extra_style}"')
+
+    l_id = f'id="{left_id}" ' if left_id else ""
+    r_id = f'id="{right_id}" ' if right_id else ""
+    return (
+        f'<{" ".join([tag, *attrs])}>'
+        f'<div {l_id}class="flex items-center justify-start justify-self-start z-10">{left_html}</div>'
+        f'<div class="justify-self-center z-10">{center_html}</div>'
+        f'<div {r_id}class="justify-self-end self-center z-10">{right_html}</div>'
+        f"</{tag}>"
+    )
+
+
 def build_button_instances(catalog: dict) -> dict[str, str]:
     ig_url = catalog["site"]["social"]["instagram"].replace("&", "&amp;")
     px_url = catalog["site"]["social"]["fiveHundredPx"].replace("&", "&amp;")
-    return {
-        # Live Website Instances — Button
-        "__BTN_HDR_BACK__": render_button(
-            "Back to gallery",
-            icon_left="arrow-left",
-            onclick="showView('gallery')",
-            elem_id="hdr-left-back",
-            extra_cls="ds-showcase-back is-hidden",
+
+    btn_hdr_back = render_button(
+        "Back to gallery",
+        icon_left="arrow-left",
+        onclick="showView('gallery')",
+        elem_id="hdr-left-back",
+        extra_cls="ds-showcase-back is-hidden",
+    )
+    btn_mob_back = render_button(
+        "Gallery",
+        icon_left="arrow-left",
+        onclick="showView('gallery')",
+        aria_label="Back to gallery",
+    )
+    ibtn_hdr_ig = render_icon_button(
+        "instagram",
+        href=ig_url,
+        title="Instagram (@alejandroropeza.photo)",
+        aria_label="Instagram",
+    )
+    ibtn_hdr_500px = render_icon_button(
+        "500px",
+        href=px_url,
+        title="500px (Alejandro Oropeza)",
+        aria_label="500px",
+    )
+    ibtn_hdr_menu = render_icon_button(
+        "menu",
+        onclick="toggleMobileMenu()",
+        elem_id="hdr-hamburger-btn",
+        aria_label="Toggle navigation menu",
+        extra_attrs='aria-expanded="false"',
+        extra_cls="md:hidden",
+    )
+    ibtn_hdr_prev = render_icon_button(
+        "arrow-left",
+        onclick="stepPhoto(-1)",
+        title="Previous photograph",
+        aria_label="Previous photograph",
+    )
+    ibtn_hdr_next = render_icon_button(
+        "arrow-right",
+        onclick="stepPhoto(1)",
+        title="Next photograph",
+        aria_label="Next photograph",
+    )
+    ibtn_mob_prev = render_icon_button(
+        "arrow-left",
+        onclick="stepPhoto(-1)",
+        title="Previous photograph",
+        aria_label="Previous photograph",
+    )
+    ibtn_mob_next = render_icon_button(
+        "arrow-right",
+        onclick="stepPhoto(1)",
+        title="Next photograph",
+        aria_label="Next photograph",
+    )
+
+    # Top Header Pill Instance
+    top_header_pill = render_pill(
+        left_html=(
+            '<button onclick="showView(\'gallery\')" id="hdr-brand-name" '
+            'class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">'
+            "Alejandro Oropeza</button>" + btn_hdr_back
         ),
+        center_html=(
+            '<nav id="header-menu-nav" class="ds-menu-nav">'
+            '<button onclick="showView(\'gallery\')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button>'
+            '<span class="ds-menu-sep">/</span>'
+            '<button onclick="showView(\'about\')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button>'
+            "</nav>"
+            '<div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">'
+            '<span id="hdr-photo-title" class="ds-h2"></span>'
+            '<span id="hdr-showcase-author">Alejandro Oropeza</span>'
+            "</div>"
+        ),
+        right_html=(
+            f'<div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">{ibtn_hdr_ig}{ibtn_hdr_500px}{ibtn_hdr_menu}</div>'
+            f'<div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">'
+            f'<span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span>'
+            f'<div class="flex items-center gap-1.5">{ibtn_hdr_prev}{ibtn_hdr_next}</div>'
+            f"</div>"
+        ),
+        elem_id="floating-header-pill",
+        left_id="hdr-left-col",
+        right_id="hdr-right-col",
+        extra_cls="ds-floating-pill",
+    )
+
+    # Mobile Bottom Showcase Pill Instance
+    mob_showcase_pill = render_pill(
+        left_html=btn_mob_back,
+        center_html='<span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>',
+        right_html=f'<div class="flex items-center gap-1.5">{ibtn_mob_prev}{ibtn_mob_next}</div>',
+        tag="nav",
+        elem_id="mobile-showcase-bar",
+        aria_label="Photo navigation",
+        controls_inset=True,
+        extra_cls="ds-mobile-showcase-bar hidden md:hidden",
+    )
+
+    # Design System Specimen Pills
+    ds_ibtn_ig = render_icon_button("instagram", title="Instagram")
+    ds_ibtn_500px = render_icon_button("500px", title="500px")
+    ds_ibtn_prev = render_icon_button("arrow-left", title="Previous")
+    ds_ibtn_next = render_icon_button("arrow-right", title="Next")
+
+    ds_pill_header = render_pill(
+        left_html='<span class="ds-brand-name">Alejandro Oropeza</span>',
+        center_html=(
+            '<nav class="ds-menu-nav">'
+            '<button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button>'
+            '<span class="ds-menu-sep">/</span>'
+            '<button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button>'
+            "</nav>"
+        ),
+        right_html=f'<div class="flex items-center gap-2">{ds_ibtn_ig}{ds_ibtn_500px}</div>',
+        extra_cls="mx-auto w-full",
+    )
+
+    ds_pill_mob_dock = render_pill(
+        left_html=render_button("Gallery", icon_left="arrow-left"),
+        center_html='<span class="ds-mobile-tonal-counter">2 of 10</span>',
+        right_html=f'<div class="flex items-center gap-1.5">{ds_ibtn_prev}{ds_ibtn_next}</div>',
+        controls_inset=True,
+        extra_cls="mx-auto w-full max-w-[23rem]",
+    )
+
+    return {
+        # Standardized Pill Instances
+        "__PILL_TOP_HEADER__": top_header_pill,
+        "__PILL_MOB_SHOWCASE__": mob_showcase_pill,
+        # Live Website Instances — Button
         "__BTN_PRINT_ORDER__": render_button(
             "Order print",
             onclick="triggerPrintOrder(this)",
             elem_id="detail-print-btn",
         ),
-        "__BTN_MOB_BACK__": render_button(
-            "Gallery",
-            icon_left="arrow-left",
-            onclick="showView('gallery')",
-            aria_label="Back to gallery",
-        ),
         # Live Website Instances — IconButton
-        "__IBTN_HDR_IG__": render_icon_button(
-            "instagram",
-            href=ig_url,
-            title="Instagram (@alejandroropeza.photo)",
-            aria_label="Instagram",
-        ),
-        "__IBTN_HDR_500PX__": render_icon_button(
-            "500px",
-            href=px_url,
-            title="500px (Alejandro Oropeza)",
-            aria_label="500px",
-        ),
-        "__IBTN_HDR_MENU__": render_icon_button(
-            "menu",
-            onclick="toggleMobileMenu()",
-            elem_id="hdr-hamburger-btn",
-            aria_label="Toggle navigation menu",
-            extra_attrs='aria-expanded="false"',
-            extra_cls="md:hidden",
-        ),
-        "__IBTN_HDR_PREV__": render_icon_button(
-            "arrow-left",
-            onclick="stepPhoto(-1)",
-            title="Previous photograph",
-            aria_label="Previous photograph",
-        ),
-        "__IBTN_HDR_NEXT__": render_icon_button(
-            "arrow-right",
-            onclick="stepPhoto(1)",
-            title="Next photograph",
-            aria_label="Next photograph",
-        ),
         "__IBTN_DRAWER_CLOSE__": render_icon_button(
             "close",
             onclick="toggleMobileMenu(false)",
@@ -335,18 +459,6 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px",
             aria_label="500px",
         ),
-        "__IBTN_MOB_PREV__": render_icon_button(
-            "arrow-left",
-            onclick="stepPhoto(-1)",
-            title="Previous photograph",
-            aria_label="Previous photograph",
-        ),
-        "__IBTN_MOB_NEXT__": render_icon_button(
-            "arrow-right",
-            onclick="stepPhoto(1)",
-            title="Next photograph",
-            aria_label="Next photograph",
-        ),
         "__IBTN_FOOT_IG__": render_icon_button(
             "instagram",
             href=ig_url,
@@ -363,22 +475,24 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         "__DS_BTN_LABEL_ONLY__": render_button("Order print"),
         "__DS_BTN_ICON_LEFT__": render_button("Back to gallery", icon_left="arrow-left"),
         "__DS_BTN_ICON_RIGHT__": render_button("Next photo", icon_right="arrow-right"),
-        "__DS_IBTN_PREV__": render_icon_button("arrow-left", title="Previous"),
-        "__DS_IBTN_NEXT__": render_icon_button("arrow-right", title="Next"),
-        "__DS_IBTN_IG__": render_icon_button("instagram", title="Instagram"),
-        "__DS_IBTN_500PX__": render_icon_button("500px", title="500px"),
+        "__DS_IBTN_PREV__": ds_ibtn_prev,
+        "__DS_IBTN_NEXT__": ds_ibtn_next,
+        "__DS_IBTN_IG__": ds_ibtn_ig,
+        "__DS_IBTN_500PX__": ds_ibtn_500px,
         "__DS_IBTN_MENU__": render_icon_button("menu", title="Menu"),
         "__DS_IBTN_CLOSE__": render_icon_button("close", title="Close"),
+        "__DS_PILL_HEADER__": ds_pill_header,
+        "__DS_PILL_MOB_DOCK__": ds_pill_mob_dock,
     }
 
 
 def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = False, is_production: bool = False) -> str:
-    hero_height_cls = "h-[450px]" if is_inline_embed else "h-screen"
-    stage_height_cls = "h-[450px]" if is_inline_embed else "h-screen"
+    hero_height_cls = "h-[450px]" if is_inline_embed else "ds-viewport-height"
+    stage_height_cls = "h-[450px]" if is_inline_embed else "ds-viewport-height"
     shell_cls = (
         "relative w-full max-h-[450px] overflow-y-auto rounded-b-xl shadow-sm"
         if is_inline_embed
-        else "relative min-h-screen w-full"
+        else "relative ds-viewport-min-height w-full"
     )
     ds_shell_cls = (
         "hidden w-full max-h-[450px] overflow-y-auto rounded-b-xl p-5 space-y-6"
@@ -449,8 +563,8 @@ def build_production(design_system_css: str, catalog: dict):
     with open(dist_dir / "favicon.svg", "w", encoding="utf-8") as f:
         f.write(favicon_svg)
 
-        # 5. Build dist/design-system.html (standalone design system page)
-    ds_page_html = prod_html.replace('id="scroll-viewport" class="relative min-h-screen w-full"', 'id="scroll-viewport" class="hidden relative min-h-screen w-full"')
+    # 5. Build dist/design-system.html (standalone design system page)
+    ds_page_html = prod_html.replace('id="scroll-viewport" class="relative ds-viewport-min-height w-full"', 'id="scroll-viewport" class="hidden relative ds-viewport-min-height w-full"')
     ds_page_html = ds_page_html.replace('id="design-system-viewport" class="hidden ', 'id="design-system-viewport" class="')
     with open(dist_dir / "design-system.html", "w", encoding="utf-8") as f:
         f.write(ds_page_html)
@@ -569,63 +683,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
        ========================================================================= -->
   <div id="scroll-viewport" class="__SHELL_CLS__" style="__SHELL_STYLE__">
 
-    <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Whisper Mist Floating Pill Capsule) -->
+    <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero __HEADER_POS_CLS__">
-      <div id="floating-header-pill" class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center">
-        
-        <!-- COLUMN 1 (LEFT):
-             - On Home / About: "Alejandro Oropeza" (Avenir Medium, horizontally centered with Tonal IconButtons)
-             - On Showcase: Tonal Button "← Back to gallery" -->
-        <div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10">
-          <button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">
-            Alejandro Oropeza
-          </button>
-          __BTN_HDR_BACK__
-        </div>
-
-        <!-- COLUMN 2 (CENTER):
-             - On Home / About: Editorial Slash Menu ("GALLERY  /  ABOUT ME")
-             - On Showcase: Photo Title (.ds-h2) + subtle "Alejandro Oropeza" -->
-        <div class="justify-self-center z-10">
-          <nav id="header-menu-nav" class="ds-menu-nav">
-            <button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none">
-              <span class="ds-menu-text">GALLERY</span>
-            </button>
-            <span class="ds-menu-sep">/</span>
-            <button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none">
-              <span class="ds-menu-text">ABOUT ME</span>
-            </button>
-          </nav>
-          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">
-            <span id="hdr-photo-title" class="ds-h2"></span>
-            <span id="hdr-showcase-author">
-              Alejandro Oropeza
-            </span>
-          </div>
-        </div>
-
-        <!-- COLUMN 3 (RIGHT):
-             - On Home / About: Tonal Circular IconButtons (Instagram, 500px, Mobile Menu)
-             - On Showcase: "n of n" counter + Tonal Circular Prev/Next IconButtons -->
-        <div id="hdr-right-col" class="justify-self-end self-center z-10">
-          <div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">
-            __IBTN_HDR_IG__
-            __IBTN_HDR_500PX__
-            __IBTN_HDR_MENU__
-          </div>
-
-          <div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">
-            <span id="hdr-photo-counter" class="whitespace-nowrap">
-              1 of 10
-            </span>
-            <div class="flex items-center gap-1.5">
-              __IBTN_HDR_PREV__
-              __IBTN_HDR_NEXT__
-            </div>
-          </div>
-        </div>
-
-      </div>
+      __PILL_TOP_HEADER__
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -677,7 +737,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </section>
 
       <!-- Gallery Grid Section -->
-      <div class="px-4 sm:px-6 py-8">
+      <div class="px-4 sm:px-6 pt-8 pb-16">
         <div class="max-w-2xl mb-5">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
           <p id="gallery-intro-body" class="ds-body mt-1"></p>
@@ -690,51 +750,46 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     <!-- VIEW 2: PHOTO SHOWCASE PAGE -->
     <section id="view-detail" class="hidden __MAIN_PULL_CLS__">
       
-      <!-- Full-Viewport-Height Pure Grey Photo Stage (.ds-showcase-stage) -->
+      <!-- Dynamic-Viewport-Height Pure White Photo Stage (.ds-showcase-stage) -->
       <div class="ds-showcase-stage relative w-full __STAGE_HEIGHT_CLS__ flex items-center justify-center overflow-hidden">
         <div class="w-full h-full flex items-center justify-center">
-          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm rounded-sm mx-auto block" />
+          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
       </div>
 
-      <!-- Spec Sheet & Description Below Image -->
-      <div class="max-w-md mx-auto px-4 py-6">
-        <div class="text-center">
-          <h2 class="ds-h3">Photo details</h2>
-        </div>
-
-        <div id="detail-spec-table" class="mt-3"></div>
-
-        <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
-        <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
-          <div>
-            <span class="ds-label block">ARCHIVAL PRINT</span>
-            <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
+      <!-- Pure Neutral Grey Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
+      <div class="ds-showcase-details">
+        <div class="max-w-md mx-auto px-4 py-8">
+          <div class="text-center">
+            <h2 class="ds-h3">Photo details</h2>
           </div>
-          __BTN_PRINT_ORDER__
-        </div>
 
-        <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-        <div class="mt-5 pb-20 md:pb-4">
-          <h3 class="ds-h3 text-center">DESCRIPTION</h3>
-          <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+          <div id="detail-spec-table" class="mt-3"></div>
+
+          <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
+          <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border-strong);">
+            <div>
+              <span class="ds-label block">ARCHIVAL PRINT</span>
+              <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
+            </div>
+            __BTN_PRINT_ORDER__
+          </div>
+
+          <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
+          <div class="mt-5 pb-20 md:pb-4">
+            <h3 class="ds-h3 text-center">DESCRIPTION</h3>
+            <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+          </div>
         </div>
       </div>
 
-      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only) -->
-      <nav id="mobile-showcase-bar" class="ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation">
-        __BTN_MOB_BACK__
-        <span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>
-        <div class="flex items-center gap-1.5">
-          __IBTN_MOB_PREV__
-          __IBTN_MOB_NEXT__
-        </div>
-      </nav>
+      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only — Standardized .ds-pill Instance) -->
+      __PILL_MOB_SHOWCASE__
 
     </section>
 
     <!-- VIEW 3: ABOUT ME PAGE -->
-    <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-4 sm:px-6 pb-8 max-w-xl mx-auto">
+    <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-4 sm:px-6 pb-16 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
       <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
       <p id="about-bio" class="ds-body mt-2.5"></p>
@@ -777,9 +832,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </p>
     </div>
 
-    <!-- 1. UNIFIED TONAL BUTTON ARCHITECTURE (Button + IconButton) -->
+    <!-- 1. UNIFIED TONAL COMPONENT ARCHITECTURE (Button + IconButton + Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Button System (2 Master Components · Responsive 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Component System (3 Master Components · Responsive 48px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- MASTER COMPONENT 1: BUTTON (.ds-btn) -->
@@ -811,11 +866,23 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- TOP BAR & WHISPER MIST PILL + DARK/LIGHT CONTEXT ADAPTATION -->
+        <!-- MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill) -->
+        <div class="pb-3.5 space-y-2.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <span class="ds-value font-medium">Master Component 3 — Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
+            <span class="ds-label">Shared frosted capsule tokens (<code>--ds-pill-*</code>) instanced for Top Scrolled Header &amp; Mobile Bottom Dock</span>
+          </div>
+          <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
+            __DS_PILL_HEADER__
+            __DS_PILL_MOB_DOCK__
+          </div>
+        </div>
+
+        <!-- DARK HERO CONTEXT ADAPTATION -->
         <div class="space-y-2.5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Automatic Context Adaptation (Hero Dark Glass vs. Light Surface)</span>
-            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Whisper Mist surface</span>
+            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Standardized Pill surface</span>
           </div>
           <!-- Hero State Specimen -->
           <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
@@ -832,25 +899,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <div class="flex items-center gap-2 justify-self-end self-center">
               __DS_IBTN_IG__
               __DS_IBTN_500PX__
-            </div>
-          </div>
-          <!-- Scrolled Whisper Mist Pill Specimen -->
-          <div class="p-3 rounded ds-header-frosted" style="background: linear-gradient(90deg, #D9D9D9 0%, #EFEFEF 50%, #CCCCCC 100%);">
-            <div class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center mx-auto" style="margin-top: 0;">
-              <span class="ds-brand-name justify-self-start">Alejandro Oropeza</span>
-              <nav class="ds-menu-nav justify-self-center">
-                <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
-                  <span class="ds-menu-text">GALLERY</span>
-                </button>
-                <span class="ds-menu-sep">/</span>
-                <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none">
-                  <span class="ds-menu-text">ABOUT ME</span>
-                </button>
-              </nav>
-              <div class="flex items-center gap-2 justify-self-end self-center">
-                __DS_IBTN_IG__
-                __DS_IBTN_500PX__
-              </div>
             </div>
           </div>
         </div>
@@ -1024,6 +1072,27 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    function getVisibleViewportHeight() {
+      const vv = window.visualViewport;
+      if (vv && Math.abs(vv.scale - 1) <= 0.02 && vv.height > 0) {
+        return vv.height;
+      }
+      return window.innerHeight;
+    }
+
+    function syncViewportHeight() {
+      const vv = window.visualViewport;
+      // Ignore pinch-zoom scaling so zooming a photograph never resizes the stage
+      if (vv && Math.abs(vv.scale - 1) > 0.02) return;
+      const vh = getVisibleViewportHeight();
+      if (vh > 0) {
+        document.documentElement.style.setProperty('--app-viewport-height', `${Math.round(vh)}px`);
+      }
+      if (currentView === 'detail' && window.innerWidth < 768) {
+        updateMobileDockPosition();
+      }
+    }
+
     function updateMobileDockPosition() {
       const dock = document.getElementById('mobile-showcase-bar');
       const footer = document.getElementById('site-footer');
@@ -1033,7 +1102,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         return;
       }
       const footerRect = footer.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const windowHeight = getVisibleViewportHeight();
       const baseBottom = 18;
       const clearance = 16;
       const threshold = windowHeight - baseBottom;
@@ -1045,9 +1114,14 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    syncViewportHeight();
     scrollViewport.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('scroll', updateHeaderStyle, { passive: true });
-    window.addEventListener('resize', updateMobileDockPosition, { passive: true });
+    window.addEventListener('resize', syncViewportHeight, { passive: true });
+    window.addEventListener('orientationchange', syncViewportHeight, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncViewportHeight, { passive: true });
+    }
 
     const heroLandscapeIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
     const heroLandscape = heroLandscapeIdx !== -1 ? PHOTOS[heroLandscapeIdx] : PHOTOS[0];

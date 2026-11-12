@@ -41,7 +41,13 @@
   --ds-color-ink-label: #8C8C8C;
   --ds-color-ink-inverse: #FFFFFF;
 
-  /* 2. FROSTED GLASS & LIGHT-SURFACE HOVER TOKENS */
+  /* 2. FROSTED GLASS, STANDARDIZED FLOATING PILL & LIGHT-SURFACE HOVER TOKENS */
+  --ds-pill-bg: rgba(255, 255, 255, 0.68);
+  --ds-pill-blur: blur(14px) saturate(140%);
+  --ds-pill-border: rgba(255, 255, 255, 0.78);
+  --ds-pill-shadow: 0 0 0 1px rgba(20, 20, 20, 0.08),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+                    0 6px 20px -4px rgba(0, 0, 0, 0.08);
   --ds-surface-frosted: rgba(255, 255, 255, 0.76);
   --ds-border-frosted: rgba(20, 20, 20, 0.08);
   --ds-blur-frosted: blur(16px) saturate(140%);
@@ -62,12 +68,12 @@
      - Mobile (< 768px): 48px high (12px side padding) buttons & 48px diameter icon buttons
      - Desktop (>= 768px): 40px high (16px side padding) buttons & 40px diameter icon buttons */
   --ds-header-height: 4.5rem;          /* 72px — Accommodates 48px mobile controls comfortably */
-  --ds-showcase-header-height: 6.5rem; /* 104px — Positions mobile showcase title/author comfortably lower */
+  --ds-showcase-title-band: 6.5rem;    /* 104px — Positions mobile showcase title/author comfortably lower */
   --ds-control-size: 48px;             /* Mobile default: 48px height / diameter */
   --ds-btn-padding-x: 12px;            /* Mobile default: 12px side padding */
   --ds-btn-gap: 0.4rem;                /* 6.4px space between icon and label inside buttons */
   --ds-grid-gap: 0.625rem;             /* 10px gallery grid gutter */
-  --ds-radius-sm: 0.125rem;            /* 2px photo frame corner radius */
+  --ds-radius-sm: 0.25rem;             /* 4px photo frame corner radius */
   --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 
   /* 5. MOTION & ANIMATION TOKENS */
@@ -80,11 +86,26 @@
 
 @media (min-width: 768px) {
   :root {
-    --ds-header-height: 4.25rem;           /* 68px desktop floating header height */
-    --ds-showcase-header-height: 7.75rem;  /* 124px desktop showcase band (equal space above & below title+author) */
-    --ds-control-size: 40px;               /* Desktop: 40px height / diameter */
-    --ds-btn-padding-x: 16px;              /* Desktop: 16px side padding */
+    --ds-header-height: 4.25rem;         /* 68px desktop floating header height (keeps header buttons in place) */
+    --ds-showcase-title-band: 9.75rem;   /* 156px desktop title+author band (~52px equal space above & below) */
+    --ds-control-size: 40px;             /* Desktop: 40px height / diameter */
+    --ds-btn-padding-x: 16px;            /* Desktop: 16px side padding */
   }
+}
+
+/* Browser & Phone Agnostic Dynamic Viewport Sizing (accounts for top/bottom mobile search bars) */
+.ds-viewport-height {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  height: var(--app-viewport-height, 100dvh);
+}
+
+.ds-viewport-min-height {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  min-height: var(--app-viewport-height, 100dvh);
 }
 
 /* ============================================================================
@@ -116,10 +137,15 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
+  transition: font-size 240ms var(--ds-ease-out-expo);
 }
 @media (min-width: 768px) {
   .ds-h2 {
-    font-size: 1.5rem; /* 24px on desktop */
+    font-size: 1.5rem; /* 24px on desktop unscrolled */
+  }
+  /* Switch H2 to 20px when in scrolled pill mode on desktop showcase */
+  .ds-header-frosted.is-detail .ds-h2 {
+    font-size: 1.25rem; /* 20px */
   }
 }
 
@@ -626,7 +652,43 @@
 }
 
 /* ============================================================================
-   FLOATING HEADER & WHISPER MIST PILL-SHAPED SCROLLED CONTAINER
+   MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill)
+   Shared frosted capsule surface used by both the Top Scrolled Header Pill
+   and the Mobile Bottom Showcase Pill (instanced via render_pill()).
+   ============================================================================ */
+
+.ds-pill {
+  box-sizing: border-box;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-pill-bg);
+  backdrop-filter: var(--ds-pill-blur);
+  -webkit-backdrop-filter: var(--ds-pill-blur);
+  border: 1px solid var(--ds-pill-border);
+  box-shadow: var(--ds-pill-shadow);
+  color: var(--ds-color-ink-primary);
+  padding: 0.35rem 1.25rem;
+}
+
+.ds-pill:not(.hidden):not(.is-hidden) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  align-content: center;
+}
+
+/* Concentric button-end inset when left & right slots hold circular/pill buttons */
+.ds-pill-controls {
+  padding: 0.35rem 0.45rem;
+}
+
+@media (min-width: 768px) {
+  .ds-pill.md\:hidden {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   FLOATING HEADER & STANDARDIZED SCROLLED PILL CONTAINER
    ============================================================================ */
 
 .ds-floating-header {
@@ -635,7 +697,6 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  transition: height 320ms var(--ds-ease-out-expo);
 }
 
 .ds-floating-pill {
@@ -643,9 +704,6 @@
   width: 100%;
   max-width: 100%;
   min-height: 2.85rem;
-  padding: 0.35rem 0;
-  border-radius: 9999px;
-  border: 1px solid transparent;
   transition: max-width 360ms var(--ds-ease-out-expo),
               padding 360ms var(--ds-ease-out-expo),
               margin-top 360ms var(--ds-ease-out-expo),
@@ -660,9 +718,10 @@
 
 /* State 1: Scrolled all the way up on Home Page (Over Hero Image, White Text, No Pill Box) */
 .ds-header-hero .ds-floating-pill {
+  padding: 0.35rem 0;
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
   box-shadow: none;
   color: var(--ds-color-ink-inverse);
@@ -670,29 +729,34 @@
 
 /* State 2: Scrolled all the way up on Showcase / About (No background, Dark Text, No Pill Box) */
 .ds-header-transparent-dark .ds-floating-pill {
+  padding: 0.35rem 0;
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
   box-shadow: none;
   color: var(--ds-color-ink-primary);
 }
 
-/* State 3: Scrolled on Any Page — Lighter Whisper Mist Pill with Horizontal Center Alignment */
+/* State 3: Scrolled on Any Page — Standardized Floating Pill (.ds-pill tokens) */
 .ds-header-frosted .ds-floating-pill {
   max-width: 62rem;
   margin-top: 0.35rem;
   padding: 0.35rem 1.25rem;
-  border-radius: 9999px;
   align-items: center !important;
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  box-shadow: 0 0 0 1px rgba(20, 20, 20, 0.08),
-              inset 0 1px 0 rgba(255, 255, 255, 0.85),
-              0 6px 20px -4px rgba(0, 0, 0, 0.08);
+  background: var(--ds-pill-bg);
+  backdrop-filter: var(--ds-pill-blur);
+  -webkit-backdrop-filter: var(--ds-pill-blur);
+  border: 1px solid var(--ds-pill-border);
+  box-shadow: var(--ds-pill-shadow);
   color: var(--ds-color-ink-primary);
+}
+
+/* Concentric button padding when Desktop Showcase header morphs into pill mode */
+@media (min-width: 768px) {
+  .ds-header-frosted.is-detail .ds-floating-pill {
+    padding: 0.35rem 0.45rem;
+  }
 }
 
 .ds-header-frosted #hdr-left-col {
@@ -713,12 +777,12 @@
 }
 
 /* ============================================================================
-   GALLERY THUMBNAIL & SPEC TABLE PATTERNS
+   GALLERY THUMBNAIL, SHOWCASE STAGE (WHITE) & DETAILS SECTION (GREY)
    ============================================================================ */
 
 .ds-thumb-card {
   background-color: var(--ds-color-placeholder);
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--ds-radius-sm); /* 4px */
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -736,19 +800,26 @@
   }
 }
 
+/* Showcase Stage: Pure White (#FFFFFF) */
 .ds-showcase-stage {
-  background-color: var(--ds-color-stage); /* Strictly Pure Neutral Grey #F2F2F2 */
+  background-color: var(--ds-color-canvas); /* #FFFFFF */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: matches --ds-showcase-header-height (104px) top, 6.25rem (100px) bottom above 48px floating dock */
-  padding: var(--ds-showcase-header-height) 1.25rem 6.25rem 1.25rem;
+  /* Mobile padding: matches --ds-showcase-title-band (104px) top, bottom clears floating pill + safe area */
+  padding: var(--ds-showcase-title-band) 1.25rem calc(6.25rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
 }
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding: matches --ds-showcase-header-height (124px) top so title+author block has equal space to page top & image top */
-    padding: var(--ds-showcase-header-height) 2.5rem 3.5rem 2.5rem;
+    /* Desktop padding: matches --ds-showcase-title-band (156px) top so title+author has equal ~52px space above & below */
+    padding: var(--ds-showcase-title-band) 2.5rem 3.5rem 2.5rem;
   }
+}
+
+/* Showcase Details Band Below Stage: Pure Neutral Grey (#F2F2F2) */
+.ds-showcase-details {
+  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  width: 100%;
 }
 
 .ds-spec-row {
@@ -759,15 +830,39 @@
   border-bottom: 1px solid var(--ds-color-border);
 }
 
-/* SHOWCASE TOP BAR */
-.ds-floating-header.is-detail:not(.ds-header-frosted) {
-  height: var(--ds-showcase-header-height);
+/* Slightly stronger pure-grey divider on #F2F2F2 background for crisp contrast */
+.ds-showcase-details .ds-spec-row {
+  border-bottom-color: var(--ds-color-border-strong);
 }
+.ds-showcase-details #detail-print-hook {
+  border-top-color: var(--ds-color-border-strong) !important;
+}
+
+/* SHOWCASE TOP BAR:
+   Keep header buttons in their standard top-bar position while centering
+   ONLY the unscrolled title + author block within --ds-showcase-title-band */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-right-col {
   align-self: center;
+}
+.ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+  position: absolute;
+  top: calc(var(--ds-showcase-title-band) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+}
+@media (min-width: 768px) {
+  .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+    max-width: calc(100vw - 24rem);
+  }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
   line-height: 1.22;
@@ -802,9 +897,10 @@
    SITE FOOTER (.ds-footer)
    ============================================================================ */
 .ds-footer {
-  margin-top: 3rem;
+  margin-top: 0;
   padding: 1.5rem 1rem 1.25rem;
   border-top: 1px solid var(--ds-color-border);
+  background-color: var(--ds-color-canvas);
   color: var(--ds-color-ink-primary);
 }
 @media (min-width: 640px) {
@@ -843,7 +939,7 @@
 }
 
 /* ============================================================================
-   PHOTOGRAPHY SHARPNESS & RENDERING FIDELITY
+   PHOTOGRAPHY SHARPNESS, CORNER RADIUS & RENDERING FIDELITY
    ============================================================================ */
 #hero-featured-img {
   width: 100%;
@@ -856,31 +952,21 @@
 }
 
 #detail-img {
+  border-radius: var(--ds-radius-sm); /* 4px */
   image-rendering: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
-/* Floating Bottom Showcase Navigation Dock (Mobile Only) */
+/* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
 .ds-mobile-showcase-bar {
   position: fixed;
   bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: calc(100% - 2rem);
   max-width: 23rem;
-  padding: 0.35rem 0.45rem;
-  border-radius: 9999px;
-  background-color: rgba(250, 250, 250, 0.90);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(20, 20, 20, 0.08);
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.18),
-              0 2px 6px -1px rgba(0, 0, 0, 0.06);
   pointer-events: auto;
   transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
 }
@@ -910,65 +996,11 @@
   <!-- =========================================================================
        MODE 1: THE LIVE WEBSITE SHELL
        ========================================================================= -->
-  <div id="scroll-viewport" class="hidden relative min-h-screen w-full" style="background-color: var(--ds-color-canvas); color: var(--ds-color-ink-primary); border: none;">
+  <div id="scroll-viewport" class="hidden relative ds-viewport-min-height w-full" style="background-color: var(--ds-color-canvas); color: var(--ds-color-ink-primary); border: none;">
 
-    <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Whisper Mist Floating Pill Capsule) -->
+    <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 sm:px-10">
-      <div id="floating-header-pill" class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center">
-        
-        <!-- COLUMN 1 (LEFT):
-             - On Home / About: "Alejandro Oropeza" (Avenir Medium, horizontally centered with Tonal IconButtons)
-             - On Showcase: Tonal Button "← Back to gallery" -->
-        <div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10">
-          <button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">
-            Alejandro Oropeza
-          </button>
-          <button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
-        </div>
-
-        <!-- COLUMN 2 (CENTER):
-             - On Home / About: Editorial Slash Menu ("GALLERY  /  ABOUT ME")
-             - On Showcase: Photo Title (.ds-h2) + subtle "Alejandro Oropeza" -->
-        <div class="justify-self-center z-10">
-          <nav id="header-menu-nav" class="ds-menu-nav">
-            <button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none">
-              <span class="ds-menu-text">GALLERY</span>
-            </button>
-            <span class="ds-menu-sep">/</span>
-            <button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none">
-              <span class="ds-menu-text">ABOUT ME</span>
-            </button>
-          </nav>
-          <div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">
-            <span id="hdr-photo-title" class="ds-h2"></span>
-            <span id="hdr-showcase-author">
-              Alejandro Oropeza
-            </span>
-          </div>
-        </div>
-
-        <!-- COLUMN 3 (RIGHT):
-             - On Home / About: Tonal Circular IconButtons (Instagram, 500px, Mobile Menu)
-             - On Showcase: "n of n" counter + Tonal Circular Prev/Next IconButtons -->
-        <div id="hdr-right-col" class="justify-self-end self-center z-10">
-          <div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5">
-            <a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a>
-            <a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a>
-            <button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
-          </div>
-
-          <div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5">
-            <span id="hdr-photo-counter" class="whitespace-nowrap">
-              1 of 10
-            </span>
-            <div class="flex items-center gap-1.5">
-              <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-              <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span><span id="hdr-showcase-author">Alejandro Oropeza</span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2 sm:gap-2.5"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2.5"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -1002,7 +1034,7 @@
     <main id="view-gallery" class="">
       
       <!-- Full-Viewport-Height Main Image: Non-clickable, responsive picture (portrait photo on mobile, landscape on desktop) -->
-      <section id="hero-banner" class="relative w-full h-screen overflow-hidden" style="background-color: var(--ds-color-ink-primary);">
+      <section id="hero-banner" class="relative w-full ds-viewport-height overflow-hidden" style="background-color: var(--ds-color-ink-primary);">
         <picture id="hero-picture" class="w-full h-full block">
           <source id="hero-source-mobile" media="(max-width: 767px)" srcset="" />
           <img id="hero-featured-img" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
@@ -1020,7 +1052,7 @@
       </section>
 
       <!-- Gallery Grid Section -->
-      <div class="px-4 sm:px-6 py-8">
+      <div class="px-4 sm:px-6 pt-8 pb-16">
         <div class="max-w-2xl mb-5">
           <h1 id="gallery-intro-h1" class="ds-h1">Explore the gallery</h1>
           <p id="gallery-intro-body" class="ds-body mt-1"></p>
@@ -1033,51 +1065,46 @@
     <!-- VIEW 2: PHOTO SHOWCASE PAGE -->
     <section id="view-detail" class="hidden ">
       
-      <!-- Full-Viewport-Height Pure Grey Photo Stage (.ds-showcase-stage) -->
-      <div class="ds-showcase-stage relative w-full h-screen flex items-center justify-center overflow-hidden">
+      <!-- Dynamic-Viewport-Height Pure White Photo Stage (.ds-showcase-stage) -->
+      <div class="ds-showcase-stage relative w-full ds-viewport-height flex items-center justify-center overflow-hidden">
         <div class="w-full h-full flex items-center justify-center">
-          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm rounded-sm mx-auto block" />
+          <img id="detail-img" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
       </div>
 
-      <!-- Spec Sheet & Description Below Image -->
-      <div class="max-w-md mx-auto px-4 py-6">
-        <div class="text-center">
-          <h2 class="ds-h3">Photo details</h2>
-        </div>
-
-        <div id="detail-spec-table" class="mt-3"></div>
-
-        <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
-        <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
-          <div>
-            <span class="ds-label block">ARCHIVAL PRINT</span>
-            <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
+      <!-- Pure Neutral Grey Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
+      <div class="ds-showcase-details">
+        <div class="max-w-md mx-auto px-4 py-8">
+          <div class="text-center">
+            <h2 class="ds-h3">Photo details</h2>
           </div>
-          <button type="button" id="detail-print-btn" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="triggerPrintOrder(this)"><span>Order print</span></button>
-        </div>
 
-        <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
-        <div class="mt-5 pb-20 md:pb-4">
-          <h3 class="ds-h3 text-center">DESCRIPTION</h3>
-          <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+          <div id="detail-spec-table" class="mt-3"></div>
+
+          <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
+          <div id="detail-print-hook" class="hidden mt-4 pt-3 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border-strong);">
+            <div>
+              <span class="ds-label block">ARCHIVAL PRINT</span>
+              <span id="detail-print-meta" class="ds-value">16 × 24 in · $240</span>
+            </div>
+            <button type="button" id="detail-print-btn" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="triggerPrintOrder(this)"><span>Order print</span></button>
+          </div>
+
+          <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
+          <div class="mt-5 pb-20 md:pb-4">
+            <h3 class="ds-h3 text-center">DESCRIPTION</h3>
+            <p id="dt-desc" class="ds-body mt-1.5 text-center"></p>
+          </div>
         </div>
       </div>
 
-      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only) -->
-      <nav id="mobile-showcase-bar" class="ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation">
-        <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button>
-        <span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span>
-        <div class="flex items-center gap-1.5">
-          <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-          <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-        </div>
-      </nav>
+      <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only — Standardized .ds-pill Instance) -->
+      <nav id="mobile-showcase-bar" class="ds-pill ds-pill-controls ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></nav>
 
     </section>
 
     <!-- VIEW 3: ABOUT ME PAGE -->
-    <section id="view-about" class="hidden  pt-24 px-4 sm:px-6 pb-8 max-w-xl mx-auto">
+    <section id="view-about" class="hidden  pt-24 px-4 sm:px-6 pb-16 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
       <h1 id="about-heading" class="ds-brand-name mt-1">Alejandro Oropeza</h1>
       <p id="about-bio" class="ds-body mt-2.5"></p>
@@ -1120,9 +1147,9 @@
       </p>
     </div>
 
-    <!-- 1. UNIFIED TONAL BUTTON ARCHITECTURE (Button + IconButton) -->
+    <!-- 1. UNIFIED TONAL COMPONENT ARCHITECTURE (Button + IconButton + Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Button System (2 Master Components · Responsive 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Component System (3 Master Components · Responsive 48px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- MASTER COMPONENT 1: BUTTON (.ds-btn) -->
@@ -1154,11 +1181,23 @@
           </div>
         </div>
 
-        <!-- TOP BAR & WHISPER MIST PILL + DARK/LIGHT CONTEXT ADAPTATION -->
+        <!-- MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill) -->
+        <div class="pb-3.5 space-y-2.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <span class="ds-value font-medium">Master Component 3 — Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
+            <span class="ds-label">Shared frosted capsule tokens (<code>--ds-pill-*</code>) instanced for Top Scrolled Header &amp; Mobile Bottom Dock</span>
+          </div>
+          <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
+            <div class="ds-pill mx-auto w-full"><div class="flex items-center justify-start justify-self-start z-10"><span class="ds-brand-name">Alejandro Oropeza</span></div><div class="justify-self-center z-10"><nav class="ds-menu-nav"><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button></div></div></div>
+            <div class="ds-pill ds-pill-controls mx-auto w-full max-w-[23rem]"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span class="ds-mobile-tonal-counter">2 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-1.5"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div>
+          </div>
+        </div>
+
+        <!-- DARK HERO CONTEXT ADAPTATION -->
         <div class="space-y-2.5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Automatic Context Adaptation (Hero Dark Glass vs. Light Surface)</span>
-            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Whisper Mist surface</span>
+            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Standardized Pill surface</span>
           </div>
           <!-- Hero State Specimen -->
           <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
@@ -1175,25 +1214,6 @@
             <div class="flex items-center gap-2 justify-self-end self-center">
               <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
               <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-            </div>
-          </div>
-          <!-- Scrolled Whisper Mist Pill Specimen -->
-          <div class="p-3 rounded ds-header-frosted" style="background: linear-gradient(90deg, #D9D9D9 0%, #EFEFEF 50%, #CCCCCC 100%);">
-            <div class="ds-floating-pill grid grid-cols-[1fr_auto_1fr] items-center content-center mx-auto" style="margin-top: 0;">
-              <span class="ds-brand-name justify-self-start">Alejandro Oropeza</span>
-              <nav class="ds-menu-nav justify-self-center">
-                <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
-                  <span class="ds-menu-text">GALLERY</span>
-                </button>
-                <span class="ds-menu-sep">/</span>
-                <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none">
-                  <span class="ds-menu-text">ABOUT ME</span>
-                </button>
-              </nav>
-              <div class="flex items-center gap-2 justify-self-end self-center">
-                <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
-                <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-              </div>
             </div>
           </div>
         </div>
@@ -1367,6 +1387,27 @@
       }
     }
 
+    function getVisibleViewportHeight() {
+      const vv = window.visualViewport;
+      if (vv && Math.abs(vv.scale - 1) <= 0.02 && vv.height > 0) {
+        return vv.height;
+      }
+      return window.innerHeight;
+    }
+
+    function syncViewportHeight() {
+      const vv = window.visualViewport;
+      // Ignore pinch-zoom scaling so zooming a photograph never resizes the stage
+      if (vv && Math.abs(vv.scale - 1) > 0.02) return;
+      const vh = getVisibleViewportHeight();
+      if (vh > 0) {
+        document.documentElement.style.setProperty('--app-viewport-height', `${Math.round(vh)}px`);
+      }
+      if (currentView === 'detail' && window.innerWidth < 768) {
+        updateMobileDockPosition();
+      }
+    }
+
     function updateMobileDockPosition() {
       const dock = document.getElementById('mobile-showcase-bar');
       const footer = document.getElementById('site-footer');
@@ -1376,7 +1417,7 @@
         return;
       }
       const footerRect = footer.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const windowHeight = getVisibleViewportHeight();
       const baseBottom = 18;
       const clearance = 16;
       const threshold = windowHeight - baseBottom;
@@ -1388,9 +1429,14 @@
       }
     }
 
+    syncViewportHeight();
     scrollViewport.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('scroll', updateHeaderStyle, { passive: true });
-    window.addEventListener('resize', updateMobileDockPosition, { passive: true });
+    window.addEventListener('resize', syncViewportHeight, { passive: true });
+    window.addEventListener('orientationchange', syncViewportHeight, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncViewportHeight, { passive: true });
+    }
 
     const heroLandscapeIdx = PHOTOS.findIndex(p => p.id === CATALOG.site.heroPhotoId);
     const heroLandscape = heroLandscapeIdx !== -1 ? PHOTOS[heroLandscapeIdx] : PHOTOS[0];

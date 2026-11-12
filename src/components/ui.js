@@ -97,6 +97,35 @@ export function IconButton({
 }
 
 /**
+ * Master Component 3: Standardized Floating Pill (.ds-pill)
+ * Shared frosted capsule container instanced for Top Scrolled Header Pill
+ * and Mobile Bottom Showcase Pill.
+ */
+export function Pill({
+  left = '',
+  center = '',
+  right = '',
+  tag = 'div',
+  controlsInset = false,
+  ariaLabel = '',
+  className = '',
+  id = ''
+}) {
+  const classes = [
+    'ds-pill',
+    controlsInset ? 'ds-pill-controls' : '',
+    className
+  ].filter(Boolean).join(' ');
+  const idAttr = id ? `id="${id}"` : '';
+  const ariaAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
+  return `<${tag} ${idAttr} ${ariaAttr} class="${classes}">
+    <div class="justify-self-start flex items-center">${left}</div>
+    <div class="justify-self-center flex items-center">${center}</div>
+    <div class="justify-self-end flex items-center">${right}</div>
+  </${tag}>`;
+}
+
+/**
  * SpecTable Component (Hairline key-value rows for EXIF & Metadata)
  */
 export function SpecTable({ rows = [], className = '' }) {
