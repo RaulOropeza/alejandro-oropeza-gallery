@@ -246,10 +246,14 @@
 }
 
 /* ============================================================================
-   UNIFIED TONAL BUTTON ARCHITECTURE (2 MASTER COMPONENTS)
-   1. Button (.ds-btn)         — Pill button with label + optional leading/trailing icon toggle
-   2. IconButton (.ds-icon-btn) — Circular icon-only button
-   Shared Styling: Tonal translucent surface (adapts automatically to Hero dark glass vs Light surface)
+   UNIFIED BUTTON ARCHITECTURE (TONAL & SURFACE STYLES)
+   Master Shapes:
+     1. Button (.ds-btn)               — Pill button with label + optional leading/trailing icon toggle
+     2. IconButton (.ds-icon-btn)       — Circular icon-only button
+   Style Variants:
+     A. Tonal (default)                 — Translucent tonal pill background at rest + radial hover light
+     B. Surface (.ds-btn-surface)       — No background/border at rest; Tonal background + radial light
+                                          appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
      - Mobile (< 768px): 48px height / diameter, 12px horizontal padding on .ds-btn
@@ -311,6 +315,32 @@
   justify-content: center;
 }
 
+/* Surface Button Variant (.ds-btn-surface):
+   No background or border by default; reveals Tonal background + radial animation on hover */
+.ds-btn-surface {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ds-btn-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  background-color: rgba(20, 20, 20, 0.08);
+  background-image: radial-gradient(
+    circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
+    var(--lite-surface-peak) 0%,
+    var(--lite-surface-mid) 38%,
+    rgba(20, 20, 20, 0.08) 100%
+  );
+  transition: opacity 180ms ease;
+}
+
 /* Ensure Tailwind responsive visibility classes (e.g. md:hidden) work seamlessly */
 @media (min-width: 768px) {
   .ds-btn.md\:hidden,
@@ -322,6 +352,8 @@
 .ds-btn > span,
 .ds-btn > svg,
 .ds-icon-btn > svg {
+  position: relative;
+  z-index: 1;
   color: inherit;
   flex-shrink: 0;
   pointer-events: none;
@@ -335,6 +367,8 @@
 
 /* Masked Vector Glyphs inside IconButton (Instagram & 500px) */
 .ds-icon-glyph {
+  position: relative;
+  z-index: 1;
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -361,16 +395,6 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
 
-/* Shared Pressed / Active State (Light Surface) */
-.ds-btn:active,
-.ds-icon-btn:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(20, 20, 20, 0.11);
-  border-color: rgba(20, 20, 20, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
-              inset 0 1px 2px rgba(0, 0, 0, 0.16);
-}
-
 /* --- HERO DARK CONTEXT OVERRIDE (.ds-header-hero) --- */
 .ds-header-hero .ds-btn,
 .ds-header-hero .ds-icon-btn {
@@ -380,13 +404,20 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
-.ds-header-hero .ds-btn:active,
-.ds-header-hero .ds-icon-btn:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
-              inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
+.ds-header-hero .ds-btn-surface {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ds-header-hero .ds-btn-surface::before {
+  background-color: rgba(255, 255, 255, 0.20);
+  background-image: radial-gradient(
+    circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
+    rgba(255, 255, 255, 0.48) 0%,
+    rgba(255, 255, 255, 0.30) 40%,
+    rgba(255, 255, 255, 0.20) 100%
+  );
 }
 
 /* --- SHARED HOVER PHYSICS (Strictly scoped to fine pointers — zero sticky tap on mobile) --- */
@@ -396,15 +427,23 @@
   .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: var(--lite-peak);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
+                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+
+  .ds-btn:not(.ds-btn-surface):hover,
+  .ds-icon-btn:not(.ds-btn-surface):hover {
     background-image: radial-gradient(
       circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       var(--lite-surface-peak) 0%,
       var(--lite-surface-mid) 38%,
       rgba(20, 20, 20, 0.08) 100%
     );
-    border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+
+  .ds-btn-surface:hover::before {
+    opacity: 1;
   }
 
   /* Hero Context Hover: Luminous Glass Sheen + Crisp White Glyph + Deep Drop Shadow */
@@ -412,15 +451,19 @@
   .ds-header-hero .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
+                0 3px 6px -1px rgba(0, 0, 0, 0.30);
+  }
+
+  .ds-header-hero .ds-btn:not(.ds-btn-surface):hover,
+  .ds-header-hero .ds-icon-btn:not(.ds-btn-surface):hover {
     background-image: radial-gradient(
       circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       rgba(255, 255, 255, 0.48) 0%,
       rgba(255, 255, 255, 0.30) 40%,
       rgba(255, 255, 255, 0.20) 100%
     );
-    border-color: rgba(255, 255, 255, 0.26);
-    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
-                0 3px 6px -1px rgba(0, 0, 0, 0.30);
   }
 
   .ds-header-hero .ds-icon-btn:hover .ds-icon-glyph {
@@ -433,6 +476,29 @@
       rgba(255, 255, 255, 0.72) 100%
     );
   }
+}
+
+/* Shared Pressed / Active State (Light & Hero Dark Surfaces) */
+.ds-btn:active,
+.ds-icon-btn:active {
+  transform: translateY(0.5px) scale(0.96);
+  background-color: rgba(20, 20, 20, 0.11);
+  border-color: rgba(20, 20, 20, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.ds-btn-surface:active::before {
+  opacity: 0;
+}
+
+.ds-header-hero .ds-btn:active,
+.ds-header-hero .ds-icon-btn:active {
+  transform: translateY(0.5px) scale(0.96);
+  background-color: rgba(255, 255, 255, 0.17);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
+              inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
 }
 
 /* ============================================================================

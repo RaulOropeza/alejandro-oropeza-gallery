@@ -197,9 +197,9 @@ PROD_EXTRA_HEAD = """  <link rel="icon" type="image/svg+xml" href="favicon.svg" 
 
 
 # ============================================================================
-# MASTER TONAL BUTTON COMPONENT HELPERS (Single Source of Truth)
-# 1. render_button()      -> Tonal Pill Button (.ds-btn) with icon toggle props
-# 2. render_icon_button() -> Tonal Circular Icon Button (.ds-icon-btn)
+# MASTER BUTTON COMPONENT HELPERS (Single Source of Truth)
+# 1. render_button(..., variant='tonal'|'surface')      -> Pill Button (.ds-btn / .ds-btn-surface)
+# 2. render_icon_button(..., variant='tonal'|'surface') -> Circular IconButton (.ds-icon-btn / .ds-btn-surface)
 # ============================================================================
 
 ICON_MARKUP = {
@@ -215,6 +215,7 @@ ICON_MARKUP = {
 def render_button(
     label: str,
     *,
+    variant: str = "tonal",
     icon_left: str | None = None,
     icon_right: str | None = None,
     onclick: str | None = None,
@@ -223,8 +224,9 @@ def render_button(
     aria_label: str | None = None,
     extra_cls: str = "",
 ) -> str:
-    """Master Component 1: Tonal Pill Button (48px/12px Mobile, 40px/16px Desktop)."""
-    classes = " ".join(c for c in ["ds-btn", extra_cls, "focus:outline-none"] if c)
+    """Master Component 1: Pill Button — 'tonal' (default) or 'surface' (.ds-btn-surface)."""
+    variant_cls = "ds-btn-surface" if variant == "surface" else ""
+    classes = " ".join(c for c in ["ds-btn", variant_cls, extra_cls, "focus:outline-none"] if c)
     attrs = [f'class="{classes}"', 'onmousemove="trackMenuLight(event, this)"']
     if elem_id:
         attrs.insert(0, f'id="{elem_id}"')
@@ -248,9 +250,15 @@ def render_button(
     return f'<button {" ".join(attrs)}>{inner}</button>'
 
 
+def render_surface_button(label: str, **kwargs) -> str:
+    """Surface Button convenience wrapper (no resting background; reveals Tonal background + animation on hover)."""
+    return render_button(label, variant="surface", **kwargs)
+
+
 def render_icon_button(
     icon: str,
     *,
+    variant: str = "tonal",
     onclick: str | None = None,
     href: str | None = None,
     elem_id: str | None = None,
@@ -259,8 +267,9 @@ def render_icon_button(
     extra_attrs: str = "",
     extra_cls: str = "",
 ) -> str:
-    """Master Component 2: Tonal Circular IconButton (48px Mobile, 40px Desktop)."""
-    classes = " ".join(c for c in ["ds-icon-btn", extra_cls, "focus:outline-none"] if c)
+    """Master Component 2: Circular IconButton — 'tonal' (default) or 'surface' (.ds-btn-surface)."""
+    variant_cls = "ds-btn-surface" if variant == "surface" else ""
+    classes = " ".join(c for c in ["ds-icon-btn", variant_cls, extra_cls, "focus:outline-none"] if c)
     attrs = [f'class="{classes}"', 'onmousemove="trackMenuLight(event, this)"']
     if elem_id:
         attrs.insert(0, f'id="{elem_id}"')
@@ -279,6 +288,11 @@ def render_icon_button(
     if onclick:
         attrs.append(f'onclick="{onclick}"')
     return f'<button {" ".join(attrs)}>{inner}</button>'
+
+
+def render_surface_icon_button(icon: str, **kwargs) -> str:
+    """Surface IconButton convenience wrapper (no resting background; reveals Tonal background + animation on hover)."""
+    return render_icon_button(icon, variant="surface", **kwargs)
 
 
 def render_pill(
@@ -490,7 +504,7 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px (Alejandro Oropeza)",
             aria_label="500px",
         ),
-        # Design System Specimen Instances
+        # Design System Specimen Instances — Tonal
         "__DS_BTN_LABEL_ONLY__": render_button("Order print"),
         "__DS_BTN_ICON_LEFT__": render_button("Back to gallery", icon_left="arrow-left"),
         "__DS_BTN_ICON_RIGHT__": render_button("Next photo", icon_right="arrow-right"),
@@ -500,6 +514,16 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         "__DS_IBTN_500PX__": ds_ibtn_500px,
         "__DS_IBTN_MENU__": render_icon_button("menu", title="Menu"),
         "__DS_IBTN_CLOSE__": render_icon_button("close", title="Close"),
+        # Design System Specimen Instances — Surface (No resting background; Tonal background + animation on hover)
+        "__DS_SBTN_LABEL_ONLY__": render_surface_button("Order print"),
+        "__DS_SBTN_ICON_LEFT__": render_surface_button("Back to gallery", icon_left="arrow-left"),
+        "__DS_SBTN_ICON_RIGHT__": render_surface_button("Next photo", icon_right="arrow-right"),
+        "__DS_SIBTN_PREV__": render_surface_icon_button("arrow-left", title="Previous"),
+        "__DS_SIBTN_NEXT__": render_surface_icon_button("arrow-right", title="Next"),
+        "__DS_SIBTN_IG__": render_surface_icon_button("instagram", title="Instagram"),
+        "__DS_SIBTN_500PX__": render_surface_icon_button("500px", title="500px"),
+        "__DS_SIBTN_MENU__": render_surface_icon_button("menu", title="Menu"),
+        "__DS_SIBTN_CLOSE__": render_surface_icon_button("close", title="Close"),
         "__DS_PILL_HEADER__": ds_pill_header,
         "__DS_PILL_MOB_DOCK__": ds_pill_mob_dock,
     }
@@ -875,15 +899,15 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       </p>
     </div>
 
-    <!-- 1. UNIFIED TONAL COMPONENT ARCHITECTURE (Button + IconButton + Pill) -->
+    <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Component System (3 Master Components · Responsive 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 48px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
-        <!-- MASTER COMPONENT 1: BUTTON (.ds-btn) -->
+        <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
-            <span class="ds-value font-medium">Master Component 1 — Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
+            <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
             <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
@@ -893,10 +917,23 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- MASTER COMPONENT 2: ICON BUTTON (.ds-icon-btn) -->
+        <!-- SURFACE BUTTON (.ds-btn.ds-btn-surface) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
-            <span class="ds-value font-medium">Master Component 2 — Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
+            <span class="ds-value font-medium">Surface Button (<code>.ds-btn.ds-btn-surface</code> · <code>render_surface_button()</code> / <code>variant="surface"</code>)</span>
+            <span class="ds-label">No background at rest · Tonal background, radial light sheen &amp; elevation appear on hover</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            __DS_SBTN_LABEL_ONLY__
+            __DS_SBTN_ICON_LEFT__
+            __DS_SBTN_ICON_RIGHT__
+          </div>
+        </div>
+
+        <!-- TONAL ICON BUTTON (.ds-icon-btn) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
             <span class="ds-label">Mobile: 48px × 48px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
@@ -909,10 +946,26 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill) -->
+        <!-- SURFACE ICON BUTTON (.ds-icon-btn.ds-btn-surface) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Surface IconButton (<code>.ds-icon-btn.ds-btn-surface</code> · <code>render_surface_icon_button()</code> / <code>variant="surface"</code>)</span>
+            <span class="ds-label">No background at rest · Tonal circular background &amp; radial light sheen appear on hover</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            __DS_SIBTN_PREV__
+            __DS_SIBTN_NEXT__
+            __DS_SIBTN_IG__
+            __DS_SIBTN_500PX__
+            __DS_SIBTN_MENU__
+            __DS_SIBTN_CLOSE__
+          </div>
+        </div>
+
+        <!-- STANDARDIZED FLOATING PILL (.ds-pill) -->
         <div class="pb-3.5 space-y-2.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
-            <span class="ds-value font-medium">Master Component 3 — Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
+            <span class="ds-value font-medium">Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
             <span class="ds-label">Shared frosted capsule tokens (<code>--ds-pill-*</code>) instanced for Top Scrolled Header &amp; Mobile Bottom Dock</span>
           </div>
           <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
@@ -925,11 +978,14 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="space-y-2.5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Automatic Context Adaptation (Hero Dark Glass vs. Light Surface)</span>
-            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Standardized Pill surface</span>
+            <span class="ds-label">Both Tonal and Surface variants automatically adapt to dark Hero glass and light surfaces</span>
           </div>
           <!-- Hero State Specimen -->
           <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
-            <span class="ds-brand-name justify-self-start" style="color: #FFFFFF;">Alejandro Oropeza</span>
+            <div class="flex items-center gap-3 justify-self-start">
+              <span class="ds-brand-name" style="color: #FFFFFF;">Alejandro Oropeza</span>
+              __DS_SBTN_ICON_LEFT__
+            </div>
             <nav class="ds-menu-nav justify-self-center">
               <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
                 <span class="ds-menu-text">GALLERY</span>
@@ -940,6 +996,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
               </button>
             </nav>
             <div class="flex items-center gap-2 justify-self-end self-center">
+              __DS_SIBTN_IG__
               __DS_IBTN_IG__
               __DS_IBTN_500PX__
             </div>
@@ -1256,6 +1313,17 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       `).join('');
     }
 
+    let savedGalleryScroll = null;
+
+    function captureGalleryScroll() {
+      if (currentView === 'gallery') {
+        savedGalleryScroll = {
+          windowY: window.scrollY || document.documentElement.scrollTop || 0,
+          viewportTop: scrollViewport ? scrollViewport.scrollTop : 0
+        };
+      }
+    }
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
@@ -1268,6 +1336,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     function _applyView(view) {
+      const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
       document.getElementById('view-about').classList.toggle('hidden', view !== 'about');
@@ -1311,8 +1380,24 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       if (mobGal) mobGal.classList.toggle('is-active', view === 'gallery');
       if (mobAbt) mobAbt.classList.toggle('is-active', view === 'about');
 
-      scrollViewport.scrollTop = 0;
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null) {
+        const restoreTarget = savedGalleryScroll;
+        savedGalleryScroll = null;
+        scrollViewport.scrollTop = restoreTarget.viewportTop;
+        window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
+        requestAnimationFrame(() => {
+          scrollViewport.scrollTop = restoreTarget.viewportTop;
+          window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
+          updateHeaderStyle();
+        });
+      } else {
+        if (view !== 'detail') {
+          savedGalleryScroll = null;
+        }
+        scrollViewport.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
       if (mobShowcaseBar) {
         mobShowcaseBar.style.transform = 'translateX(-50%) translateY(0)';
       }
@@ -1323,6 +1408,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     function openPhoto(idx, push = true) {
+      captureGalleryScroll();
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;
@@ -1337,6 +1423,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     function _applyOpenPhoto(idx) {
+      if (currentView === 'gallery' && savedGalleryScroll === null) {
+        captureGalleryScroll();
+      }
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;

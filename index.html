@@ -256,10 +256,14 @@
 }
 
 /* ============================================================================
-   UNIFIED TONAL BUTTON ARCHITECTURE (2 MASTER COMPONENTS)
-   1. Button (.ds-btn)         — Pill button with label + optional leading/trailing icon toggle
-   2. IconButton (.ds-icon-btn) — Circular icon-only button
-   Shared Styling: Tonal translucent surface (adapts automatically to Hero dark glass vs Light surface)
+   UNIFIED BUTTON ARCHITECTURE (TONAL & SURFACE STYLES)
+   Master Shapes:
+     1. Button (.ds-btn)               — Pill button with label + optional leading/trailing icon toggle
+     2. IconButton (.ds-icon-btn)       — Circular icon-only button
+   Style Variants:
+     A. Tonal (default)                 — Translucent tonal pill background at rest + radial hover light
+     B. Surface (.ds-btn-surface)       — No background/border at rest; Tonal background + radial light
+                                          appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
      - Mobile (< 768px): 48px height / diameter, 12px horizontal padding on .ds-btn
@@ -321,6 +325,32 @@
   justify-content: center;
 }
 
+/* Surface Button Variant (.ds-btn-surface):
+   No background or border by default; reveals Tonal background + radial animation on hover */
+.ds-btn-surface {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ds-btn-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  background-color: rgba(20, 20, 20, 0.08);
+  background-image: radial-gradient(
+    circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
+    var(--lite-surface-peak) 0%,
+    var(--lite-surface-mid) 38%,
+    rgba(20, 20, 20, 0.08) 100%
+  );
+  transition: opacity 180ms ease;
+}
+
 /* Ensure Tailwind responsive visibility classes (e.g. md:hidden) work seamlessly */
 @media (min-width: 768px) {
   .ds-btn.md\:hidden,
@@ -332,6 +362,8 @@
 .ds-btn > span,
 .ds-btn > svg,
 .ds-icon-btn > svg {
+  position: relative;
+  z-index: 1;
   color: inherit;
   flex-shrink: 0;
   pointer-events: none;
@@ -345,6 +377,8 @@
 
 /* Masked Vector Glyphs inside IconButton (Instagram & 500px) */
 .ds-icon-glyph {
+  position: relative;
+  z-index: 1;
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -371,16 +405,6 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
 
-/* Shared Pressed / Active State (Light Surface) */
-.ds-btn:active,
-.ds-icon-btn:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(20, 20, 20, 0.11);
-  border-color: rgba(20, 20, 20, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
-              inset 0 1px 2px rgba(0, 0, 0, 0.16);
-}
-
 /* --- HERO DARK CONTEXT OVERRIDE (.ds-header-hero) --- */
 .ds-header-hero .ds-btn,
 .ds-header-hero .ds-icon-btn {
@@ -390,13 +414,20 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
-.ds-header-hero .ds-btn:active,
-.ds-header-hero .ds-icon-btn:active {
-  transform: translateY(0.5px) scale(0.96);
-  background-color: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
-              inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
+.ds-header-hero .ds-btn-surface {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ds-header-hero .ds-btn-surface::before {
+  background-color: rgba(255, 255, 255, 0.20);
+  background-image: radial-gradient(
+    circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
+    rgba(255, 255, 255, 0.48) 0%,
+    rgba(255, 255, 255, 0.30) 40%,
+    rgba(255, 255, 255, 0.20) 100%
+  );
 }
 
 /* --- SHARED HOVER PHYSICS (Strictly scoped to fine pointers — zero sticky tap on mobile) --- */
@@ -406,15 +437,23 @@
   .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: var(--lite-peak);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
+                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+
+  .ds-btn:not(.ds-btn-surface):hover,
+  .ds-icon-btn:not(.ds-btn-surface):hover {
     background-image: radial-gradient(
       circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       var(--lite-surface-peak) 0%,
       var(--lite-surface-mid) 38%,
       rgba(20, 20, 20, 0.08) 100%
     );
-    border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 5px 12px -2px rgba(0, 0, 0, 0.18),
-                0 2px 5px -1px rgba(0, 0, 0, 0.11);
+  }
+
+  .ds-btn-surface:hover::before {
+    opacity: 1;
   }
 
   /* Hero Context Hover: Luminous Glass Sheen + Crisp White Glyph + Deep Drop Shadow */
@@ -422,15 +461,19 @@
   .ds-header-hero .ds-icon-btn:hover {
     transform: translateY(0) scale(1);
     color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
+                0 3px 6px -1px rgba(0, 0, 0, 0.30);
+  }
+
+  .ds-header-hero .ds-btn:not(.ds-btn-surface):hover,
+  .ds-header-hero .ds-icon-btn:not(.ds-btn-surface):hover {
     background-image: radial-gradient(
       circle 42px at var(--pill-x, 50%) var(--pill-y, 50%),
       rgba(255, 255, 255, 0.48) 0%,
       rgba(255, 255, 255, 0.30) 40%,
       rgba(255, 255, 255, 0.20) 100%
     );
-    border-color: rgba(255, 255, 255, 0.26);
-    box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45),
-                0 3px 6px -1px rgba(0, 0, 0, 0.30);
   }
 
   .ds-header-hero .ds-icon-btn:hover .ds-icon-glyph {
@@ -443,6 +486,29 @@
       rgba(255, 255, 255, 0.72) 100%
     );
   }
+}
+
+/* Shared Pressed / Active State (Light & Hero Dark Surfaces) */
+.ds-btn:active,
+.ds-icon-btn:active {
+  transform: translateY(0.5px) scale(0.96);
+  background-color: rgba(20, 20, 20, 0.11);
+  border-color: rgba(20, 20, 20, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.ds-btn-surface:active::before {
+  opacity: 0;
+}
+
+.ds-header-hero .ds-btn:active,
+.ds-header-hero .ds-icon-btn:active {
+  transform: translateY(0.5px) scale(0.96);
+  background-color: rgba(255, 255, 255, 0.17);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.24),
+              inset 0 1px 2.5px rgba(0, 0, 0, 0.28);
 }
 
 /* ============================================================================
@@ -1149,15 +1215,15 @@
       </p>
     </div>
 
-    <!-- 1. UNIFIED TONAL COMPONENT ARCHITECTURE (Button + IconButton + Pill) -->
+    <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Tonal Component System (3 Master Components · Responsive 48px M / 40px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 48px M / 40px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
-        <!-- MASTER COMPONENT 1: BUTTON (.ds-btn) -->
+        <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
-            <span class="ds-value font-medium">Master Component 1 — Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
+            <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
             <span class="ds-label">Mobile: 48px high (12px side padding) · Desktop: 40px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
@@ -1167,10 +1233,23 @@
           </div>
         </div>
 
-        <!-- MASTER COMPONENT 2: ICON BUTTON (.ds-icon-btn) -->
+        <!-- SURFACE BUTTON (.ds-btn.ds-btn-surface) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
-            <span class="ds-value font-medium">Master Component 2 — Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
+            <span class="ds-value font-medium">Surface Button (<code>.ds-btn.ds-btn-surface</code> · <code>render_surface_button()</code> / <code>variant="surface"</code>)</span>
+            <span class="ds-label">No background at rest · Tonal background, radial light sheen &amp; elevation appear on hover</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
+            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
+            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Next photo</span><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </div>
+        </div>
+
+        <!-- TONAL ICON BUTTON (.ds-icon-btn) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
             <span class="ds-label">Mobile: 48px × 48px circle · Desktop: 40px × 40px circle · Shared hover light &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
@@ -1183,10 +1262,26 @@
           </div>
         </div>
 
-        <!-- MASTER COMPONENT 3: STANDARDIZED FLOATING PILL (.ds-pill) -->
+        <!-- SURFACE ICON BUTTON (.ds-icon-btn.ds-btn-surface) -->
+        <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+            <span class="ds-value font-medium">Surface IconButton (<code>.ds-icon-btn.ds-btn-surface</code> · <code>render_surface_icon_button()</code> / <code>variant="surface"</code>)</span>
+            <span class="ds-label">No background at rest · Tonal circular background &amp; radial light sheen appear on hover</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          </div>
+        </div>
+
+        <!-- STANDARDIZED FLOATING PILL (.ds-pill) -->
         <div class="pb-3.5 space-y-2.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
-            <span class="ds-value font-medium">Master Component 3 — Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
+            <span class="ds-value font-medium">Standardized Floating Pill (<code>.ds-pill</code> · <code>render_pill()</code>)</span>
             <span class="ds-label">Shared frosted capsule tokens (<code>--ds-pill-*</code>) instanced for Top Scrolled Header &amp; Mobile Bottom Dock</span>
           </div>
           <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
@@ -1199,11 +1294,14 @@
         <div class="space-y-2.5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Automatic Context Adaptation (Hero Dark Glass vs. Light Surface)</span>
-            <span class="ds-label">Same component instances automatically switch between dark Hero glass and light Standardized Pill surface</span>
+            <span class="ds-label">Both Tonal and Surface variants automatically adapt to dark Hero glass and light surfaces</span>
           </div>
           <!-- Hero State Specimen -->
           <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
-            <span class="ds-brand-name justify-self-start" style="color: #FFFFFF;">Alejandro Oropeza</span>
+            <div class="flex items-center gap-3 justify-self-start">
+              <span class="ds-brand-name" style="color: #FFFFFF;">Alejandro Oropeza</span>
+              <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="16" height="16" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
+            </div>
             <nav class="ds-menu-nav justify-self-center">
               <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">
                 <span class="ds-menu-text">GALLERY</span>
@@ -1214,6 +1312,7 @@
               </button>
             </nav>
             <div class="flex items-center gap-2 justify-self-end self-center">
+              <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
               <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
               <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
             </div>
@@ -1530,6 +1629,17 @@
       `).join('');
     }
 
+    let savedGalleryScroll = null;
+
+    function captureGalleryScroll() {
+      if (currentView === 'gallery') {
+        savedGalleryScroll = {
+          windowY: window.scrollY || document.documentElement.scrollTop || 0,
+          viewportTop: scrollViewport ? scrollViewport.scrollTop : 0
+        };
+      }
+    }
+
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
         const target = '#/' + view;
@@ -1542,6 +1652,7 @@
     }
 
     function _applyView(view) {
+      const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
       document.getElementById('view-about').classList.toggle('hidden', view !== 'about');
@@ -1585,8 +1696,24 @@
       if (mobGal) mobGal.classList.toggle('is-active', view === 'gallery');
       if (mobAbt) mobAbt.classList.toggle('is-active', view === 'about');
 
-      scrollViewport.scrollTop = 0;
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null) {
+        const restoreTarget = savedGalleryScroll;
+        savedGalleryScroll = null;
+        scrollViewport.scrollTop = restoreTarget.viewportTop;
+        window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
+        requestAnimationFrame(() => {
+          scrollViewport.scrollTop = restoreTarget.viewportTop;
+          window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
+          updateHeaderStyle();
+        });
+      } else {
+        if (view !== 'detail') {
+          savedGalleryScroll = null;
+        }
+        scrollViewport.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
       if (mobShowcaseBar) {
         mobShowcaseBar.style.transform = 'translateX(-50%) translateY(0)';
       }
@@ -1597,6 +1724,7 @@
     }
 
     function openPhoto(idx, push = true) {
+      captureGalleryScroll();
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;
@@ -1611,6 +1739,9 @@
     }
 
     function _applyOpenPhoto(idx) {
+      if (currentView === 'gallery' && savedGalleryScroll === null) {
+        captureGalleryScroll();
+      }
       currentIdx = idx;
       const p = PHOTOS[idx];
       if (!p) return;

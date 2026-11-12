@@ -42,7 +42,7 @@ export function Text({ variant = 'body', tag = 'p', text, className = '', id = '
 }
 
 /**
- * Master Component 1: Tonal Button (.ds-btn)
+ * Master Component 1: Button (.ds-btn) — Supports 'tonal' (default) and 'surface' variants
  * Responsive sizing:
  *   - Mobile (< 768px): 48px high, 12px horizontal padding
  *   - Desktop (>= 768px): 40px high, 16px horizontal padding
@@ -51,13 +51,15 @@ export function Button({
   label = '',
   iconLeft = '',
   iconRight = '',
+  variant = 'tonal',
   onClick = '',
   href = '',
   ariaLabel = '',
   className = '',
   id = ''
 }) {
-  const classes = ['ds-btn', className, 'focus:outline-none'].filter(Boolean).join(' ');
+  const variantCls = variant === 'surface' ? 'ds-btn-surface' : '';
+  const classes = ['ds-btn', variantCls, className, 'focus:outline-none'].filter(Boolean).join(' ');
   const idAttr = id ? `id="${id}"` : '';
   const ariaAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
   const innerHtml = `${iconLeft}<span>${label}</span>${iconRight}`;
@@ -70,13 +72,21 @@ export function Button({
 }
 
 /**
- * Master Component 2: Tonal Circular IconButton (.ds-icon-btn)
+ * Surface Button (.ds-btn.ds-btn-surface) — Transparent by default; reveals Tonal background + animation on hover
+ */
+export function SurfaceButton(props = {}) {
+  return Button({ ...props, variant: 'surface' });
+}
+
+/**
+ * Master Component 2: Circular IconButton (.ds-icon-btn) — Supports 'tonal' (default) and 'surface' variants
  * Responsive sizing:
  *   - Mobile (< 768px): 48px × 48px circle
  *   - Desktop (>= 768px): 40px × 40px circle
  */
 export function IconButton({
   icon = '',
+  variant = 'tonal',
   onClick = '',
   href = '',
   title = '',
@@ -84,7 +94,8 @@ export function IconButton({
   className = '',
   id = ''
 }) {
-  const classes = ['ds-icon-btn', className, 'focus:outline-none'].filter(Boolean).join(' ');
+  const variantCls = variant === 'surface' ? 'ds-btn-surface' : '';
+  const classes = ['ds-icon-btn', variantCls, className, 'focus:outline-none'].filter(Boolean).join(' ');
   const idAttr = id ? `id="${id}"` : '';
   const titleAttr = title ? `title="${title}"` : '';
   const ariaAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
@@ -94,6 +105,13 @@ export function IconButton({
   }
   const clickAttr = onClick ? `onclick="${onClick}"` : '';
   return `<button type="button" ${idAttr} ${clickAttr} ${titleAttr} ${ariaAttr} onmousemove="trackMenuLight(event, this)" class="${classes}">${icon}</button>`;
+}
+
+/**
+ * Surface IconButton (.ds-icon-btn.ds-btn-surface) — Transparent by default; reveals Tonal background + animation on hover
+ */
+export function SurfaceIconButton(props = {}) {
+  return IconButton({ ...props, variant: 'surface' });
 }
 
 /**
