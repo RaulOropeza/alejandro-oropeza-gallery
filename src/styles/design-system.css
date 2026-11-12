@@ -6,8 +6,8 @@
 
 /* ============================================================================
    SELF-HOSTED CROSS-DEVICE WEB FONTS (100% Identical Across Android, iOS, Mac & Windows)
-   - Jost (300–500): Geometric Futura architecture for uppercase Display Headlines (+100 weight: 400/500)
-   - Nunito Sans (300–500): Geometric-humanist Avenir proportions for Brand, UI & Body
+   - Jost (300–500): Geometric display typeface for uppercase headlines & brand title
+   - Nunito Sans (300–500): Geometric-humanist sans-serif for Menu, UI, Body & Specs
    ============================================================================ */
 @font-face {
   font-family: 'Jost';
@@ -76,11 +76,9 @@
   --lite-surface-peak: rgba(255, 255, 255, 0.92);
   --lite-surface-mid: rgba(255, 255, 255, 0.58);
 
-  /* 3. TYPOGRAPHY FAMILY TOKENS (Self-Hosted Web Fonts -> Identical Across All Devices) */
-  /* Titles: Geometric Futura Display ('Jost' self-hosted webfont, 400 & 500 weight — Never Heavy Bold) */
-  --ds-font-display: 'Jost', 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
-  /* Brand Name, Menu, Body, Labels, Buttons, Technical Specs: Geometric-Humanist Avenir Sans ('Nunito Sans' self-hosted webfont) */
-  --ds-font-sans: 'Nunito Sans', 'Avenir', 'Avenir Next', 'Century Gothic', sans-serif;
+  /* 3. TYPOGRAPHY FAMILY TOKENS (Self-Hosted Jost & Nunito Sans) */
+  --ds-font-display: 'Jost', sans-serif;
+  --ds-font-sans: 'Nunito Sans', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
      - Mobile (< 768px): 56px high (16px side padding) buttons & 56px diameter icon buttons
@@ -150,32 +148,37 @@
   }
 }
 
-/* H2: Showcase Photograph Title (Header Center) — Jost Medium (500), +100 weight */
+/* H2: Showcase Photograph Title (Header Center) — Jost Medium (500) */
 .ds-h2 {
   font-family: var(--ds-font-display);
   font-weight: 500;
-  font-size: 1.375rem; /* 22px on mobile (+2px) */
+  font-size: 1.5rem; /* 24px on mobile (+2px) */
   line-height: 1.22;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
   transition: font-size 240ms var(--ds-ease-out-expo);
 }
+@media (max-width: 767px) {
+  .ds-header-frosted.is-detail .ds-h2 {
+    font-size: 1.5rem; /* 24px in scrolled Showcase bar on mobile */
+  }
+}
 @media (min-width: 768px) {
   .ds-h2 {
-    font-size: 1.5rem; /* 24px on desktop unscrolled */
+    font-size: 1.625rem; /* 26px on desktop unscrolled (+2px) */
   }
-  /* Switch H2 to 20px when in scrolled pill mode on desktop showcase */
+  /* Switch H2 to 22px (+2px) when in scrolled pill mode on desktop showcase */
   .ds-header-frosted.is-detail .ds-h2 {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.375rem; /* 22px */
   }
 }
 
-/* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Jost Medium (500), +100 weight */
+/* H3: Section Subheading (e.g., "PHOTO DETAILS", "DESCRIPTION") — Jost Medium (500) */
 .ds-h3 {
   font-family: var(--ds-font-display);
   font-weight: 500;
-  font-size: 1rem; /* 16px on mobile (+2px) */
+  font-size: 1rem; /* 16px on mobile */
   line-height: 1.35;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -187,15 +190,16 @@
   }
 }
 
-/* Brand Name ("Alejandro Oropeza") — Avenir Medium (500), Horizontally Aligned to Social Buttons */
+/* Brand Name ("ALEJANDRO OROPEZA") — Same Display Title Style (Jost Medium 500, Uppercase) */
 .ds-brand-name {
   display: inline-flex;
   align-items: center;
-  font-family: var(--ds-font-sans);
+  font-family: var(--ds-font-display);
   font-weight: 500;
-  font-size: 1.125rem; /* 18px on mobile & desktop */
-  line-height: 1;
-  letter-spacing: 0.02em;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   margin: 0;
   padding: 0;
   background: transparent;
@@ -204,9 +208,34 @@
   transition: opacity var(--ds-duration-fast) ease;
 }
 
-/* About Page H1 Tag ("Alejandro Oropeza") — +2px on mobile alongside all H tags */
+/* Mobile Home Hero Brand Title (Same style as .ds-h1 in white, 2 lines, subtle drop shadow without top gradient) */
+.ds-hero-mobile-brand {
+  position: absolute;
+  top: 1rem; /* 16px — aligned with top bar */
+  left: var(--ds-header-pad-x);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--ds-font-display);
+  font-weight: 400;
+  font-size: 1.75rem; /* 28px — matches .ds-h1 on mobile */
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-color-ink-inverse);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.30), 0 1px 3px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .ds-hero-mobile-brand {
+    display: none;
+  }
+}
+
+/* About Page H1 Tag ("ALEJANDRO OROPEZA") */
 h1.ds-brand-name {
-  font-size: 1.25rem; /* 20px on mobile (+2px) */
+  font-size: 1.25rem; /* 20px on mobile */
 }
 @media (min-width: 768px) {
   h1.ds-brand-name {
@@ -214,7 +243,7 @@ h1.ds-brand-name {
   }
 }
 
-/* Body Copy — Avenir Light (300) / Book (400) — 16px Base */
+/* Body Copy — Nunito Sans Light (300) — 16px Base */
 .ds-body {
   font-family: var(--ds-font-sans);
   font-weight: 300;
@@ -224,7 +253,7 @@ h1.ds-brand-name {
   color: var(--ds-color-ink-secondary);
 }
 
-/* Metadata / Spec Row Label (e.g., "LOCATION & YEAR", "ISO") — Avenir Regular (400) */
+/* Metadata / Spec Row Label (e.g., "LOCATION & YEAR", "ISO") — Nunito Sans Regular (400) */
 .ds-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -235,7 +264,7 @@ h1.ds-brand-name {
   color: var(--ds-color-ink-label);
 }
 
-/* Metadata / Spec Row Value (e.g., "135 mm", "f/8.0") — Avenir Regular + Tabular Numerals */
+/* Metadata / Spec Row Value (e.g., "135 mm", "f/8.0") — Nunito Sans Regular + Tabular Numerals */
 .ds-value {
   font-family: var(--ds-font-sans);
   font-weight: 400;
@@ -251,7 +280,7 @@ h1.ds-brand-name {
   position: absolute;
   left: 50%;
   right: auto;
-  bottom: 5rem; /* 80px (10 × 8px) — centered cleanly above View gallery signifier on mobile */
+  bottom: 5.5rem; /* 88px (11 × 8px) — centered cleanly above larger View gallery signifier on mobile */
   transform: translateX(-50%);
   text-align: center;
   white-space: nowrap;
@@ -298,13 +327,13 @@ h1.ds-brand-name {
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 1rem; /* 16px (+2px from 14px) */
+  font-size: 1.125rem; /* 18px (+2px from 16px) */
   line-height: 1;
   letter-spacing: 0.04em;
 }
 .ds-scroll-cue-arrow {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   animation: ds-scroll-bob 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 @keyframes ds-scroll-bob {
@@ -461,8 +490,8 @@ h1.ds-brand-name {
 .ds-icon-glyph-500px {
   width: 18px;
   height: 18px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Avenir, Helvetica Neue, Arial, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Nunito Sans, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='12' y='15.3' text-anchor='middle' font-family='Nunito Sans, sans-serif' font-weight='700' font-size='8.5' letter-spacing='-0.3' fill='black'%3E500%3C/text%3E%3C/svg%3E");
 }
 
 /* --- HERO DARK CONTEXT OVERRIDE (.ds-header-hero) --- */
@@ -917,8 +946,27 @@ h1.ds-brand-name {
   color: var(--ds-color-ink-primary);
 }
 
-/* Mobile Showcase Scrolled State: Full-Width Solid White Container (No Pill) */
+/* Mobile Top Bar (< 768px): Name lives in Hero; Hamburger Menu is the only persistent button in the pill */
 @media (max-width: 767px) {
+  #hdr-brand-name {
+    display: none !important;
+  }
+  .ds-floating-header.ds-header-frosted:not(.is-detail) {
+    justify-content: flex-end;
+  }
+  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: calc(var(--ds-control-size) + 0.7rem);
+    margin-left: auto;
+    padding: 0.35rem;
+  }
+  .ds-floating-header.ds-header-frosted:not(.is-detail) #hdr-left-col,
+  .ds-floating-header.ds-header-frosted:not(.is-detail) #floating-header-pill > div:nth-child(2) {
+    display: none !important;
+  }
   .ds-floating-header.is-detail .ds-floating-pill {
     border-radius: 0;
     margin-top: 0;
@@ -1299,9 +1347,7 @@ h1.ds-brand-name {
   border-radius: 0;
   overflow: hidden;
   touch-action: none;
-  background-color: rgba(242, 242, 242, 0.94);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;

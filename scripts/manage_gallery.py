@@ -413,7 +413,6 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             "</nav>"
             '<div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none">'
             '<span id="hdr-photo-title" class="ds-h2"></span>'
-            '<span id="hdr-showcase-author">Alejandro Oropeza</span>'
             "</div>"
         ),
         right_html=(
@@ -858,7 +857,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <source id="hero-source-mobile" media="(max-width: 767px)" srcset="__HERO_MOBILE_SRCSET__" />
           <img id="hero-featured-img" src="__HERO_DESKTOP_SRC__" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
         </picture>
-        <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);"></div>
+        <div class="ds-hero-mobile-brand md:hidden" aria-hidden="true">
+          <span>Alejandro</span>
+          <span>Oropeza</span>
+        </div>
         <div class="absolute inset-x-0 bottom-0 h-36 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);">
           <!-- Technical details (Mobile: centered above View gallery cue | Desktop: bottom-right) -->
           <span id="hero-tech-details" class="ds-hero-tech"></span>
@@ -956,7 +958,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
   </div>
 
   <!-- ZOOMABLE POPUP PHOTO VISUALIZER (In-browser modal, edge-to-edge zero-radius framing, zoom & pan) -->
-  <div id="photo-visualizer" class="ds-visualizer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Zoomable photograph visualizer">
+  <div id="photo-visualizer" class="ds-visualizer ds-header-hero" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Zoomable photograph visualizer">
     <img id="visualizer-img" decoding="sync" draggable="false" alt="Photograph" />
     __SIBTN_VISUALIZER_CLOSE__
   </div>
@@ -1113,39 +1115,39 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
     <!-- 2. TYPOGRAPHY HIERARCHY -->
     <div>
-      <h2 class="ds-h3 mb-2.5">2. Typography Hierarchy (Self-Hosted Cross-Device WOFF2: Jost / Futura + Nunito Sans / Avenir)</h2>
+      <h2 class="ds-h3 mb-2.5">2. Typography Hierarchy (Self-Hosted Cross-Device WOFF2: Jost + Nunito Sans)</h2>
       <div class="space-y-2.5 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h1 · Jost / Futura Regular (400) · Uppercase · +0.04em</span>
+            <span class="ds-label block">.ds-h1 · Jost Regular (400) · Uppercase · +0.04em</span>
             <span class="ds-h1 mt-0.5 block">Explore the gallery</span>
           </div>
           <code class="text-xs text-neutral-500">28px M · 30px D / 400</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Jost / Futura Medium (500) · Uppercase · +0.05em</span>
+            <span class="ds-label block">.ds-h2 · Jost Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">22px M · 24px D / 500</code>
+          <code class="text-xs text-neutral-500">24px M · 26px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h3 · Jost / Futura Medium (500) · Uppercase · +0.12em</span>
+            <span class="ds-label block">.ds-h3 · Jost Medium (500) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
           <code class="text-xs text-neutral-500">16px M · 15px D / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-brand-name · Nunito Sans / Avenir Medium (500) · +0.02em · Center-Aligned</span>
+            <span class="ds-label block">.ds-brand-name · Jost Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-brand-name mt-0.5 block">Alejandro Oropeza</span>
           </div>
           <code class="text-xs text-neutral-500">18px / 500</code>
         </div>
         <div class="ds-spec-row" style="border-bottom: none;">
           <div>
-            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Nunito Sans / Avenir</span>
+            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Nunito Sans</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
           <code class="text-xs text-neutral-500">16px / 300–400</code>
