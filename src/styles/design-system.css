@@ -1124,8 +1124,9 @@
 }
 
 /* ============================================================================
-   FULLSCREEN PHOTO VISUALIZER (.ds-visualizer)
-   Minimalist fullscreen view showing ONLY the photograph and Close button.
+   ZOOMABLE POPUP PHOTO VISUALIZER (.ds-visualizer)
+   In-browser full-viewport popup (no OS fullscreen), maximizing screen real
+   estate edge-to-edge with zero rounded corners and interactive zoom & pan.
    ============================================================================ */
 .ds-visualizer {
   position: fixed;
@@ -1134,32 +1135,23 @@
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  background-color: var(--ds-color-stage); /* #F2F2F2 */
+  height: var(--app-viewport-height, 100dvh);
+  padding: 0;
+  border-radius: 0;
+  overflow: hidden;
+  touch-action: none;
+  background-color: rgba(242, 242, 242, 0.94);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 72px top clears 48px close button, 16px sides, 24px bottom */
-  padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity var(--ds-duration-fast) ease,
               visibility var(--ds-duration-fast) ease;
-}
-
-.ds-visualizer:fullscreen,
-.ds-visualizer:-webkit-full-screen {
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--ds-color-stage); /* #F2F2F2 */
-}
-
-@media (min-width: 768px) {
-  .ds-visualizer {
-    /* Desktop padding (all multiples of 8): 24px top/bottom, 72px sides (clears 40px close button) */
-    padding: 1.5rem 4.5rem;
-  }
 }
 
 .ds-visualizer.is-open {
@@ -1169,15 +1161,28 @@
 }
 
 #visualizer-img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: contain;
-  border-radius: var(--ds-radius-sm); /* 4px */
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+  border-radius: 0 !important;
+  box-shadow: none;
   image-rendering: auto;
   display: block;
-  margin: 0 auto;
+  flex-shrink: 0;
+  transform-origin: center center;
+  will-change: transform;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  cursor: zoom-in;
+}
+
+.ds-visualizer.is-zoomed #visualizer-img {
+  cursor: grab;
+}
+
+.ds-visualizer.is-dragging #visualizer-img {
+  cursor: grabbing;
 }
 
 .ds-visualizer-close-btn {
@@ -1185,12 +1190,18 @@
   top: calc(1rem + env(safe-area-inset-top, 0px)); /* 16px */
   right: 1rem; /* 16px */
   z-index: 210;
+  background-color: var(--ds-pill-bg);
+  backdrop-filter: var(--ds-pill-blur);
+  -webkit-backdrop-filter: var(--ds-pill-blur);
+  border-color: var(--ds-pill-border);
+  box-shadow: var(--ds-pill-shadow);
 }
 
 @media (min-width: 768px) {
   .ds-visualizer-close-btn {
-    top: 1.5rem;   /* 24px */
+    top: 1rem;     /* 16px */
     right: 1.5rem; /* 24px */
   }
 }
+
 

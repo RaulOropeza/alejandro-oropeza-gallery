@@ -505,21 +505,21 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
             title="500px (Alejandro Oropeza)",
             aria_label="500px",
         ),
-        # Live Website Instances — Surface IconButton (Showcase Stage Fullscreen & Visualizer Close)
+        # Live Website Instances — Stage Visualizer Trigger (Surface) & Popup Visualizer Close (Frosted Tonal)
         "__SIBTN_STAGE_VISUALIZER__": render_surface_icon_button(
             "fullscreen",
             onclick="openVisualizer()",
             elem_id="stage-visualizer-btn",
-            title="View fullscreen",
-            aria_label="View fullscreen",
+            title="Open zoomable view",
+            aria_label="Open zoomable view",
             extra_cls="ds-stage-visualizer-btn",
         ),
-        "__SIBTN_VISUALIZER_CLOSE__": render_surface_icon_button(
+        "__SIBTN_VISUALIZER_CLOSE__": render_icon_button(
             "close",
             onclick="closeVisualizer()",
             elem_id="visualizer-close-btn",
-            title="Close fullscreen",
-            aria_label="Close fullscreen",
+            title="Close visualizer",
+            aria_label="Close visualizer",
             extra_cls="ds-visualizer-close-btn",
         ),
         # Design System Specimen Instances — Tonal
@@ -908,9 +908,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
   </div>
 
-  <!-- FULLSCREEN PHOTO VISUALIZER (Shows ONLY the photograph & Close button) -->
-  <div id="photo-visualizer" class="ds-visualizer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fullscreen photograph visualizer">
-    <img id="visualizer-img" decoding="sync" alt="Fullscreen Photograph" />
+  <!-- ZOOMABLE POPUP PHOTO VISUALIZER (In-browser modal, edge-to-edge zero-radius framing, zoom & pan) -->
+  <div id="photo-visualizer" class="ds-visualizer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Zoomable photograph visualizer">
+    <img id="visualizer-img" decoding="sync" draggable="false" alt="Photograph" />
     __SIBTN_VISUALIZER_CLOSE__
   </div>
 
@@ -1461,10 +1461,127 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     const visualizerImg = document.getElementById('visualizer-img');
     let isVisualizerOpen = false;
     let visualizerLoadToken = 0;
+    let visCurrentPhotoId = null;
 
-    function syncVisualizerPhoto(p) {
+    const VIS_MIN_SCALE = 1;
+    const VIS_MAX_SCALE = 5;
+    const VIS_TOGGLE_SCALE = 2.5;
+    let visScale = 1;
+    let visX = 0;
+    let visY = 0;
+    let visFitW = 0;
+    let visFitH = 0;
+
+    function getVisualizerViewport() {
+      if (visualizerEl) {
+        const rect = visualizerEl.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          return { vw: rect.width, vh: rect.height, left: rect.left, top: rect.top };
+        }
+      }
+      const vw = window.innerWidth;
+      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      return { vw, vh, left: 0, top: 0 };
+    }
+
+    function clampVisualizerPan() {
+      const { vw, vh } = getVisualizerViewport();
+      if (visScale <= 1.001) {
+        visScale = 1;
+        visX = 0;
+        visY = 0;
+        return;
+      }
+      const maxX = Math.max(0, (visFitW * visScale - vw) / 2);
+      const maxY = Math.max(0, (visFitH * visScale - vh) / 2);
+      visX = Math.min(maxX, Math.max(-maxX, visX));
+      visY = Math.min(maxY, Math.max(-maxY, visY));
+    }
+
+    function applyVisualizerTransform(animate = false) {
+      if (!visualizerImg || !visualizerEl) return;
+      clampVisualizerPan();
+      visualizerImg.style.transition = animate
+        ? 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)'
+        : 'none';
+      visualizerImg.style.transform = `translate3d(${visX}px, ${visY}px, 0) scale(${visScale})`;
+      visualizerEl.classList.toggle('is-zoomed', visScale > 1.01);
+    }
+
+    function layoutVisualizerFit() {
+      if (!visualizerImg || !visualizerEl) return;
+      const { vw, vh } = getVisualizerViewport();
+      const p = PHOTOS[currentIdx];
+      let ratio = 1.5;
+      if (visualizerImg.naturalWidth > 0 && visualizerImg.naturalHeight > 0) {
+        ratio = visualizerImg.naturalWidth / visualizerImg.naturalHeight;
+      } else if (p && p.aspectRatio > 0) {
+        ratio = p.aspectRatio;
+      }
+      if (vw / vh > ratio) {
+        visFitH = vh;
+        visFitW = vh * ratio;
+      } else {
+        visFitW = vw;
+        visFitH = vw / ratio;
+      }
+      visualizerImg.style.width = `${visFitW}px`;
+      visualizerImg.style.height = `${visFitH}px`;
+      applyVisualizerTransform(false);
+    }
+
+    function resetVisualizerZoom(animate = false) {
+      visScale = 1;
+      visX = 0;
+      visY = 0;
+      applyVisualizerTransform(animate);
+    }
+
+    function zoomVisualizerAt(targetScale, clientX, clientY, animate = false) {
+      const nextScale = Math.min(VIS_MAX_SCALE, Math.max(VIS_MIN_SCALE, targetScale));
+      const { vw, vh, left, top } = getVisualizerViewport();
+      const cx = left + vw / 2;
+      const cy = top + vh / 2;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      if (nextScale <= 1.001) {
+        visScale = 1;
+        visX = 0;
+        visY = 0;
+      } else {
+        const scaleRatio = nextScale / visScale;
+        visX = dx - (dx - visX) * scaleRatio;
+        visY = dy - (dy - visY) * scaleRatio;
+        visScale = nextScale;
+      }
+      applyVisualizerTransform(animate);
+    }
+
+    if (visualizerImg) {
+      visualizerImg.addEventListener('load', () => {
+        if (isVisualizerOpen) layoutVisualizerFit();
+      });
+    }
+    window.addEventListener('resize', () => {
+      if (isVisualizerOpen) layoutVisualizerFit();
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => {
+        if (isVisualizerOpen) layoutVisualizerFit();
+      });
+    }
+
+    function syncVisualizerPhoto(p, resetZoom = false) {
       if (!p || !visualizerImg) return;
       const vToken = ++visualizerLoadToken;
+      const isNewPhoto = visCurrentPhotoId !== p.id;
+      visCurrentPhotoId = p.id;
+      if (resetZoom || isNewPhoto) {
+        visScale = 1;
+        visX = 0;
+        visY = 0;
+      }
+
       const thumbUrl = p.thumbSrc || p.src;
       const fullUrl = p.src;
       const fullEntry = decodedFullCache.get(fullUrl);
@@ -1499,51 +1616,211 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           });
         }
       }
+      layoutVisualizerFit();
     }
 
     function openVisualizer() {
       const p = PHOTOS[currentIdx];
       if (!p || !visualizerEl) return;
       isVisualizerOpen = true;
-      syncVisualizerPhoto(p);
       visualizerEl.classList.add('is-open');
       visualizerEl.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-
-      try {
-        const reqFs = visualizerEl.requestFullscreen || visualizerEl.webkitRequestFullscreen;
-        if (reqFs && !document.fullscreenElement && !document.webkitFullscreenElement) {
-          const pFs = reqFs.call(visualizerEl);
-          if (pFs && typeof pFs.catch === 'function') pFs.catch(() => {});
-        }
-      } catch (_) {}
+      syncVisualizerPhoto(p, true);
     }
 
-    function closeVisualizer(fromFullscreenExit = false) {
+    function closeVisualizer() {
       if (!isVisualizerOpen || !visualizerEl) return;
       isVisualizerOpen = false;
-      visualizerEl.classList.remove('is-open');
+      visualizerEl.classList.remove('is-open', 'is-zoomed', 'is-dragging');
       visualizerEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-
-      if (!fromFullscreenExit && (document.fullscreenElement || document.webkitFullscreenElement)) {
-        try {
-          const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
-          if (exitFs) {
-            const pEx = exitFs.call(document);
-            if (pEx && typeof pEx.catch === 'function') pEx.catch(() => {});
-          }
-        } catch (_) {}
-      }
+      resetVisualizerZoom(false);
     }
 
-    const _onFsChange = () => {
-      if (isVisualizerOpen && !document.fullscreenElement && !document.webkitFullscreenElement) {
-        closeVisualizer(true);
-      }
-    };
-    document.addEventListener('fullscreenchange', _onFsChange);
-    document.addEventListener('webkitfullscreenchange', _onFsChange);
+    // Desktop Mouse / Wheel & Mobile Touch Zoom + Pan for Popup Visualizer
+    if (visualizerEl) {
+      let visPointerDown = false;
+      let visDragMoved = 0;
+      let visPointerStartX = 0;
+      let visPointerStartY = 0;
+      let visStartPanX = 0;
+      let visStartPanY = 0;
+      let visDownTarget = null;
+      let visLastTouchTime = 0;
+
+      visualizerEl.addEventListener('wheel', (e) => {
+        if (!isVisualizerOpen) return;
+        e.preventDefault();
+        let delta = e.deltaY;
+        if (e.deltaMode === 1) delta *= 16;
+        else if (e.deltaMode === 2) delta *= 100;
+        const sensitivity = e.ctrlKey ? 0.01 : 0.0022;
+        const factor = Math.exp(-delta * sensitivity);
+        zoomVisualizerAt(visScale * factor, e.clientX, e.clientY, false);
+      }, { passive: false });
+
+      visualizerEl.addEventListener('mousedown', (e) => {
+        if (!isVisualizerOpen || e.button !== 0) return;
+        if (Date.now() - visLastTouchTime < 500) return;
+        if (e.target.closest('#visualizer-close-btn')) return;
+        e.preventDefault();
+        visPointerDown = true;
+        visDragMoved = 0;
+        visPointerStartX = e.clientX;
+        visPointerStartY = e.clientY;
+        visStartPanX = visX;
+        visStartPanY = visY;
+        visDownTarget = e.target;
+        if (visScale > 1.01) {
+          visualizerEl.classList.add('is-dragging');
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!visPointerDown || !isVisualizerOpen) return;
+        const dx = e.clientX - visPointerStartX;
+        const dy = e.clientY - visPointerStartY;
+        visDragMoved = Math.hypot(dx, dy);
+        if (visScale > 1.01 && visDragMoved > 2) {
+          visX = visStartPanX + dx;
+          visY = visStartPanY + dy;
+          applyVisualizerTransform(false);
+        }
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!visPointerDown) return;
+        visPointerDown = false;
+        visualizerEl.classList.remove('is-dragging');
+        if (!isVisualizerOpen) return;
+        if (visDragMoved <= 5) {
+          if (visDownTarget === visualizerImg) {
+            const next = visScale > 1.05 ? 1 : VIS_TOGGLE_SCALE;
+            zoomVisualizerAt(next, e.clientX, e.clientY, true);
+          } else if (visDownTarget === visualizerEl) {
+            closeVisualizer();
+          }
+        }
+      });
+
+      let visTouchMode = null;
+      let visTouchMoved = 0;
+      let visTouchStartX = 0;
+      let visTouchStartY = 0;
+      let visTouchTarget = null;
+      let visPinchStartDist = 0;
+      let visPinchStartScale = 1;
+      let visPinchPrevMidX = 0;
+      let visPinchPrevMidY = 0;
+      let visLastTapTime = 0;
+      let visLastTapX = 0;
+      let visLastTapY = 0;
+
+      visualizerEl.addEventListener('touchstart', (e) => {
+        visLastTouchTime = Date.now();
+        if (!isVisualizerOpen) return;
+        if (e.target.closest('#visualizer-close-btn')) return;
+        e.preventDefault();
+        if (e.touches.length === 2) {
+          const t0 = e.touches[0];
+          const t1 = e.touches[1];
+          visTouchMode = 'pinch';
+          visTouchMoved = 999;
+          visPinchStartDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+          visPinchStartScale = visScale;
+          visPinchPrevMidX = (t0.clientX + t1.clientX) / 2;
+          visPinchPrevMidY = (t0.clientY + t1.clientY) / 2;
+        } else if (e.touches.length === 1) {
+          const t0 = e.touches[0];
+          visTouchMode = 'single';
+          visTouchMoved = 0;
+          visTouchStartX = t0.clientX;
+          visTouchStartY = t0.clientY;
+          visStartPanX = visX;
+          visStartPanY = visY;
+          visTouchTarget = e.target;
+        }
+      }, { passive: false });
+
+      visualizerEl.addEventListener('touchmove', (e) => {
+        visLastTouchTime = Date.now();
+        if (!isVisualizerOpen) return;
+        if (e.target.closest('#visualizer-close-btn')) return;
+        e.preventDefault();
+        if (e.touches.length === 2) {
+          const t0 = e.touches[0];
+          const t1 = e.touches[1];
+          const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+          const midX = (t0.clientX + t1.clientX) / 2;
+          const midY = (t0.clientY + t1.clientY) / 2;
+          if (visTouchMode !== 'pinch') {
+            visTouchMode = 'pinch';
+            visTouchMoved = 999;
+            visPinchStartDist = dist;
+            visPinchStartScale = visScale;
+            visPinchPrevMidX = midX;
+            visPinchPrevMidY = midY;
+            return;
+          }
+          visX += (midX - visPinchPrevMidX);
+          visY += (midY - visPinchPrevMidY);
+          const targetScale = visPinchStartScale * (dist / Math.max(1, visPinchStartDist));
+          zoomVisualizerAt(targetScale, midX, midY, false);
+          visPinchPrevMidX = midX;
+          visPinchPrevMidY = midY;
+        } else if (e.touches.length === 1 && visTouchMode === 'single') {
+          const t0 = e.touches[0];
+          const dx = t0.clientX - visTouchStartX;
+          const dy = t0.clientY - visTouchStartY;
+          visTouchMoved = Math.hypot(dx, dy);
+          if (visScale > 1.01 && visTouchMoved > 2) {
+            visX = visStartPanX + dx;
+            visY = visStartPanY + dy;
+            applyVisualizerTransform(false);
+          }
+        }
+      }, { passive: false });
+
+      const onVisTouchEnd = (e) => {
+        visLastTouchTime = Date.now();
+        if (!isVisualizerOpen) return;
+        if (e.target.closest('#visualizer-close-btn')) return;
+        if (e.touches.length === 1) {
+          const t0 = e.touches[0];
+          visTouchMode = 'single';
+          visTouchMoved = 999;
+          visTouchStartX = t0.clientX;
+          visTouchStartY = t0.clientY;
+          visStartPanX = visX;
+          visStartPanY = visY;
+          return;
+        }
+        if (e.touches.length === 0) {
+          if (visTouchMode === 'single' && visTouchMoved < 10 && e.changedTouches.length > 0) {
+            const t = e.changedTouches[0];
+            if (visTouchTarget === visualizerEl) {
+              closeVisualizer();
+            } else if (visTouchTarget === visualizerImg) {
+              const now = Date.now();
+              if (now - visLastTapTime < 300 && Math.hypot(t.clientX - visLastTapX, t.clientY - visLastTapY) < 32) {
+                visLastTapTime = 0;
+                const next = visScale > 1.05 ? 1 : VIS_TOGGLE_SCALE;
+                zoomVisualizerAt(next, t.clientX, t.clientY, true);
+              } else {
+                visLastTapTime = now;
+                visLastTapX = t.clientX;
+                visLastTapY = t.clientY;
+              }
+            }
+          }
+          visTouchMode = null;
+        }
+      };
+
+      visualizerEl.addEventListener('touchend', onVisTouchEnd);
+      visualizerEl.addEventListener('touchcancel', onVisTouchEnd);
+    }
 
     function showView(view, push = true) {
       if (push && (view === 'gallery' || view === 'about')) {
@@ -1834,12 +2111,32 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }, { passive: true });
     }
 
-    // Keyboard Navigation for Desktop Showcase & Fullscreen Visualizer
+    // Keyboard Navigation for Desktop Showcase & Zoomable Popup Visualizer
     window.addEventListener('keydown', (e) => {
-      if (isVisualizerOpen && e.key === 'Escape') {
-        e.preventDefault();
-        closeVisualizer();
-        return;
+      if (isVisualizerOpen) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeVisualizer();
+          return;
+        }
+        const { vw, vh, left, top } = getVisualizerViewport();
+        const cx = left + vw / 2;
+        const cy = top + vh / 2;
+        if (e.key === '+' || e.key === '=') {
+          e.preventDefault();
+          zoomVisualizerAt(visScale * 1.4, cx, cy, true);
+          return;
+        }
+        if (e.key === '-' || e.key === '_') {
+          e.preventDefault();
+          zoomVisualizerAt(visScale / 1.4, cx, cy, true);
+          return;
+        }
+        if (e.key === '0') {
+          e.preventDefault();
+          resetVisualizerZoom(true);
+          return;
+        }
       }
       if (currentView === 'detail') {
         if (e.key === 'ArrowRight' || e.key === 'Right') {
