@@ -424,7 +424,9 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
         left_html=(
             '<button onclick="showView(\'gallery\')" id="hdr-brand-name" '
             'class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">'
-            "Alejandro Oropeza</button>" + btn_hdr_back
+            '<span>Alejandro Oropeza</span>'
+            '<span class="ds-brand-subtitle">Photo Gallery</span>'
+            "</button>" + btn_hdr_back
         ),
         center_html=(
             '<nav id="header-menu-nav" class="ds-menu-nav">'
@@ -860,6 +862,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         <div class="ds-hero-mobile-brand md:hidden" aria-hidden="true">
           <span>Alejandro</span>
           <span>Oropeza</span>
+          <span class="ds-brand-subtitle">Photo Gallery</span>
         </div>
         <div class="absolute inset-x-0 bottom-0 h-36 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0) 100%);">
           <!-- Technical details (Mobile: centered above View gallery cue | Desktop: bottom-right) -->
