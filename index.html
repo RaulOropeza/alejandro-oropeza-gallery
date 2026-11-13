@@ -203,7 +203,7 @@
   align-items: center;
   font-family: var(--ds-font-display);
   font-weight: 500;
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem; /* 18px default (e.g. footer / About Me) */
   line-height: 1.1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -212,7 +212,19 @@
   background: transparent;
   border: none;
   white-space: nowrap;
-  transition: opacity var(--ds-duration-fast) ease;
+  transition: opacity var(--ds-duration-fast) ease,
+              font-size 320ms var(--ds-ease-out-expo);
+}
+
+/* Desktop Top Bar Brand Name: 20px at top scroll position, 16px in scrolled pill mode */
+@media (min-width: 768px) {
+  #hdr-brand-name {
+    font-size: 1.25rem; /* 20px at top scroll */
+  }
+  .ds-header-frosted #hdr-brand-name,
+  .ds-pill .ds-brand-name {
+    font-size: 1rem; /* 16px in pill mode */
+  }
 }
 
 /* Mobile Home Hero Brand Title (Same style as .ds-h1 in white, 2 lines, subtle drop shadow without top gradient) */
