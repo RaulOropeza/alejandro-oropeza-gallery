@@ -93,13 +93,14 @@
   --ds-font-display: 'Jost', sans-serif;
   --ds-font-sans: 'Nunito Sans', sans-serif;
 
-  /* 4. CONTROL & SPACING TOKENS
-     - Unified across mobile & desktop: 56px high (16px side padding) buttons & 56px diameter icon buttons */
-  --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px controls comfortably */
+  /* 4. RESPONSIVE CONTROL & SPACING TOKENS
+     - Mobile (< 768px): 56px high (16px side padding) buttons & 56px diameter icon buttons
+     - Desktop (>= 768px): 48px high (16px side padding) buttons & 48px diameter icon buttons */
+  --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Original mobile spacing for single-line titles */
-  --ds-control-size: 56px;             /* Unified: 56px height / diameter (7 × 8px) */
-  --ds-btn-padding-x: 16px;            /* Unified: 16px side padding (2 × 8px) */
+  --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
+  --ds-btn-padding-x: 16px;            /* 16px side padding (2 × 8px) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
   --ds-gallery-max-width: 72rem;       /* 1152px (144 × 8px) desktop gallery grid max-width */
@@ -116,8 +117,10 @@
 
 @media (min-width: 768px) {
   :root {
+    --ds-header-height: 4.5rem;          /* 72px (9 × 8px) desktop floating header height (accommodates 48px controls) */
     --ds-header-pad-x: 2.5rem;           /* 40px (5 × 8px) desktop header side padding */
     --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
+    --ds-control-size: 48px;             /* Desktop: 48px height / diameter (6 × 8px) */
     --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
@@ -356,8 +359,9 @@ h1.ds-brand-name {
      B. Surface (.ds-btn-surface)       — No background/border at rest; Tonal background + radial light
                                           appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
-   Unified Sizing (Mobile & Desktop):
-     - 56px height / diameter, 16px horizontal padding on .ds-btn
+   Responsive Sizing:
+     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn
+     - Desktop (>= 768px): 48px height / diameter, 16px horizontal padding on .ds-btn
    ============================================================================ */
 
 .ds-btn,
@@ -1215,8 +1219,8 @@ h1.ds-brand-name {
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 80px bottom (clears 56px Fullscreen button) */
-    padding: var(--ds-showcase-title-band) 2.5rem 5rem 2.5rem;
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 72px bottom (clears 48px Fullscreen button) */
+    padding: var(--ds-showcase-title-band) 2.5rem 4.5rem 2.5rem;
   }
 }
 
@@ -1362,7 +1366,7 @@ h1.ds-brand-name {
     align-items: center;
     justify-content: center;
     width: max-content;
-    max-width: calc(100vw - 28rem); /* 448px (56 × 8px) horizontal clearance for 56px header controls */
+    max-width: calc(100vw - 26rem); /* 416px (52 × 8px) horizontal clearance for 48px header controls */
   }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
@@ -1764,14 +1768,14 @@ h1.ds-brand-name {
 
     <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px M / 48px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">56px high (16px side padding) on mobile &amp; desktop · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (16px side padding) · Desktop: 48px high (16px side padding) · Optional icon toggle</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
@@ -1797,7 +1801,7 @@ h1.ds-brand-name {
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
-            <span class="ds-label">56px × 56px circle on mobile &amp; desktop · Shared hover light &amp; press physics</span>
+            <span class="ds-label">Mobile: 56px × 56px circle · Desktop: 48px × 48px circle · Shared hover light &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
