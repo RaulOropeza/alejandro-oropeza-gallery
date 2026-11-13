@@ -939,13 +939,20 @@ h1.ds-brand-name {
               color 260ms ease;
 }
 
+.ds-floating-header.is-switching-view,
+.ds-floating-header.is-switching-view *,
+.ds-floating-header.is-switching-view *::before,
+.ds-floating-header.is-switching-view *::after {
+  transition: none !important;
+}
+
 /* State 1: Scrolled all the way up on Home Page (Over Hero Image, White Text, No Pill Box) */
 .ds-header-hero .ds-floating-pill {
   padding: 0.35rem 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-color: transparent;
+  border-color: rgba(255, 255, 255, 0);
   box-shadow: none;
   color: var(--ds-color-ink-inverse);
 }
@@ -953,10 +960,10 @@ h1.ds-brand-name {
 /* State 2: Scrolled all the way up on Showcase / About (No background, Dark Text, No Pill Box) */
 .ds-header-transparent-dark .ds-floating-pill {
   padding: 0.35rem 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-color: transparent;
+  border-color: rgba(255, 255, 255, 0);
   box-shadow: none;
   color: var(--ds-color-ink-primary);
 }
@@ -1062,31 +1069,58 @@ h1.ds-brand-name {
   .ds-floating-header:not(.is-detail) #floating-header-pill > div:nth-child(2) {
     display: none !important;
   }
-  .ds-floating-header.is-detail .ds-floating-pill {
-    border-radius: 0;
-    margin-top: 0;
-    max-width: 100%;
-    border: none;
-    border-bottom: 1px solid transparent;
-  }
-  .ds-floating-header.ds-header-frosted.is-detail {
+  /* Mobile Showcase Top Bar:
+     Keep geometry full-bleed in both states and fade a dedicated ::before white bar
+     via GPU opacity (prevents shrinking white rectangle on scroll-up & dark border flash) */
+  .ds-floating-header.is-detail {
     padding-left: 0 !important;
     padding-right: 0 !important;
     height: auto;
+    align-items: flex-start;
   }
-  .ds-floating-header.ds-header-frosted.is-detail .ds-floating-pill {
+  .ds-floating-header.is-detail #hdr-left-col,
+  .ds-floating-header.is-detail #hdr-right-col {
+    display: none !important;
+  }
+  .ds-floating-header.is-detail .ds-floating-pill {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 100%;
     min-height: 4.5rem; /* 72px (9 × 8px) */
     margin-top: 0;
     padding: 1rem 1.5rem; /* 16px top/bottom, 24px sides */
     border-radius: 0;
-    background: var(--ds-color-canvas); /* Solid #FFFFFF */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: none;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none;
+    transition: color 220ms ease;
+  }
+  .ds-floating-header.is-detail .ds-floating-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--ds-color-canvas); /* Solid #FFFFFF */
     border-bottom: 1px solid var(--ds-color-border);
-    box-shadow: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 0;
+    will-change: opacity;
+    transition: opacity 220ms cubic-bezier(0.25, 0.1, 0.25, 1),
+                visibility 0s linear 220ms;
+  }
+  .ds-floating-header.ds-header-frosted.is-detail .ds-floating-pill::before {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 220ms cubic-bezier(0.25, 0.1, 0.25, 1),
+                visibility 0s linear 0s;
   }
 }
 
@@ -1192,8 +1226,9 @@ h1.ds-brand-name {
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top (original for 1-line), 24px sides, 184px + safe-area bottom */
-  padding: var(--ds-showcase-title-band) 1.5rem calc(11.5rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+  /* Mobile padding (all multiples of 8): 104px top (1-line), 24px sides, static 184px bottom
+     (avoids dynamic env(safe-area-inset-bottom) jumps inside 100svh when mobile browser bars collapse on scroll) */
+  padding: var(--ds-showcase-title-band) 1.5rem 11.5rem 1.5rem;
 }
 
 @media (max-width: 767px) {
@@ -1216,8 +1251,19 @@ h1.ds-brand-name {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px)); /* 120px — 8px below image box vs 36px above bottom bar */
+  bottom: 7.5rem; /* 120px — static within 100svh stage so button & image never jump when browser bars hide */
   z-index: 20;
+}
+
+/* Standalone Home Screen PWA only (no collapsible browser bar; safe-area-inset-bottom is constant) */
+@media (display-mode: standalone) and (max-width: 767px) {
+  .ds-showcase-stage {
+    padding-bottom: calc(11.5rem + env(safe-area-inset-bottom, 0px));
+  }
+  .ds-btn.ds-stage-visualizer-btn,
+  .ds-stage-visualizer-btn {
+    bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 .ds-btn.ds-stage-visualizer-btn:active,
 .ds-stage-visualizer-btn:active {
@@ -1304,31 +1350,42 @@ h1.ds-brand-name {
 }
 
 /* SHOWCASE TOP BAR:
-   Keep header buttons in their standard top-bar position while anchoring
-   the unscrolled title block on mobile at line 1 so 2-line titles grow downward */
+   - Mobile (< 768px): Keep title in normal flow inside full-bleed header and glide smoothly via GPU transform
+   - Desktop (>= 768px): Center unscrolled title block across the showcase title band */
 .ds-floating-header.is-detail:not(.ds-header-frosted) .ds-floating-pill {
   align-items: center;
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-right-col {
   align-self: center;
 }
-.ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
-  position: absolute;
-  top: 2.335rem; /* ~37px — keeps line 1 fixed while 2-line titles get 24px space below */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: max-content;
-  max-width: calc(100vw - 3rem); /* 48px (6 × 8px) horizontal clearance */
+@media (max-width: 767px) {
+  .ds-floating-header.is-detail #hdr-photo-title-wrap:not(.hidden) {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: calc(100vw - 3rem); /* 48px (6 × 8px) horizontal clearance */
+    transform: translateY(0);
+    will-change: transform;
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+    transform: translateY(1rem); /* 16px — places unscrolled title cleanly in top band without layout snap */
+  }
 }
 @media (min-width: 768px) {
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
+    position: absolute;
     top: calc(var(--ds-showcase-title-band) / 2);
+    left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    width: max-content;
     max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
@@ -2646,6 +2703,9 @@ h1.ds-brand-name {
       if (view !== 'detail' && isVisualizerOpen) {
         closeVisualizer();
       }
+      if (floatingHeader) {
+        floatingHeader.classList.add('is-switching-view');
+      }
       const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
@@ -2692,7 +2752,8 @@ h1.ds-brand-name {
       if (mobGal) mobGal.classList.toggle('is-active', view === 'gallery');
       if (mobAbt) mobAbt.classList.toggle('is-active', view === 'about');
 
-      if (view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null) {
+      const restoringGalleryScroll = view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null;
+      if (restoringGalleryScroll) {
         const restoreTarget = savedGalleryScroll;
         savedGalleryScroll = null;
         scrollViewport.scrollTop = restoreTarget.viewportTop;
@@ -2701,6 +2762,10 @@ h1.ds-brand-name {
           scrollViewport.scrollTop = restoreTarget.viewportTop;
           window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
           updateHeaderStyle();
+          if (floatingHeader) {
+            void floatingHeader.offsetHeight;
+            floatingHeader.classList.remove('is-switching-view');
+          }
         });
       } else {
         if (view !== 'detail') {
@@ -2711,6 +2776,12 @@ h1.ds-brand-name {
       }
 
       updateHeaderStyle();
+      if (floatingHeader && !restoringGalleryScroll) {
+        void floatingHeader.offsetHeight;
+        requestAnimationFrame(() => {
+          floatingHeader.classList.remove('is-switching-view');
+        });
+      }
     }
 
     function openPhoto(idx, historyMode = 'push') {

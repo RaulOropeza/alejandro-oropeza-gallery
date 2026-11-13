@@ -1911,6 +1911,9 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       if (view !== 'detail' && isVisualizerOpen) {
         closeVisualizer();
       }
+      if (floatingHeader) {
+        floatingHeader.classList.add('is-switching-view');
+      }
       const prevView = currentView;
       currentView = view;
       document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
@@ -1957,7 +1960,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       if (mobGal) mobGal.classList.toggle('is-active', view === 'gallery');
       if (mobAbt) mobAbt.classList.toggle('is-active', view === 'about');
 
-      if (view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null) {
+      const restoringGalleryScroll = view === 'gallery' && prevView === 'detail' && savedGalleryScroll !== null;
+      if (restoringGalleryScroll) {
         const restoreTarget = savedGalleryScroll;
         savedGalleryScroll = null;
         scrollViewport.scrollTop = restoreTarget.viewportTop;
@@ -1966,6 +1970,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           scrollViewport.scrollTop = restoreTarget.viewportTop;
           window.scrollTo({ top: restoreTarget.windowY, behavior: 'instant' });
           updateHeaderStyle();
+          if (floatingHeader) {
+            void floatingHeader.offsetHeight;
+            floatingHeader.classList.remove('is-switching-view');
+          }
         });
       } else {
         if (view !== 'detail') {
@@ -1976,6 +1984,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
 
       updateHeaderStyle();
+      if (floatingHeader && !restoringGalleryScroll) {
+        void floatingHeader.offsetHeight;
+        requestAnimationFrame(() => {
+          floatingHeader.classList.remove('is-switching-view');
+        });
+      }
     }
 
     function openPhoto(idx, historyMode = 'push') {
