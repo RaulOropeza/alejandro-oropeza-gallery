@@ -1216,35 +1216,42 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    let lastHeaderStateKey = '';
+
     function updateHeaderStyle() {
       const scrolled = scrollViewport.scrollTop > 18 || window.scrollY > 18 || document.documentElement.scrollTop > 18;
-      const navGal = document.getElementById('nav-gallery');
-      const navAbt = document.getElementById('nav-about');
+      const stateKey = `${currentView}:${scrolled ? 1 : 0}`;
 
-      floatingHeader.classList.remove(
-        'ds-header-hero',
-        'ds-header-transparent-dark',
-        'ds-header-frosted'
-      );
+      if (stateKey !== lastHeaderStateKey) {
+        lastHeaderStateKey = stateKey;
+        const navGal = document.getElementById('nav-gallery');
+        const navAbt = document.getElementById('nav-about');
 
-      navGal.classList.toggle('is-active', currentView === 'gallery');
-      navAbt.classList.toggle('is-active', currentView === 'about');
-      const fGal = document.getElementById('foot-nav-gallery');
-      const fAbt = document.getElementById('foot-nav-about');
-      if (fGal) fGal.classList.toggle('is-active', currentView !== 'about');
-      if (fAbt) fAbt.classList.toggle('is-active', currentView === 'about');
+        floatingHeader.classList.remove(
+          'ds-header-hero',
+          'ds-header-transparent-dark',
+          'ds-header-frosted'
+        );
 
-      const scrollCue = document.getElementById('hero-scroll-cue');
-      if (scrollCue) scrollCue.classList.toggle('is-hidden', scrolled);
+        navGal.classList.toggle('is-active', currentView === 'gallery');
+        navAbt.classList.toggle('is-active', currentView === 'about');
+        const fGal = document.getElementById('foot-nav-gallery');
+        const fAbt = document.getElementById('foot-nav-about');
+        if (fGal) fGal.classList.toggle('is-active', currentView !== 'about');
+        if (fAbt) fAbt.classList.toggle('is-active', currentView === 'about');
 
-      if (!scrolled) {
-        if (currentView === 'gallery') {
-          floatingHeader.classList.add('ds-header-hero');
+        const scrollCue = document.getElementById('hero-scroll-cue');
+        if (scrollCue) scrollCue.classList.toggle('is-hidden', scrolled);
+
+        if (!scrolled) {
+          if (currentView === 'gallery') {
+            floatingHeader.classList.add('ds-header-hero');
+          } else {
+            floatingHeader.classList.add('ds-header-transparent-dark');
+          }
         } else {
-          floatingHeader.classList.add('ds-header-transparent-dark');
+          floatingHeader.classList.add('ds-header-frosted');
         }
-      } else {
-        floatingHeader.classList.add('ds-header-frosted');
       }
 
       if (currentView === 'detail' && window.innerWidth < 768) {
@@ -1264,17 +1271,17 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const vv = window.visualViewport;
       // Ignore pinch-zoom scaling so zooming a photograph never resizes the stage
       if (vv && Math.abs(vv.scale - 1) > 0.02) return;
-      const vh = getVisibleViewportHeight();
-      const offsetTop = vv ? Math.max(0, vv.offsetTop) : 0;
-      if (vh > 0) {
-        document.documentElement.style.setProperty('--app-viewport-height', `${Math.round(vh)}px`);
-        document.documentElement.style.setProperty('--app-viewport-offset-top', `${Math.round(offsetTop)}px`);
+      if (typeof isVisualizerOpen !== 'undefined' && isVisualizerOpen && typeof visualizerEl !== 'undefined' && visualizerEl) {
+        const vh = getVisibleViewportHeight();
+        const offsetTop = vv ? Math.max(0, vv.offsetTop) : 0;
+        if (vh > 0) {
+          visualizerEl.style.setProperty('--vis-viewport-height', `${Math.round(vh)}px`);
+          visualizerEl.style.setProperty('--vis-viewport-offset-top', `${Math.round(offsetTop)}px`);
+        }
+        layoutVisualizerFit();
       }
       if (currentView === 'detail' && window.innerWidth < 768) {
         updateMobileDockPosition();
-      }
-      if (typeof isVisualizerOpen !== 'undefined' && isVisualizerOpen) {
-        layoutVisualizerFit();
       }
     }
 
@@ -1299,7 +1306,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
-    syncViewportHeight();
     scrollViewport.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('scroll', updateHeaderStyle, { passive: true });
     window.addEventListener('resize', syncViewportHeight, { passive: true });
@@ -1685,6 +1691,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       isVisualizerOpen = true;
       visualizerEl.classList.add('is-open');
       visualizerEl.setAttribute('aria-hidden', 'false');
+      syncViewportHeight();
       if (!isMob) {
         document.body.style.overflow = 'hidden';
       }

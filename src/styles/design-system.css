@@ -113,19 +113,16 @@
   }
 }
 
-/* Browser & Phone Agnostic Dynamic Viewport Sizing (accounts for top/bottom mobile search bars) */
+/* Stable Viewport Sizing (100svh fits visible screen with mobile browser bars shown,
+   and stays locked during scroll so URL/tab bar animations never resize sections or jump scroll) */
 .ds-viewport-height {
   height: 100vh;
   height: 100svh;
-  height: 100dvh;
-  height: var(--app-viewport-height, 100dvh);
 }
 
 .ds-viewport-min-height {
   min-height: 100vh;
   min-height: 100svh;
-  min-height: 100dvh;
-  min-height: var(--app-viewport-height, 100dvh);
 }
 
 /* ============================================================================
@@ -1427,14 +1424,14 @@ h1.ds-brand-name {
    ============================================================================ */
 .ds-visualizer {
   position: fixed;
-  top: var(--app-viewport-offset-top, 0px);
+  top: var(--vis-viewport-offset-top, 0px);
   left: 0;
   right: 0;
   z-index: 200;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  height: var(--app-viewport-height, 100dvh);
+  height: var(--vis-viewport-height, 100dvh);
   padding: 0;
   border-radius: 0;
   overflow: hidden;
