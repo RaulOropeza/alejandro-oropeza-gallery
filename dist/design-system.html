@@ -108,12 +108,13 @@
   --ds-font-sans: 'Nunito Sans', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
-     - Mobile (< 768px): 56px high (16px side padding) buttons & 56px diameter icon buttons
-     - Desktop (>= 768px): 48px high (16px side padding) buttons & 48px diameter icon buttons */
+     - Mobile (< 768px): 56px high (16px side padding) buttons, 56px diameter icon buttons, 20px icons
+     - Desktop (>= 768px): 36px high (16px side padding) buttons, 36px diameter icon buttons, 18px icons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Original mobile spacing for single-line titles */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
+  --ds-icon-size: 20px;                /* Mobile default: 20px icons inside buttons & icon buttons */
   --ds-btn-padding-x: 16px;            /* 16px side padding (2 × 8px) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
@@ -131,10 +132,11 @@
 
 @media (min-width: 768px) {
   :root {
-    --ds-header-height: 4.5rem;          /* 72px (9 × 8px) desktop floating header height (accommodates 48px controls) */
+    --ds-header-height: 4.25rem;         /* 68px desktop floating header height (accommodates 36px controls) */
     --ds-header-pad-x: 2.5rem;           /* 40px (5 × 8px) desktop header side padding */
     --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
-    --ds-control-size: 48px;             /* Desktop: 48px height / diameter (6 × 8px) */
+    --ds-control-size: 36px;             /* Desktop: 36px height / diameter */
+    --ds-icon-size: 18px;                /* Desktop: 18px icons inside buttons & icon buttons */
     --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
@@ -374,8 +376,8 @@ h1.ds-brand-name {
                                           appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
-     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn
-     - Desktop (>= 768px): 48px height / diameter, 16px horizontal padding on .ds-btn
+     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn, 20px icons
+     - Desktop (>= 768px): 36px height / diameter, 16px horizontal padding on .ds-btn, 18px icons
    ============================================================================ */
 
 .ds-btn,
@@ -481,8 +483,8 @@ h1.ds-brand-name {
 
 .ds-btn > svg,
 .ds-icon-btn > svg {
-  width: 20px;
-  height: 20px;
+  width: var(--ds-icon-size);
+  height: var(--ds-icon-size);
 }
 
 /* Masked Vector Glyphs inside IconButton (Instagram & 500px) */
@@ -490,8 +492,8 @@ h1.ds-brand-name {
   position: relative;
   z-index: 1;
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: var(--ds-icon-size);
+  height: var(--ds-icon-size);
   flex-shrink: 0;
   pointer-events: none;
   background-color: currentColor;
@@ -1233,8 +1235,8 @@ h1.ds-brand-name {
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 72px bottom (clears 48px Fullscreen button) */
-    padding: var(--ds-showcase-title-band) 2.5rem 4.5rem 2.5rem;
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 64px bottom (clears 36px Fullscreen button) */
+    padding: var(--ds-showcase-title-band) 2.5rem 4rem 2.5rem;
   }
 }
 
@@ -1380,7 +1382,7 @@ h1.ds-brand-name {
     align-items: center;
     justify-content: center;
     width: max-content;
-    max-width: calc(100vw - 26rem); /* 416px (52 × 8px) horizontal clearance for 48px header controls */
+    max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
@@ -1604,7 +1606,7 @@ h1.ds-brand-name {
 
     <!-- FLOATING HEADER (Unscrolled: Full-Width Bar | Scrolled: Morphs into Standardized Floating Pill .ds-pill) -->
     <header id="floating-header" class="ds-floating-header ds-header-hero fixed top-0 left-0 right-0 z-50 px-4 md:px-10">
-      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button><div id="mobile-social-stack" class="ds-mobile-social-stack" aria-label="Social links"><a id="mob-hero-ig-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a id="mob-hero-500px-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
+      <div id="floating-header-pill" class="ds-pill ds-floating-pill"><div id="hdr-left-col" class="flex items-center justify-start justify-self-start z-10"><button onclick="showView('gallery')" id="hdr-brand-name" class="ds-brand-name text-left hover:opacity-75 transition-opacity focus:outline-none">Alejandro Oropeza</button><button type="button" id="hdr-left-back" class="ds-btn ds-showcase-back is-hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" onclick="showView('gallery')"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button></div><div class="justify-self-center z-10"><nav id="header-menu-nav" class="ds-menu-nav"><button onclick="showView('gallery')" onmousemove="trackMenuLight(event, this)" id="nav-gallery" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onclick="showView('about')" onmousemove="trackMenuLight(event, this)" id="nav-about" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav><div id="hdr-photo-title-wrap" class="hidden flex-col items-center justify-center text-center pointer-events-none px-2 max-w-[calc(100vw-2rem)] md:max-w-none"><span id="hdr-photo-title" class="ds-h2"></span></div></div><div id="hdr-right-col" class="justify-self-end self-center z-10"><div id="header-main-nav" class="flex items-center justify-end gap-2"><div class="ds-desktop-social"><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div><button type="button" id="hdr-hamburger-btn" class="ds-icon-btn md:hidden focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleMobileMenu()"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button><div id="mobile-social-stack" class="ds-mobile-social-stack" aria-label="Social links"><a id="mob-hero-ig-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram (@alejandroropeza.photo)" aria-label="Instagram" href="https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&amp;mdxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></a><a id="mob-hero-500px-btn" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px (Alejandro Oropeza)" aria-label="500px" href="https://500px.com/user/R6dqvyPxtGm" target="_blank" rel="noopener noreferrer"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></a></div></div><div id="header-photo-status" class="ds-showcase-status is-hidden items-center justify-end gap-2"><span id="hdr-photo-counter" class="whitespace-nowrap">1 of 10</span><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div></div>
     </header>
 
     <!-- MOBILE NAVIGATION OVERLAY & SHEET -->
@@ -1612,7 +1614,7 @@ h1.ds-brand-name {
       <div class="ds-mobile-nav-sheet">
         <div class="flex items-center justify-between pb-4 border-b border-[var(--ds-color-border)]">
           <span class="ds-brand-name">Alejandro Oropeza</span>
-          <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Close menu" onclick="toggleMobileMenu(false)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Close menu" onclick="toggleMobileMenu(false)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <nav class="flex flex-col py-6 space-y-2">
           <button onclick="mobileNavTo('gallery')" id="mob-nav-gallery" class="ds-mob-menu-link is-active focus:outline-none">
@@ -1678,7 +1680,7 @@ h1.ds-brand-name {
           <img id="detail-img" decoding="sync" alt="Selected Photograph" class="max-h-full max-w-full object-contain shadow-sm mx-auto block" />
         </div>
         <!-- Bottom-Right Fullscreen Visualizer Trigger (Surface IconButton) -->
-        <button type="button" id="stage-visualizer-btn" class="ds-btn ds-btn-surface ds-stage-visualizer-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Open zoomable fullscreen view" onclick="openVisualizer()"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><span>Fullscreen</span></button>
+        <button type="button" id="stage-visualizer-btn" class="ds-btn ds-btn-surface ds-stage-visualizer-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Open zoomable fullscreen view" onclick="openVisualizer()"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><span>Fullscreen</span></button>
       </div>
 
       <!-- Pure White Spec Sheet & Description Band Below Stage (.ds-showcase-details) -->
@@ -1708,7 +1710,7 @@ h1.ds-brand-name {
       </div>
 
       <!-- FLOATING BOTTOM SHOWCASE CONTROLS (Mobile Only — Standardized .ds-pill Instance) -->
-      <nav id="mobile-showcase-bar" class="ds-pill ds-pill-controls ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></nav>
+      <nav id="mobile-showcase-bar" class="ds-pill ds-pill-controls ds-mobile-showcase-bar hidden md:hidden" aria-label="Photo navigation"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" aria-label="Back to gallery" onclick="showView('gallery')"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span id="mob-photo-counter" class="ds-mobile-tonal-counter">1 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous photograph" aria-label="Previous photograph" onclick="stepPhoto(-1)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next photograph" aria-label="Next photograph" onclick="stepPhoto(1)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></nav>
 
     </section>
 
@@ -1746,7 +1748,7 @@ h1.ds-brand-name {
   <!-- ZOOMABLE POPUP PHOTO VISUALIZER (In-browser modal, edge-to-edge zero-radius framing, zoom & pan) -->
   <div id="photo-visualizer" class="ds-visualizer ds-header-hero" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Zoomable photograph visualizer">
     <img id="visualizer-img" decoding="sync" draggable="false" alt="Photograph" />
-    <button type="button" id="visualizer-close-btn" class="ds-icon-btn ds-visualizer-close-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close visualizer" aria-label="Close visualizer" onclick="closeVisualizer()"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button type="button" id="visualizer-close-btn" class="ds-icon-btn ds-visualizer-close-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close visualizer" aria-label="Close visualizer" onclick="closeVisualizer()"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
 
   <!-- =========================================================================
@@ -1764,19 +1766,19 @@ h1.ds-brand-name {
 
     <!-- 1. UNIFIED COMPONENT ARCHITECTURE (Tonal & Surface Buttons + Standardized Pill) -->
     <div>
-      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px M / 48px D)</h2>
+      <h2 class="ds-h3 mb-2.5">1. Unified Component System (Tonal &amp; Surface Buttons · Standardized Pill · 56px M / 36px D)</h2>
       <div class="space-y-4 rounded-lg p-4" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
         
         <!-- TONAL BUTTON (.ds-btn) -->
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal Button (<code>.ds-btn</code> · <code>render_button()</code>)</span>
-            <span class="ds-label">Mobile: 56px high (16px side padding) · Desktop: 48px high (16px side padding) · Optional icon toggle</span>
+            <span class="ds-label">Mobile: 56px high (20px icons) · Desktop: 36px high (18px icons) · 16px side padding</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
-            <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
-            <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Next photo</span><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
+            <button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Next photo</span><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
           </div>
         </div>
 
@@ -1788,8 +1790,8 @@ h1.ds-brand-name {
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Order print</span></button>
-            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
-            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Next photo</span><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
+            <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><span>Next photo</span><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
           </div>
         </div>
 
@@ -1797,16 +1799,16 @@ h1.ds-brand-name {
         <div class="pb-3.5" style="border-bottom: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
             <span class="ds-value font-medium">Tonal IconButton (<code>.ds-icon-btn</code> · <code>render_icon_button()</code>)</span>
-            <span class="ds-label">Mobile: 56px × 56px circle · Desktop: 48px × 48px circle · Shared hover light &amp; press physics</span>
+            <span class="ds-label">Mobile: 56px × 56px (20px icons) · Desktop: 36px × 36px (18px icons) · Shared hover &amp; press physics</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
-            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+            <button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
         </div>
 
@@ -1817,13 +1819,13 @@ h1.ds-brand-name {
             <span class="ds-label">No background at rest · Tonal circular background &amp; radial light sheen appear on hover</span>
           </div>
           <div class="flex flex-wrap items-center gap-3">
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Fullscreen"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button>
             <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button>
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
-            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Menu"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+            <button type="button" class="ds-icon-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Close"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
         </div>
 
@@ -1835,7 +1837,7 @@ h1.ds-brand-name {
           </div>
           <div class="p-3.5 rounded space-y-3" style="background: linear-gradient(90deg, #E2E2E2 0%, #F5F5F5 50%, #D9D9D9 100%);">
             <div class="ds-pill mx-auto w-full"><div class="flex items-center justify-start justify-self-start z-10"><span class="ds-brand-name">Alejandro Oropeza</span></div><div class="justify-self-center z-10"><nav class="ds-menu-nav"><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none"><span class="ds-menu-text">GALLERY</span></button><span class="ds-menu-sep">/</span><button onmousemove="trackMenuLight(event, this)" class="ds-menu-link focus:outline-none"><span class="ds-menu-text">ABOUT ME</span></button></nav></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Instagram"><span class="ds-icon-glyph ds-icon-glyph-ig"></span></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="500px"><span class="ds-icon-glyph ds-icon-glyph-500px"></span></button></div></div></div>
-            <div class="ds-pill ds-pill-controls mx-auto w-full max-w-[23rem]"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span class="ds-mobile-tonal-counter">2 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div>
+            <div class="ds-pill ds-pill-controls mx-auto w-full max-w-[23rem]"><div class="flex items-center justify-start justify-self-start z-10"><button type="button" class="ds-btn focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Gallery</span></button></div><div class="justify-self-center z-10"><span class="ds-mobile-tonal-counter">2 of 10</span></div><div class="justify-self-end self-center z-10"><div class="flex items-center gap-2"><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Previous"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button><button type="button" class="ds-icon-btn focus:outline-none" onmousemove="trackMenuLight(event, this)" title="Next"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div></div>
           </div>
         </div>
 
@@ -1849,7 +1851,7 @@ h1.ds-brand-name {
           <div class="p-4 rounded grid grid-cols-[1fr_auto_1fr] items-center content-center ds-header-hero" style="background-color: #141414; color: #FFFFFF;">
             <div class="flex items-center gap-3 justify-self-start">
               <span class="ds-brand-name" style="color: #FFFFFF;">Alejandro Oropeza</span>
-              <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
+              <button type="button" class="ds-btn ds-btn-surface focus:outline-none" onmousemove="trackMenuLight(event, this)"><svg width="20" height="20" class="shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Back to gallery</span></button>
             </div>
             <nav class="ds-menu-nav justify-self-center">
               <button onmousemove="trackMenuLight(event, this)" class="ds-menu-link is-active focus:outline-none">

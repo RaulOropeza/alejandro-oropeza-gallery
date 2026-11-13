@@ -81,12 +81,13 @@
   --ds-font-sans: 'Nunito Sans', sans-serif;
 
   /* 4. RESPONSIVE CONTROL & SPACING TOKENS
-     - Mobile (< 768px): 56px high (16px side padding) buttons & 56px diameter icon buttons
-     - Desktop (>= 768px): 48px high (16px side padding) buttons & 48px diameter icon buttons */
+     - Mobile (< 768px): 56px high (16px side padding) buttons, 56px diameter icon buttons, 20px icons
+     - Desktop (>= 768px): 36px high (16px side padding) buttons, 36px diameter icon buttons, 18px icons */
   --ds-header-height: 5rem;            /* 80px (10 × 8px) — Accommodates 56px mobile controls comfortably */
   --ds-header-pad-x: 1rem;             /* 16px (2 × 8px) mobile header side padding */
   --ds-showcase-title-band: 6.5rem;    /* 104px (13 × 8px) — Original mobile spacing for single-line titles */
   --ds-control-size: 56px;             /* Mobile default: 56px height / diameter (7 × 8px) */
+  --ds-icon-size: 20px;                /* Mobile default: 20px icons inside buttons & icon buttons */
   --ds-btn-padding-x: 16px;            /* 16px side padding (2 × 8px) */
   --ds-btn-gap: 0.5rem;                /* 8px space between icon and label inside buttons */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
@@ -104,10 +105,11 @@
 
 @media (min-width: 768px) {
   :root {
-    --ds-header-height: 4.5rem;          /* 72px (9 × 8px) desktop floating header height (accommodates 48px controls) */
+    --ds-header-height: 4.25rem;         /* 68px desktop floating header height (accommodates 36px controls) */
     --ds-header-pad-x: 2.5rem;           /* 40px (5 × 8px) desktop header side padding */
     --ds-showcase-title-band: 10rem;     /* 160px (20 × 8px) desktop title+author band (equal space above & below) */
-    --ds-control-size: 48px;             /* Desktop: 48px height / diameter (6 × 8px) */
+    --ds-control-size: 36px;             /* Desktop: 36px height / diameter */
+    --ds-icon-size: 18px;                /* Desktop: 18px icons inside buttons & icon buttons */
     --ds-grid-gap: 1rem;                 /* 16px (2 × 8px) desktop gallery grid gutter */
   }
 }
@@ -347,8 +349,8 @@ h1.ds-brand-name {
                                           appear smoothly on hover (and tactile fill on press)
    Shared Physics: Cursor-following radial light + floating shadow on hover; tactile press (scale 0.96)
    Responsive Sizing:
-     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn
-     - Desktop (>= 768px): 48px height / diameter, 16px horizontal padding on .ds-btn
+     - Mobile (< 768px): 56px height / diameter, 16px horizontal padding on .ds-btn, 20px icons
+     - Desktop (>= 768px): 36px height / diameter, 16px horizontal padding on .ds-btn, 18px icons
    ============================================================================ */
 
 .ds-btn,
@@ -454,8 +456,8 @@ h1.ds-brand-name {
 
 .ds-btn > svg,
 .ds-icon-btn > svg {
-  width: 20px;
-  height: 20px;
+  width: var(--ds-icon-size);
+  height: var(--ds-icon-size);
 }
 
 /* Masked Vector Glyphs inside IconButton (Instagram & 500px) */
@@ -463,8 +465,8 @@ h1.ds-brand-name {
   position: relative;
   z-index: 1;
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: var(--ds-icon-size);
+  height: var(--ds-icon-size);
   flex-shrink: 0;
   pointer-events: none;
   background-color: currentColor;
@@ -1206,8 +1208,8 @@ h1.ds-brand-name {
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 72px bottom (clears 48px Fullscreen button) */
-    padding: var(--ds-showcase-title-band) 2.5rem 4.5rem 2.5rem;
+    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 64px bottom (clears 36px Fullscreen button) */
+    padding: var(--ds-showcase-title-band) 2.5rem 4rem 2.5rem;
   }
 }
 
@@ -1353,7 +1355,7 @@ h1.ds-brand-name {
     align-items: center;
     justify-content: center;
     width: max-content;
-    max-width: calc(100vw - 26rem); /* 416px (52 × 8px) horizontal clearance for 48px header controls */
+    max-width: calc(100vw - 24rem); /* 384px (48 × 8px) horizontal clearance */
   }
 }
 .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title {
