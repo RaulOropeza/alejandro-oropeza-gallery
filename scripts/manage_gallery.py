@@ -1253,10 +1253,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           floatingHeader.classList.add('ds-header-frosted');
         }
       }
-
-      if (currentView === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
     }
 
     function getVisibleViewportHeight() {
@@ -1279,30 +1275,6 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           visualizerEl.style.setProperty('--vis-viewport-offset-top', `${Math.round(offsetTop)}px`);
         }
         layoutVisualizerFit();
-      }
-      if (currentView === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
-    }
-
-    function updateMobileDockPosition() {
-      const dock = document.getElementById('mobile-showcase-bar');
-      const footer = document.getElementById('site-footer');
-      if (!dock || !footer || currentView !== 'detail') return;
-      if (window.innerWidth >= 768) {
-        dock.style.transform = '';
-        return;
-      }
-      const footerRect = footer.getBoundingClientRect();
-      const windowHeight = getVisibleViewportHeight();
-      const baseBottom = parseFloat(getComputedStyle(dock).bottom) || 16;
-      const clearance = 16;
-      const threshold = windowHeight - baseBottom;
-      if (footerRect.top < threshold + clearance) {
-        const pushUp = (threshold + clearance) - footerRect.top;
-        dock.style.transform = `translateX(-50%) translateY(-${pushUp}px)`;
-      } else {
-        dock.style.transform = 'translateX(-50%) translateY(0)';
       }
     }
 
@@ -2003,13 +1975,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
 
-      if (mobShowcaseBar) {
-        mobShowcaseBar.style.transform = 'translateX(-50%) translateY(0)';
-      }
       updateHeaderStyle();
-      if (view === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
     }
 
     function openPhoto(idx, historyMode = 'push') {

@@ -1229,12 +1229,19 @@ h1.ds-brand-name {
   width: 100%;
 }
 
+@media (max-width: 767px) {
+  #view-detail {
+    background-color: var(--ds-color-canvas);
+    padding-bottom: 2rem; /* 32px (4 × 8px) clearance below docked bar before footer rule */
+  }
+}
+
 .ds-showcase-details-inner {
   box-sizing: border-box;
   max-width: 28rem; /* 448px (56 × 8px) */
   margin: 0 auto;
-  /* Mobile (all multiples of 8): 64px top, 32px sides, 176px bottom (leaves ~90px clearance above stuck bottom bar) */
-  padding: 4rem 2rem 11rem 2rem;
+  /* Mobile (all multiples of 8): 64px top, 32px sides, 56px below last line of description to sticky bottom bar */
+  padding: 4rem 2rem 3.5rem 2rem;
 }
 @media (min-width: 768px) {
   .ds-showcase-details-inner {
@@ -1401,17 +1408,17 @@ h1.ds-brand-name {
   image-rendering: auto;
 }
 
-/* Floating Bottom Showcase Pill Instance (Mobile Only — inherits .ds-pill surface) */
+/* Floating Bottom Showcase Pill Instance (Mobile Only — native GPU position: sticky, zero JS scroll slip) */
 .ds-mobile-showcase-bar {
-  position: fixed;
-  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px (2 × 8px) */
-  left: 50%;
-  transform: translateX(-50%);
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); /* 16px (2 × 8px) above viewport bottom while floating */
   z-index: 50;
   width: calc(100% - 2rem); /* 32px (4 × 8px) total side clearance */
   max-width: 23rem; /* 368px (46 × 8px) */
+  margin: 0 auto;
   pointer-events: auto;
-  transition: opacity 220ms ease; /* Instant transform on scroll prevents lag */
+  transition: opacity 220ms ease;
 }
 
 @media (min-width: 768px) {
@@ -1985,10 +1992,6 @@ h1.ds-brand-name {
           floatingHeader.classList.add('ds-header-frosted');
         }
       }
-
-      if (currentView === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
     }
 
     function getVisibleViewportHeight() {
@@ -2011,30 +2014,6 @@ h1.ds-brand-name {
           visualizerEl.style.setProperty('--vis-viewport-offset-top', `${Math.round(offsetTop)}px`);
         }
         layoutVisualizerFit();
-      }
-      if (currentView === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
-    }
-
-    function updateMobileDockPosition() {
-      const dock = document.getElementById('mobile-showcase-bar');
-      const footer = document.getElementById('site-footer');
-      if (!dock || !footer || currentView !== 'detail') return;
-      if (window.innerWidth >= 768) {
-        dock.style.transform = '';
-        return;
-      }
-      const footerRect = footer.getBoundingClientRect();
-      const windowHeight = getVisibleViewportHeight();
-      const baseBottom = parseFloat(getComputedStyle(dock).bottom) || 16;
-      const clearance = 16;
-      const threshold = windowHeight - baseBottom;
-      if (footerRect.top < threshold + clearance) {
-        const pushUp = (threshold + clearance) - footerRect.top;
-        dock.style.transform = `translateX(-50%) translateY(-${pushUp}px)`;
-      } else {
-        dock.style.transform = 'translateX(-50%) translateY(0)';
       }
     }
 
@@ -2735,13 +2714,7 @@ h1.ds-brand-name {
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
 
-      if (mobShowcaseBar) {
-        mobShowcaseBar.style.transform = 'translateX(-50%) translateY(0)';
-      }
       updateHeaderStyle();
-      if (view === 'detail' && window.innerWidth < 768) {
-        updateMobileDockPosition();
-      }
     }
 
     function openPhoto(idx, historyMode = 'push') {
