@@ -2443,68 +2443,68 @@ h1.ds-brand-name {
       layoutVisualizerFit();
     }
 
-    function isMobileVisualizerDevice() {
-      return window.matchMedia('(max-width: 767px)').matches;
+    let visPushedHistory = false;
+    let suppressNextVisPopstate = false;
+
+    function setVisualizerThemeColor(active) {
+      let meta = document.getElementById('vis-theme-color');
+      if (active) {
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.id = 'vis-theme-color';
+          meta.name = 'theme-color';
+          document.head.appendChild(meta);
+        }
+        meta.content = '#000000';
+      } else if (meta) {
+        meta.remove();
+      }
     }
 
     function openVisualizer() {
       const p = PHOTOS[currentIdx];
       if (!p || !visualizerEl) return;
-      const isMob = isMobileVisualizerDevice();
       isVisualizerOpen = true;
       visualizerEl.classList.add('is-open');
       visualizerEl.setAttribute('aria-hidden', 'false');
+      setVisualizerThemeColor(true);
       syncViewportHeight();
-      if (!isMob) {
-        document.body.style.overflow = 'hidden';
-      }
+      document.body.style.overflow = 'hidden';
       syncVisualizerPhoto(p, true);
 
-      // On mobile only, request fullscreen with navigationUI:'hide' to collapse the browser bar
-      // where supported (Android Chrome/Firefox/Edge & iPadOS), while keeping desktop strictly in-window.
-      if (isMob && !document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (!visPushedHistory) {
         try {
-          if (typeof visualizerEl.requestFullscreen === 'function') {
-            const pFs = visualizerEl.requestFullscreen({ navigationUI: 'hide' });
-            if (pFs && typeof pFs.catch === 'function') pFs.catch(() => {});
-          } else if (typeof visualizerEl.webkitRequestFullscreen === 'function') {
-            visualizerEl.webkitRequestFullscreen();
-          }
-        } catch (_) {}
+          window.history.pushState({ visualizer: true }, '', window.location.hash || ('#/photo/' + p.id));
+          visPushedHistory = true;
+        } catch (_) {
+          visPushedHistory = false;
+        }
       }
     }
 
-    function closeVisualizer(fromFullscreenExit = false) {
+    function closeVisualizer(fromPopstate = false) {
       if (!isVisualizerOpen || !visualizerEl) return;
       isVisualizerOpen = false;
       visualizerEl.classList.remove('is-open', 'is-zoomed', 'is-dragging');
       visualizerEl.setAttribute('aria-hidden', 'true');
+      setVisualizerThemeColor(false);
       document.body.style.overflow = '';
       resetVisualizerZoom(false);
 
-      if (!fromFullscreenExit && (document.fullscreenElement || document.webkitFullscreenElement)) {
-        try {
-          const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
-          if (exitFs) {
-            const pEx = exitFs.call(document);
-            if (pEx && typeof pEx.catch === 'function') pEx.catch(() => {});
+      if (fromPopstate) {
+        visPushedHistory = false;
+      } else if (visPushedHistory) {
+        visPushedHistory = false;
+        if (window.history.state && window.history.state.visualizer) {
+          suppressNextVisPopstate = true;
+          try {
+            window.history.back();
+          } catch (_) {
+            suppressNextVisPopstate = false;
           }
-        } catch (_) {}
-      }
-    }
-
-    const _onMobileFsChange = () => {
-      syncViewportHeight();
-      if (isVisualizerOpen) {
-        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-          closeVisualizer(true);
-        } else {
-          layoutVisualizerFit();
         }
       }
-    };
-    document.addEventListener('fullscreenchange', _onMobileFsChange);
-    document.addEventListener('webkitfullscreenchange', _onMobileFsChange);
+    }
 
     // Desktop Mouse / Wheel & Mobile Touch Zoom + Pan for Popup Visualizer
     if (visualizerEl) {
@@ -2915,6 +2915,17 @@ h1.ds-brand-name {
     }
 
     function handleRoute() {
+      if (suppressNextVisPopstate) {
+        suppressNextVisPopstate = false;
+        return;
+      }
+      if (isVisualizerOpen && !(window.history.state && window.history.state.visualizer)) {
+        closeVisualizer(true);
+        const curPhoto = PHOTOS[currentIdx];
+        if (currentView === 'detail' && curPhoto && window.location.hash === '#/photo/' + curPhoto.id) {
+          return;
+        }
+      }
       const hash = window.location.hash || '';
       if (hash.startsWith('#/photo/')) {
         const slug = hash.replace('#/photo/', '').trim();
