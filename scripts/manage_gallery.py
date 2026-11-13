@@ -902,7 +902,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <h2 class="ds-h3">Photo details</h2>
           </div>
 
-          <div id="detail-spec-table" class="mt-4"></div>
+          <div id="detail-spec-table" class="mt-6"></div>
 
           <!-- Optional Print Shop Hook (Uses Tonal Master Button .ds-btn) -->
           <div id="detail-print-hook" class="hidden mt-4 pt-4 flex items-center justify-between" style="border-top: 1px solid var(--ds-color-border);">
@@ -916,7 +916,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <!-- Centered DESCRIPTION (.ds-h3 + .ds-body) -->
           <div class="ds-showcase-desc mt-12 md:mt-16">
             <h3 class="ds-h3 text-center">DESCRIPTION</h3>
-            <p id="dt-desc" class="ds-body mt-4 text-center"></p>
+            <p id="dt-desc" class="ds-body mt-6 text-center"></p>
           </div>
         </div>
       </div>
