@@ -1136,7 +1136,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <span class="ds-label block">.ds-h3 · Jost Medium (500) · Uppercase · +0.12em</span>
             <span class="ds-h3 mt-0.5 block">PHOTO DETAILS / DESCRIPTION</span>
           </div>
-          <code class="text-xs text-neutral-500">16px M · 15px D / 500</code>
+          <code class="text-xs text-neutral-500">20px / 500</code>
         </div>
         <div class="ds-spec-row">
           <div>
@@ -1147,10 +1147,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
         <div class="ds-spec-row" style="border-bottom: none;">
           <div>
-            <span class="ds-label block">.ds-body (16px) / .ds-value (15px) / .ds-label (12px) · Nunito Sans</span>
+            <span class="ds-label block">.ds-body (18px) / .ds-value (16px) / .ds-label (14px) · Nunito Sans</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
-          <code class="text-xs text-neutral-500">16px / 300–400</code>
+          <code class="text-xs text-neutral-500">18px / 300–400</code>
         </div>
       </div>
     </div>

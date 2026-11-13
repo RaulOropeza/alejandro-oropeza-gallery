@@ -176,16 +176,11 @@
 .ds-h3 {
   font-family: var(--ds-font-display);
   font-weight: 500;
-  font-size: 1rem; /* 16px on mobile */
+  font-size: 1.25rem; /* 20px on mobile & desktop */
   line-height: 1.35;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ds-color-ink-primary);
-}
-@media (min-width: 768px) {
-  .ds-h3 {
-    font-size: 0.9375rem; /* 15px on desktop */
-  }
 }
 
 /* Brand Name ("ALEJANDRO OROPEZA") — Same Display Title Style (Jost Medium 500, Uppercase) */
@@ -241,11 +236,11 @@ h1.ds-brand-name {
   }
 }
 
-/* Body Copy — Nunito Sans Light (300) — 16px Base */
+/* Body Copy — Nunito Sans Light (300) — 18px on mobile & desktop */
 .ds-body {
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 1rem; /* 16px */
+  font-size: 1.125rem; /* 18px */
   line-height: 1.6;
   letter-spacing: 0.012em;
   color: var(--ds-color-ink-secondary);
@@ -255,7 +250,7 @@ h1.ds-brand-name {
 .ds-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.875rem; /* 14px */
   line-height: 1.4;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -266,7 +261,7 @@ h1.ds-brand-name {
 .ds-value {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.9375rem; /* 15px */
+  font-size: 1rem; /* 16px */
   line-height: 1.4;
   letter-spacing: 0.015em;
   font-variant-numeric: tabular-nums;
@@ -374,7 +369,7 @@ h1.ds-brand-name {
   color: rgba(20, 20, 20, 0.72);
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 0.875rem; /* 14px */
+  font-size: 1rem; /* 16px */
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: none; /* Sentence case */
