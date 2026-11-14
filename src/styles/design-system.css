@@ -200,7 +200,8 @@
   border: none;
   white-space: nowrap;
   transition: opacity var(--ds-duration-fast) ease,
-              font-size 320ms var(--ds-ease-out-expo);
+              font-size 320ms var(--ds-ease-out-expo),
+              text-shadow 260ms ease;
 }
 
 /* BrandSubtitle ("PHOTO GALLERY") — Nunito Sans Light (300), All Caps, significantly smaller than brand name */
@@ -208,24 +209,27 @@
   display: block;
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.6875rem; /* 11px on desktop (vs 20px brand name) */
+  font-size: 0.9375rem; /* 15px on desktop (+4px from 11px, vs 24px brand name) */
   line-height: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-/* Desktop Top Bar Brand Name: 20px + "PHOTO GALLERY" at top scroll position, 16px (name only) in pill mode */
+/* Desktop Top Bar Brand Name: 24px + "PHOTO GALLERY" (15px) at top scroll position, 16px (name only) in pill mode */
 @media (min-width: 768px) {
   #hdr-brand-name {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    font-size: 1.25rem; /* 20px at top scroll */
+    font-size: 1.5rem; /* 24px at top scroll (+4px from 20px) */
+  }
+  .ds-header-hero #hdr-brand-name {
+    text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.16), 1px 2px 3px rgba(0, 0, 0, 0.12);
   }
   #hdr-brand-name .ds-brand-subtitle {
     margin-top: 0.25rem; /* 4px */
-    max-height: 1rem;
+    max-height: 1.5rem;
     opacity: 0.76;
     overflow: hidden;
     transition: opacity 220ms ease,
@@ -239,6 +243,7 @@
   .ds-header-frosted #hdr-brand-name,
   .ds-pill .ds-brand-name {
     font-size: 1rem; /* 16px in pill mode */
+    text-shadow: none;
   }
   .ds-header-frosted #hdr-brand-name .ds-brand-subtitle {
     max-height: 0;
@@ -248,7 +253,7 @@
   }
 }
 
-/* Mobile Home Hero Brand Title (Same style as .ds-h1 in white, 2 lines, subtle drop shadow without top gradient) */
+/* Mobile Home Hero Brand Title (2 lines + Photo Gallery subtitle, subtle drop shadow without top gradient) */
 .ds-hero-mobile-brand {
   position: absolute;
   top: 1.5rem; /* 24px (3 × 8px) */
@@ -259,7 +264,7 @@
   align-items: flex-start;
   font-family: var(--ds-font-display);
   font-weight: 400;
-  font-size: 1.75rem; /* 28px — matches .ds-h1 on mobile */
+  font-size: 2rem; /* 32px on mobile (+4px from 28px) */
   line-height: 1.15;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -268,7 +273,7 @@
   pointer-events: none;
 }
 .ds-hero-mobile-brand .ds-brand-subtitle {
-  font-size: 0.75rem; /* 12px on mobile (vs 28px brand name) */
+  font-size: 1rem; /* 16px on mobile (+4px from 12px) */
   line-height: 1.1;
   margin-top: 0.5rem; /* 8px (1 × 8px) */
   color: rgba(255, 255, 255, 0.78);
