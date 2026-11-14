@@ -659,9 +659,11 @@ def build_production(design_system_css: str, catalog: dict):
     dist_dir = ROOT_DIR / "dist"
     dist_photos_dir = dist_dir / "photos"
     dist_thumbs_dir = dist_photos_dir / "thumbs"
+    dist_showcase_dir = dist_photos_dir / "showcase"
     dist_hero_dir = dist_photos_dir / "hero"
     dist_fonts_dir = dist_dir / "fonts"
     dist_thumbs_dir.mkdir(parents=True, exist_ok=True)
+    dist_showcase_dir.mkdir(parents=True, exist_ok=True)
     dist_hero_dir.mkdir(parents=True, exist_ok=True)
     dist_fonts_dir.mkdir(parents=True, exist_ok=True)
 
@@ -680,38 +682,38 @@ def build_production(design_system_css: str, catalog: dict):
     )
     hero_ids = {hero_landscape["id"], hero_portrait["id"]}
 
-    # 1. Copy untouched full-resolution originals to dist/photos/, 1600px thumbs, & fast progressive hero JPEGs
+    def save_tier(im_src: Image.Image, dest: Path, max_dim: int, quality: int, icc):
+        tier_im = im_src.copy()
+        if max(tier_im.size) > max_dim:
+            tier_im.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+        kw = {"format": "JPEG", "quality": quality, "optimize": True, "progressive": True}
+        if icc:
+            kw["icc_profile"] = icc
+        tier_im.save(dest, **kw)
+
+    # 1. Generate 3 web tiers from hi-res originals (3000px fullscreen, 1600px showcase, 1100px grid) + hero
     for p in catalog["photos"]:
         fname = p["file"]
         src = PUBLIC_PHOTOS_DIR / "hi-res" / fname
         if not src.exists():
             src = PUBLIC_PHOTOS_DIR / fname
-        shutil.copy2(src, dist_photos_dir / fname)
 
         im = Image.open(src)
         icc = im.info.get("icc_profile")
-        thumb_im = im.copy()
-        if max(thumb_im.size) > 1600:
-            thumb_im.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
-        save_kwargs = {"format": "JPEG", "quality": 90, "optimize": True}
-        if icc:
-            save_kwargs["icc_profile"] = icc
-        thumb_im.save(dist_thumbs_dir / fname, **save_kwargs)
+
+        save_tier(im, dist_photos_dir / fname, 3000, 87, icc)
+        save_tier(im, dist_showcase_dir / fname, 1600, 85, icc)
+        save_tier(im, dist_thumbs_dir / fname, 1100, 83, icc)
 
         if p["id"] in hero_ids:
-            hero_im = im.copy()
-            max_dim = 1200 if p["id"] == hero_portrait["id"] and p.get("orientation") == "portrait" else 1920
-            if max(hero_im.size) > max_dim:
-                hero_im.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
-            hero_kwargs = {"format": "JPEG", "quality": 84, "optimize": True, "progressive": True}
-            if icc:
-                hero_kwargs["icc_profile"] = icc
-            hero_im.save(dist_hero_dir / fname, **hero_kwargs)
+            max_hero = 1200 if p["id"] == hero_portrait["id"] and p.get("orientation") == "portrait" else 1920
+            save_tier(im, dist_hero_dir / fname, max_hero, 84, icc)
 
-    # 2. Build production catalog with relative full-res, thumbnail, and fast hero paths (zero base64 overhead!)
+    # 2. Build production catalog with relative fullscreen, showcase, thumbnail, and hero paths
     prod_catalog = json.loads(json.dumps(catalog))
     for p in prod_catalog["photos"]:
         p["src"] = f"photos/{p['file']}"
+        p["showcaseSrc"] = f"photos/showcase/{p['file']}"
         p["thumbSrc"] = f"photos/thumbs/{p['file']}"
         if p["id"] in hero_ids:
             p["heroSrc"] = f"photos/hero/{p['file']}"
@@ -2232,8 +2234,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
       const token = ++detailLoadToken;
       const thumbUrl = p.thumbSrc || p.src;
-      const fullUrl = p.src;
-      const fullEntry = decodedFullCache.get(fullUrl);
+      const showcaseUrl = p.showcaseSrc || p.src;
+      const fullEntry = decodedFullCache.get(showcaseUrl);
       const thumbEntry = decodedThumbCache.get(thumbUrl);
 
       if (detailImg) {
@@ -2243,8 +2245,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
         if (fullEntry && fullEntry.ready) {
           detailImg.style.opacity = '1';
-          if (detailImg.getAttribute('src') !== fullUrl) {
-            detailImg.src = fullUrl;
+          if (detailImg.getAttribute('src') !== showcaseUrl) {
+            detailImg.src = showcaseUrl;
           }
           detailImg.dataset.photoId = p.id;
         } else if (thumbEntry && thumbEntry.ready) {
@@ -2253,10 +2255,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             detailImg.src = thumbUrl;
           }
           detailImg.dataset.photoId = p.id;
-          if (fullUrl !== thumbUrl) {
-            preloadFull(fullUrl, true).then((ok) => {
+          if (showcaseUrl !== thumbUrl) {
+            preloadFull(showcaseUrl, true).then((ok) => {
               if (ok && detailLoadToken === token) {
-                detailImg.src = fullUrl;
+                detailImg.src = showcaseUrl;
               }
             });
           }
@@ -2269,19 +2271,19 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           }
           preloadThumb(thumbUrl, true).then((ok) => {
             if (detailLoadToken !== token) return;
-            if (ok && detailImg.getAttribute('src') !== fullUrl) {
+            if (ok && detailImg.getAttribute('src') !== showcaseUrl) {
               detailImg.src = thumbUrl;
               detailImg.style.opacity = '1';
             }
-            if (fullUrl !== thumbUrl) {
-              preloadFull(fullUrl, true).then((fullOk) => {
+            if (showcaseUrl !== thumbUrl) {
+              preloadFull(showcaseUrl, true).then((fullOk) => {
                 if (fullOk && detailLoadToken === token) {
-                  detailImg.src = fullUrl;
+                  detailImg.src = showcaseUrl;
                   detailImg.style.opacity = '1';
                 }
               });
             } else if (!ok) {
-              detailImg.src = fullUrl;
+              detailImg.src = showcaseUrl;
               detailImg.style.opacity = '1';
             }
           });
@@ -2297,8 +2299,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const prevIdx = (idx - 1 + PHOTOS.length) % PHOTOS.length;
       preloadThumb(PHOTOS[nextIdx].thumbSrc || PHOTOS[nextIdx].src, true);
       preloadThumb(PHOTOS[prevIdx].thumbSrc || PHOTOS[prevIdx].src, true);
-      preloadFull(PHOTOS[nextIdx].src, false);
-      preloadFull(PHOTOS[prevIdx].src, false);
+      preloadFull(PHOTOS[nextIdx].showcaseSrc || PHOTOS[nextIdx].src, false);
+      preloadFull(PHOTOS[prevIdx].showcaseSrc || PHOTOS[prevIdx].src, false);
+      if (isVisualizerOpen) {
+        preloadFull(PHOTOS[nextIdx].src, false);
+        preloadFull(PHOTOS[prevIdx].src, false);
+      }
 
       const specRows = [
         { label: 'LOCATION & YEAR', value: p.location },
