@@ -10,8 +10,14 @@
       "heading": "Alejandro Oropeza",
       "bio": "I am a travel photographer drawn to quiet intervals and isolated subjects. Whether photographing a solitary fisherman along the Pacific shoreline, historic towers in Mexico and the United Kingdom, or wildlife pausing in stillness, my work seeks solitude even within busy environments.",
       "specs": [
-        { "label": "SUBJECTS", "value": "Architecture, Wildlife, Coastlines, Solitary Figures" },
-        { "label": "LOCATIONS", "value": "Mexico, United Kingdom, Canada, United States" }
+        {
+          "label": "SUBJECTS",
+          "value": "Architecture, Wildlife, Coastlines, Solitary Figures"
+        },
+        {
+          "label": "LOCATIONS",
+          "value": "Mexico, United Kingdom, Netherlands, Belgium, Canada, United States"
+        }
       ]
     },
     "social": {
@@ -239,6 +245,908 @@
         "price": "$280",
         "dimensions": "16 × 24 in",
         "providerUrl": "https://example.com/prints/snow-leopard"
+      }
+    },
+    {
+      "id": "chalk-cliff-margate",
+      "title": "Chalk Cliff, Margate",
+      "file": "ChalkCliff_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/11.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 250"
+      },
+      "description": "Steep white chalk cliffs rise beside dark coastal waters and weathered sea defenses along the Kent shoreline.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/chalk-cliff-margate"
+      }
+    },
+    {
+      "id": "flock-of-birds-margate",
+      "title": "Flock Over Margate",
+      "file": "FlockOfBirds_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "100 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 500"
+      },
+      "description": "A dense flock of coastal birds wheels in unison above the sea wall and winter tide.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/flock-of-birds-margate"
+      }
+    },
+    {
+      "id": "red-ship-margate",
+      "title": "Red Ship, Margate",
+      "file": "RedShip_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/10.0",
+        "shutterSpeed": "1/640s",
+        "iso": "ISO 125"
+      },
+      "description": "A weathered red vessel sits anchored against pale coastal light and calm channel waters.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/red-ship-margate"
+      }
+    },
+    {
+      "id": "seagulls-contrail-margate",
+      "title": "Seagulls & Contrail",
+      "file": "SeagullsContrail_Margate_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1250s",
+        "iso": "ISO 200"
+      },
+      "description": "Silhouetted gulls glide across an open sky bisected by a high-altitude contrail.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/seagulls-contrail-margate"
+      }
+    },
+    {
+      "id": "fisherman-cast-net",
+      "title": "Fisherman Casting Net",
+      "file": "FishermanCastNet_Acapulco_2022_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 5,
+      "location": "Acapulco, Mexico · 2022",
+      "exif": {
+        "focalLength": "45 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/40s",
+        "iso": "ISO 100"
+      },
+      "description": "Wading into the Pacific surf at dusk, a lone fisherman prepares to cast a weighted net along the shoreline.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/fisherman-cast-net"
+      }
+    },
+    {
+      "id": "airplane-iztaccihuatl",
+      "title": "Airplane & Iztaccíhuatl",
+      "file": "AirplaneAndIztaccihuatlVolcano_MexicoCity_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 5,
+      "location": "Mexico City, Mexico · 2026",
+      "exif": {
+        "focalLength": "170 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 4000"
+      },
+      "description": "A departing aircraft climbs past the snow-dusted ridge of Iztaccíhuatl volcano in crisp morning air.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/airplane-iztaccihuatl"
+      }
+    },
+    {
+      "id": "fisherman-distant-beach",
+      "title": "Distant Fisherman",
+      "file": "FishermanDistantBeach_Acapulco_2022_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 5,
+      "location": "Acapulco, Mexico · 2022",
+      "exif": {
+        "focalLength": "15 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/125s",
+        "iso": "ISO 100"
+      },
+      "description": "A solitary figure stands at the edge of a wide curving bay beneath towering evening clouds.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/fisherman-distant-beach"
+      }
+    },
+    {
+      "id": "de-kat-windmill",
+      "title": "De Kat Windmill",
+      "file": "DeKatWindmill_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "175 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 250"
+      },
+      "description": "Historic timber sails and thatched cladding of De Kat paint mill rise beside the Zaan river.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/de-kat-windmill"
+      }
+    },
+    {
+      "id": "het-jonge-schap-isolated",
+      "title": "Het Jonge Schaap",
+      "file": "HetJongeSchapIsolated_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "22 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/80s",
+        "iso": "ISO 400"
+      },
+      "description": "Framed in isolation against soft northern light, the hexagonal sawmill stands quiet along the water.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/het-jonge-schap-isolated"
+      }
+    },
+    {
+      "id": "green-gable-buildings-vertical",
+      "title": "Zaandam Green Gables",
+      "file": "GreenGableBuildingsVertical_Zaandam_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Zaandam, Netherlands · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 125"
+      },
+      "description": "Stacked traditional Zaanse timber houses create a bold geometric study in painted green facades and white trim.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/green-gable-buildings-vertical"
+      }
+    },
+    {
+      "id": "classic-jaguar-bruges",
+      "title": "Classic Jaguar, Bruges",
+      "file": "ClassicJaguarCar_Bruges_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Bruges, Belgium · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/4.5",
+        "shutterSpeed": "1/250s",
+        "iso": "ISO 1000"
+      },
+      "description": "A polished vintage Jaguar rests along a quiet cobbled street framed by medieval brick facades.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/classic-jaguar-bruges"
+      }
+    },
+    {
+      "id": "three-windmills-panorama",
+      "title": "Three Windmills Panorama",
+      "file": "ThreeWindmillsPanorama_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 7,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "70 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 200"
+      },
+      "description": "Three working historic windmills line the riverbank beneath sweeping Dutch clouds.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/three-windmills-panorama"
+      }
+    },
+    {
+      "id": "green-gable-facades",
+      "title": "Green Gable Facades",
+      "file": "GreenGableFacades_Zaandam_2023_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 7,
+      "location": "Zaandam, Netherlands · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 160"
+      },
+      "description": "A wide architectural study of Zaandam's layered green wooden gables and crisp white window frames.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/green-gable-facades"
+      }
+    },
+    {
+      "id": "conveyor-pier-silhouette",
+      "title": "Conveyor Pier Silhouette",
+      "file": "ConveyorPierSilhouette_OldPortOfMontreal_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 7,
+      "location": "Old Port of Montreal, Canada · 2019",
+      "exif": {
+        "focalLength": "24 mm",
+        "aperture": "f/10.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 200"
+      },
+      "description": "Industrial grain conveyor towers cast stark silhouettes against the winter twilight sky.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/conveyor-pier-silhouette"
+      }
+    },
+    {
+      "id": "red-deer-stag-profile",
+      "title": "Red Deer Stag Profile",
+      "file": "RedDeerStagProfile_RichmondPark_2025_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 8,
+      "location": "Richmond Park, London · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 250"
+      },
+      "description": "Turned in calm side profile, a mature red deer stag pauses among tall autumn ferns.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/red-deer-stag-profile"
+      }
+    },
+    {
+      "id": "red-deer-stag-silhouette",
+      "title": "Red Deer Stag Silhouette",
+      "file": "RedDeerStagSilhouette_RichmondPark_2025_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 8,
+      "location": "Richmond Park, London · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 200"
+      },
+      "description": "Backlit in low golden light, the silhouette of a crowned stag stands motionless on the ridge.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/red-deer-stag-silhouette"
+      }
+    },
+    {
+      "id": "cormorant-london",
+      "title": "Cormorant",
+      "file": "Cormorant_London_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 8,
+      "location": "London, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1600s",
+        "iso": "ISO 125"
+      },
+      "description": "A great cormorant perches alertly above dark still water, catching crisp winter light on its plumage.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/cormorant-london"
+      }
+    },
+    {
+      "id": "greylag-goose-painshill",
+      "title": "Greylag Goose",
+      "file": "GreylagGoose_PainshillPark_2026_AOropeza.jpeg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 8,
+      "location": "Painshill Park, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1250s",
+        "iso": "ISO 1000"
+      },
+      "description": "A greylag goose glides across shaded parkland water, framed in quiet solitude.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/greylag-goose-painshill"
+      }
+    },
+    {
+      "id": "canada-goose-painshill",
+      "title": "Canada Goose",
+      "file": "CanadaGoose_PainshillPark_2026_AOropeza.JPG",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 9,
+      "location": "Painshill Park, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 640"
+      },
+      "description": "Low across the lake at Painshill Park, a Canada goose leaves gentle ripples across dark reflections.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/canada-goose-painshill"
+      }
+    },
+    {
+      "id": "pyramid-of-the-magician",
+      "title": "Pyramid of the Magician",
+      "file": "PyramidOfTheMagician_Uxmal_2022_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 9,
+      "location": "Uxmal, Yucatán, Mexico · 2022",
+      "exif": {
+        "focalLength": "45 mm",
+        "aperture": "f/10.0",
+        "shutterSpeed": "1/320s",
+        "iso": "ISO 100"
+      },
+      "description": "Rising steeply above the limestone plaza, the rounded Maya stonework of Uxmal catches warm afternoon light.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/pyramid-of-the-magician"
+      }
+    },
+    {
+      "id": "egyptian-goose-london",
+      "title": "Egyptian Goose",
+      "file": "EgyptianGoose_London_2025_Master_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 9,
+      "location": "London, UK · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 125"
+      },
+      "description": "An Egyptian goose pauses along the water's edge, its warm chestnut markings standing out against muted reeds.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/egyptian-goose-london"
+      }
+    },
+    {
+      "id": "liverpool-town-hall",
+      "title": "Liverpool Town Hall",
+      "file": "LiverpoolTownHall_Liverpool_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 10,
+      "location": "Liverpool, UK · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/14.0",
+        "shutterSpeed": "1/80s",
+        "iso": "ISO 640"
+      },
+      "description": "Neoclassical columns and the domed cupola of Liverpool Town Hall rise above quiet morning streets.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/liverpool-town-hall"
+      }
+    },
+    {
+      "id": "mathew-street-beatles",
+      "title": "Mathew Street Banner",
+      "file": "MathewStreetTheBeatlesBanner_Liverpool_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 10,
+      "location": "Liverpool, UK · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/80s",
+        "iso": "ISO 250"
+      },
+      "description": "Looking down historic Mathew Street in Liverpool, brick facades frame a tribute to The Beatles.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/mathew-street-beatles"
+      }
+    },
+    {
+      "id": "edisons-red-lion-pub",
+      "title": "Red Lion Pub, Southampton",
+      "file": "EdisonsAndRedLionPub_Southampton_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 10,
+      "location": "Southampton, UK · 2023",
+      "exif": {
+        "focalLength": "22 mm",
+        "aperture": "f/2.0",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 125"
+      },
+      "description": "Warm glowing Edison bulbs illuminate the timbered Tudor facade of the historic Red Lion Pub.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/edisons-red-lion-pub"
+      }
+    },
+    {
+      "id": "skybridge-manhattan",
+      "title": "Manhattan Skybridge",
+      "file": "Skybridge_Manhattan_2019_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 10,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "70 mm",
+        "aperture": "f/4.0",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 1000"
+      },
+      "description": "Suspended high between brick and stone towers, an arched Manhattan skybridge frames the narrow canyon below.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/skybridge-manhattan"
+      }
+    },
+    {
+      "id": "mountain-peak-nevado",
+      "title": "Nevado de Toluca",
+      "file": "MountainPeak_NevadoDeToluca_2020_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 11,
+      "location": "Nevado de Toluca, Mexico · 2020",
+      "exif": {
+        "focalLength": "70 mm",
+        "aperture": "f/16.0",
+        "shutterSpeed": "1/30s",
+        "iso": "ISO 100"
+      },
+      "description": "Jagged volcanic peaks emerge above drifting high-altitude clouds in the crisp first light of dawn.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/mountain-peak-nevado"
+      }
+    },
+    {
+      "id": "het-jonge-schap-tourists",
+      "title": "Het Jonge Schaap Dock",
+      "file": "HetJongeSchapDockTourists_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 11,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/11.0",
+        "shutterSpeed": "1/200s",
+        "iso": "ISO 800"
+      },
+      "description": "Distant figures along the wooden dock provide scale beneath the towering sails of the sawmill.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/het-jonge-schap-tourists"
+      }
+    },
+    {
+      "id": "sunrise-silhouette-mexico",
+      "title": "Mexico City Sunrise",
+      "file": "SunriseSilhouette_MexicoCity_2020_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 11,
+      "location": "Mexico City, Mexico · 2020",
+      "exif": {
+        "focalLength": "300 mm",
+        "aperture": "f/20.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 160"
+      },
+      "description": "Layered city silhouettes and distant ridges glow against a warm amber sunrise.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/sunrise-silhouette-mexico"
+      }
+    },
+    {
+      "id": "bee-on-lavender",
+      "title": "Bee on Lavender",
+      "file": "BeeOnLavender_MexicoCity_2025_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 12,
+      "location": "Mexico City, Mexico · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 250"
+      },
+      "description": "A honeybee gathers nectar from a purple lavender spike against a soft green garden bokeh.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/bee-on-lavender"
+      }
+    },
+    {
+      "id": "ladybug-margate",
+      "title": "Ladybug",
+      "file": "Ladybug_Margate_2026_IG_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 12,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1600s",
+        "iso": "ISO 400"
+      },
+      "description": "A crimson seven-spotted ladybug rests on a sunlit blade of coastal grass.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/ladybug-margate"
+      }
+    },
+    {
+      "id": "herring-gull-margate",
+      "title": "Herring Gull",
+      "file": "HerringGull_Margate_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 12,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/2000s",
+        "iso": "ISO 100"
+      },
+      "description": "A herring gull stands alert in profile against pale sea haze on the Kent coast.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/herring-gull-margate"
+      }
+    },
+    {
+      "id": "seagull-on-chimney",
+      "title": "Seagull on Chimney",
+      "file": "SeagullOnChimney_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 12,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 250"
+      },
+      "description": "Perched atop a weathered brick chimney pot, a lone seagull surveys the rooftops of Margate.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/seagull-on-chimney"
+      }
+    },
+    {
+      "id": "red-deer-stag-ferns",
+      "title": "Stag in Autumn Ferns",
+      "file": "RedDeerStagFerns_RichmondPark_2025_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 13,
+      "location": "Richmond Park, London · 2025",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 320"
+      },
+      "description": "A red deer stag moves quietly through golden-green bracken in the morning mist of Richmond Park.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/red-deer-stag-ferns"
+      }
+    },
+    {
+      "id": "fisherman-and-hotels",
+      "title": "Fisherman & Shoreline",
+      "file": "FishermanAndHotels_Acapulco_2022_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 13,
+      "location": "Acapulco, Mexico · 2022",
+      "exif": {
+        "focalLength": "45 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/60s",
+        "iso": "ISO 100"
+      },
+      "description": "Distant shoreline lights glow faintly behind a lone fisherman standing at the edge of the evening tide.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/fisherman-and-hotels"
+      }
+    },
+    {
+      "id": "mute-swan-preening",
+      "title": "Mute Swan Preening",
+      "file": "MuteSwanPreening_London_2025_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 13,
+      "location": "London, UK · 2025",
+      "exif": {
+        "focalLength": "151 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/640s",
+        "iso": "ISO 200"
+      },
+      "description": "A mute swan curves its neck to preen, its white feathers luminous against dark shaded water.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/mute-swan-preening"
+      }
+    },
+    {
+      "id": "mallard-ducks-london",
+      "title": "Mallard Ducks, London",
+      "file": "MallardDucks_London_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 14,
+      "location": "London, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 500"
+      },
+      "description": "A pair of mallards glides through dark reflective water speckled with winter light.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/mallard-ducks-london"
+      }
+    },
+    {
+      "id": "mallard-ducks-painshill",
+      "title": "Mallard Ducks, Painshill",
+      "file": "MallardDucks_PainshillPark_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 14,
+      "location": "Painshill Park, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1000s",
+        "iso": "ISO 500"
+      },
+      "description": "Mallard ducks rest quietly along the calm surface of Painshill lake.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/mallard-ducks-painshill"
+      }
+    },
+    {
+      "id": "gray-squirrel-liverpool",
+      "title": "Gray Squirrel",
+      "file": "GraySquirrel_Liverpool_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 14,
+      "location": "Liverpool, UK · 2023",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 4000"
+      },
+      "description": "A gray squirrel pauses attentively on mossy ground, framed by soft woodland shadows.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/gray-squirrel-liverpool"
+      }
+    },
+    {
+      "id": "het-jonge-schap-windmill",
+      "title": "Het Jonge Schaap Sails",
+      "file": "HetJongeSchapWindmill_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 14,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 320"
+      },
+      "description": "A tight architectural frame of the wooden windmill sails and weathered timber body.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/het-jonge-schap-windmill"
+      }
+    },
+    {
+      "id": "hot-dog-stand-west-34th",
+      "title": "West 34th Street Stand",
+      "file": "HotDogStand_West34thStreet_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 15,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "15 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/10s",
+        "iso": "ISO 160"
+      },
+      "description": "A classic New York street vendor stand glows under evening streetlights along West 34th Street.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/hot-dog-stand-west-34th"
+      }
+    },
+    {
+      "id": "floating-dock-montreal",
+      "title": "Floating Dock, Montreal",
+      "file": "FloatingDock_OldPortOfMontreal_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 15,
+      "location": "Old Port of Montreal, Canada · 2019",
+      "exif": {
+        "focalLength": "15 mm",
+        "aperture": "f/10.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 800"
+      },
+      "description": "Ice-rimmed river water surrounds a quiet floating dock in the Old Port of Montreal.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/floating-dock-montreal"
       }
     }
   ]

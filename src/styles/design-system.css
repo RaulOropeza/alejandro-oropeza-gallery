@@ -202,9 +202,11 @@
 }
 
 /* Brand Name ("ALEJANDRO OROPEZA") — Same Display Title Style (Jost Medium 500, Uppercase) */
-.ds-brand-name {
+.ds-brand-name:not(.hidden) {
   display: inline-flex;
   align-items: center;
+}
+.ds-brand-name {
   font-family: var(--ds-font-display);
   font-weight: 500;
   font-size: 1.125rem; /* 18px default (e.g. footer / About Me) */
