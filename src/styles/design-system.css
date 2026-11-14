@@ -332,17 +332,22 @@ h1.ds-brand-name {
   position: absolute;
   left: 50%;
   right: auto;
-  bottom: 5.5rem; /* 88px (11 × 8px) — centered cleanly above larger View gallery signifier on mobile */
+  bottom: 5.75rem; /* 92px (+4px higher above View gallery signifier on mobile) */
   transform: translateX(-50%);
   text-align: center;
   white-space: nowrap;
   font-family: var(--ds-font-sans);
   font-weight: 300;
-  font-size: 0.75rem; /* 12px on all devices */
+  font-size: 0.875rem; /* 14px on all devices (+2px from 12px) */
   line-height: 1;
   letter-spacing: 0.05em;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.44);
+  opacity: 1;
+  transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ds-hero-tech.is-hidden {
+  opacity: 0;
 }
 @media (min-width: 768px) {
   .ds-hero-tech {

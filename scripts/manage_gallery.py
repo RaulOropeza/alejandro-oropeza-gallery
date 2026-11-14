@@ -1246,6 +1246,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
 
         const scrollCue = document.getElementById('hero-scroll-cue');
         if (scrollCue) scrollCue.classList.toggle('is-hidden', scrolled);
+        const heroTech = document.getElementById('hero-tech-details');
+        if (heroTech) heroTech.classList.toggle('is-hidden', scrolled);
 
         if (!scrolled) {
           if (currentView === 'gallery') {
