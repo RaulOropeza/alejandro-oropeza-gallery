@@ -10,6 +10,8 @@
   <meta name="description" content="Alejandro Oropeza — Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
     <link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" href="photos/hero/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg" media="(max-width: 767px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="photos/hero/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" media="(min-width: 768px)" fetchpriority="high" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="canonical" href="https://alejandrooropeza.com/" />
   <!-- Open Graph / Social Sharing Metadata -->
@@ -23,7 +25,167 @@
   <meta name="twitter:title" content="Alejandro Oropeza — Photo gallery" />
   <meta name="twitter:description" content="Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
   <meta name="twitter:image" content="photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" />
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+    <style>
+/* Precompiled Tailwind Utilities (eliminates render-blocking external JIT script) */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e5e7eb; }
+button, input, select, textarea { font-family: inherit; color: inherit; margin: 0; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+
+.hidden { display: none; }
+.block { display: block; }
+.flex { display: flex; }
+.grid { display: grid; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.shrink-0 { flex-shrink: 0; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.content-center { align-content: center; }
+.self-center { align-self: center; }
+.justify-self-start { justify-self: start; }
+.justify-self-center { justify-self: center; }
+.justify-self-end { justify-self: end; }
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-\[1fr_auto_1fr\] { grid-template-columns: 1fr auto 1fr; }
+
+.gap-1\.5 { gap: 0.375rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-2\.5 { gap: 0.625rem; }
+.gap-3 { gap: 0.75rem; }
+.space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
+.space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+.space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { inset: 0; }
+.inset-x-0 { left: 0; right: 0; }
+.top-0 { top: 0; }
+.left-0 { left: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.bottom-4 { bottom: 1rem; }
+.left-1\/2 { left: 50%; }
+.-translate-x-1\/2 { transform: translateX(-50%); }
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-0\.5 { margin-top: 0.125rem; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-12 { margin-top: 3rem; }
+.mb-2\.5 { margin-bottom: 0.625rem; }
+.mb-16 { margin-bottom: 4rem; }
+
+.p-2\.5 { padding: 0.625rem; }
+.p-3\.5 { padding: 0.875rem; }
+.p-4 { padding: 1rem; }
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+.px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.pt-3 { padding-top: 0.75rem; }
+.pt-4 { padding-top: 1rem; }
+.pt-16 { padding-top: 4rem; }
+.pt-24 { padding-top: 6rem; }
+.pb-3 { padding-bottom: 0.75rem; }
+.pb-3\.5 { padding-bottom: 0.875rem; }
+.pb-4 { padding-bottom: 1rem; }
+.pb-16 { padding-bottom: 4rem; }
+
+.w-10 { width: 2.5rem; }
+.w-full { width: 100%; }
+.h-10 { height: 2.5rem; }
+.h-32 { height: 8rem; }
+.h-36 { height: 9rem; }
+.h-48 { height: 12rem; }
+.h-full { height: 100%; }
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-full { max-width: 100%; }
+.max-w-\[calc\(100vw-2rem\)\] { max-width: calc(100vw - 2rem); }
+.max-h-full { max-height: 100%; }
+
+.object-cover { object-fit: cover; }
+.object-contain { object-fit: contain; }
+.object-center { object-position: center; }
+.overflow-hidden { overflow: hidden; }
+
+.border { border-width: 1px; }
+.border-t { border-top-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+.border-\[var\(--border\)\] { border-color: var(--border); }
+.border-\[var\(--ds-color-border\)\] { border-color: var(--ds-color-border); }
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-t-xl { border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.bg-\[var\(--card\)\] { background-color: var(--card); }
+.bg-\[var\(--primary\)\] { background-color: var(--primary); }
+.bg-\[var\(--secondary\)\] { background-color: var(--secondary); }
+.text-\[var\(--muted-foreground\)\] { color: var(--muted-foreground); }
+.text-\[var\(--primary-foreground\)\] { color: var(--primary-foreground); }
+.text-\[var\(--secondary-foreground\)\] { color: var(--secondary-foreground); }
+.text-neutral-500 { color: #737373; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-\[10px\] { font-size: 10px; }
+.font-medium { font-weight: 500; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.whitespace-nowrap { white-space: nowrap; }
+
+.cursor-pointer { cursor: pointer; }
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+.transition-colors { transition-property: color, background-color, border-color; transition-duration: 150ms; }
+.transition-opacity { transition-property: opacity; transition-duration: 150ms; }
+.hover\:opacity-75:hover { opacity: 0.75; }
+.hover\:opacity-90:hover { opacity: 0.9; }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sm\:h-52 { height: 13rem; }
+  .sm\:h-56 { height: 14rem; }
+  .sm\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+}
+
+@media (min-width: 768px) {
+  .md\:hidden { display: none; }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .md\:h-60 { height: 15rem; }
+  .md\:h-64 { height: 16rem; }
+  .md\:max-w-none { max-width: none; }
+  .md\:mt-6 { margin-top: 1.5rem; }
+  .md\:mt-16 { margin-top: 4rem; }
+  .md\:mb-20 { margin-bottom: 5rem; }
+  .md\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .md\:pt-20 { padding-top: 5rem; }
+  .md\:pb-24 { padding-bottom: 6rem; }
+}
+
+  </style>
   <style>
 /* ============================================================================
    ALEJANDRO OROPEZA — PHOTO GALLERY DESIGN SYSTEM (design-system.css)
@@ -1740,8 +1902,8 @@ h1.ds-brand-name {
       <!-- Full-Viewport-Height Main Image: Non-clickable, responsive picture (portrait photo on mobile, landscape on desktop) -->
       <section id="hero-banner" class="relative w-full ds-viewport-height overflow-hidden" style="background-color: var(--ds-color-ink-primary);">
         <picture id="hero-picture" class="w-full h-full block">
-          <source id="hero-source-mobile" media="(max-width: 767px)" srcset="photos/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg" />
-          <img id="hero-featured-img" src="photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
+          <source id="hero-source-mobile" media="(max-width: 767px)" srcset="photos/hero/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg" />
+          <img id="hero-featured-img" src="photos/hero/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" fetchpriority="high" decoding="async" alt="Featured Photograph" class="w-full h-full object-cover object-center pointer-events-none" />
         </picture>
         <div class="ds-hero-mobile-brand md:hidden" aria-hidden="true">
           <span>Alejandro</span>
@@ -2177,7 +2339,7 @@ h1.ds-brand-name {
   </div>
 
   <script>
-    const CATALOG = {"site": {"title": "Alejandro Oropeza", "subtitle": "Photo gallery", "heroPhotoId": "fisherman-acapulco", "introHeading": "Explore the gallery", "introDescription": "Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation. Click any photograph to view full frame and technical camera details.", "about": {"kicker": "ABOUT ME", "heading": "Alejandro Oropeza", "bio": "I am a travel photographer drawn to quiet intervals and isolated subjects. Whether photographing a solitary fisherman along the Pacific shoreline, historic towers in Mexico and the United Kingdom, or wildlife pausing in stillness, my work seeks solitude even within busy environments.", "specs": [{"label": "SUBJECTS", "value": "Architecture, Wildlife, Coastlines, Solitary Figures"}, {"label": "LOCATIONS", "value": "Mexico, United Kingdom, Canada, United States"}]}, "social": {"instagram": "https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&mdxt=ZDNlZDc0MzIxNw==", "fiveHundredPx": "https://500px.com/user/R6dqvyPxtGm"}, "printShopGlobalEnabled": false}, "photos": [{"id": "fisherman-acapulco", "title": "Fisherman on Shoreline", "file": "FishermanOnShoreline_Acapulco_2022_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 1, "location": "Acapulco, Mexico · 2022", "exif": {"focalLength": "15 mm", "aperture": "f/13.0", "shutterSpeed": "1/50s", "iso": "ISO 100"}, "description": "A lone fisherman walks along the wet reflective shoreline at dusk as Pacific waves roll in beneath a vast, cloud-layered sky in Acapulco.", "print": {"enabled": false, "price": "$240", "dimensions": "18 × 27 in", "providerUrl": "https://example.com/prints/fisherman-acapulco"}, "src": "photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg", "thumbSrc": "photos/thumbs/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg"}, {"id": "perch-rock-lighthouse", "title": "Perch Rock Lighthouse", "file": "PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 1, "location": "New Brighton, UK · 2023", "exif": {"focalLength": "55 mm", "aperture": "f/4.5", "shutterSpeed": "1/400s", "iso": "ISO 250"}, "description": "Standing isolated where the River Mersey meets Liverpool Bay, Perch Rock Lighthouse rises above rippled low-tide sandbars under a quiet overcast sky.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/perch-rock-lighthouse"}, "src": "photos/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg", "thumbSrc": "photos/thumbs/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg"}, {"id": "la-grande-roue", "title": "La Grande Roue", "file": "FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 1, "location": "Old Port of Montreal, Canada · 2019", "exif": {"focalLength": "28 mm", "aperture": "f/5.6", "shutterSpeed": "1/125s", "iso": "ISO 400"}, "description": "Framed down the center of an empty, frost-dusted wooden pier at dusk, the observation wheel stands still against a clear winter twilight gradient.", "print": {"enabled": false, "price": "$280", "dimensions": "20 × 30 in", "providerUrl": "https://example.com/prints/la-grande-roue"}, "src": "photos/FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg"}, {"id": "elizabeth-tower", "title": "Elizabeth Tower", "file": "BigBenElizabethTower_London_2025_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "London, UK · 2025", "exif": {"focalLength": "200 mm", "aperture": "f/7.1", "shutterSpeed": "1/1000s", "iso": "ISO 160"}, "description": "Isolated against brooding slate clouds, crisp afternoon sunlight catches the intricate Neo-Gothic stonework and clock face of Big Ben.", "print": {"enabled": false, "price": "$260", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/elizabeth-tower"}, "src": "photos/BigBenElizabethTower_London_2025_AOropeza.jpg", "thumbSrc": "photos/thumbs/BigBenElizabethTower_London_2025_AOropeza.jpg"}, {"id": "mute-swan", "title": "Mute Swan", "file": "MuteSwanDipping_London_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "London, UK · 2026", "exif": {"focalLength": "300 mm", "aperture": "f/5.6", "shutterSpeed": "1/1250s", "iso": "ISO 320"}, "description": "A close portrait of a mute swan against dark rippled water, freezing a delicate arc of falling water droplets mid-air.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/mute-swan"}, "src": "photos/MuteSwanDipping_London_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/MuteSwanDipping_London_2026_AOropeza.jpg"}, {"id": "nuestra-senora-tower", "title": "Nuestra Señora de los Ángeles", "file": "NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "León, Guanajuato, Mexico · 2026", "exif": {"focalLength": "150 mm", "aperture": "f/8.0", "shutterSpeed": "1/800s", "iso": "ISO 100"}, "description": "Warm late-afternoon light illuminates the baroque spire and ornate iron weathervane rising in isolation against soft clouds.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/nuestra-senora-tower"}, "src": "photos/NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg"}, {"id": "margate-cliffs", "title": "Beach & Chalk Cliffs", "file": "BeachAndCliffs_Margate_UK_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "Margate, UK · 2026", "exif": {"focalLength": "85 mm", "aperture": "f/9.0", "shutterSpeed": "1/800s", "iso": "ISO 100"}, "description": "Weathered white chalk sea stacks meet deep channel waters and wide sand along the Kent coastline, with distant figures emphasizing the scale of the shore.", "print": {"enabled": false, "price": "$220", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/margate-cliffs"}, "src": "photos/BeachAndCliffs_Margate_UK_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/BeachAndCliffs_Margate_UK_2026_AOropeza.jpg"}, {"id": "red-deer-stag", "title": "Red Deer Stag", "file": "RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 3, "location": "Richmond Park, London · 2025", "exif": {"focalLength": "250 mm", "aperture": "f/5.6", "shutterSpeed": "1/1000s", "iso": "ISO 250"}, "description": "A solitary red deer stag crowned with velvet antlers stands waist-deep in sunlit green bracken.", "print": {"enabled": false, "price": "$260", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/red-deer-stag"}, "src": "photos/RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg", "thumbSrc": "photos/thumbs/RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg"}, {"id": "brooklyn-bridge-symmetry", "title": "Brooklyn Bridge Symmetry", "file": "BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 3, "location": "New York City, USA · 2019", "exif": {"focalLength": "24 mm", "aperture": "f/8.0", "shutterSpeed": "1/250s", "iso": "ISO 250"}, "description": "Diagonal steel suspension cables converge toward the Neo-Gothic granite tower along a wet, snow-edged boardwalk on an overcast winter morning.", "print": {"enabled": false, "price": "$300", "dimensions": "20 × 30 in", "providerUrl": "https://example.com/prints/brooklyn-bridge-symmetry"}, "src": "photos/BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg"}, {"id": "snow-leopard", "title": "Snow Leopard", "file": "SnowLeopard_NewYork_2019_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 3, "location": "New York, USA · 2019", "exif": {"focalLength": "300 mm", "aperture": "f/4.5", "shutterSpeed": "1/800s", "iso": "ISO 500"}, "description": "Tightly framed against soft out-of-focus foliage, a solitary snow leopard rests in quiet contemplation.", "print": {"enabled": false, "price": "$280", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/snow-leopard"}, "src": "photos/SnowLeopard_NewYork_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/SnowLeopard_NewYork_2019_AOropeza.jpg"}]};
+    const CATALOG = {"site": {"title": "Alejandro Oropeza", "subtitle": "Photo gallery", "heroPhotoId": "fisherman-acapulco", "introHeading": "Explore the gallery", "introDescription": "Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation. Click any photograph to view full frame and technical camera details.", "about": {"kicker": "ABOUT ME", "heading": "Alejandro Oropeza", "bio": "I am a travel photographer drawn to quiet intervals and isolated subjects. Whether photographing a solitary fisherman along the Pacific shoreline, historic towers in Mexico and the United Kingdom, or wildlife pausing in stillness, my work seeks solitude even within busy environments.", "specs": [{"label": "SUBJECTS", "value": "Architecture, Wildlife, Coastlines, Solitary Figures"}, {"label": "LOCATIONS", "value": "Mexico, United Kingdom, Canada, United States"}]}, "social": {"instagram": "https://www.instagram.com/alejandroropeza.photo?utm_source=ig_web_button_share_sheet&mdxt=ZDNlZDc0MzIxNw==", "fiveHundredPx": "https://500px.com/user/R6dqvyPxtGm"}, "printShopGlobalEnabled": false}, "photos": [{"id": "fisherman-acapulco", "title": "Fisherman on Shoreline", "file": "FishermanOnShoreline_Acapulco_2022_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 1, "location": "Acapulco, Mexico · 2022", "exif": {"focalLength": "15 mm", "aperture": "f/13.0", "shutterSpeed": "1/50s", "iso": "ISO 100"}, "description": "A lone fisherman walks along the wet reflective shoreline at dusk as Pacific waves roll in beneath a vast, cloud-layered sky in Acapulco.", "print": {"enabled": false, "price": "$240", "dimensions": "18 × 27 in", "providerUrl": "https://example.com/prints/fisherman-acapulco"}, "src": "photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg", "thumbSrc": "photos/thumbs/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg", "heroSrc": "photos/hero/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg"}, {"id": "perch-rock-lighthouse", "title": "Perch Rock Lighthouse", "file": "PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 1, "location": "New Brighton, UK · 2023", "exif": {"focalLength": "55 mm", "aperture": "f/4.5", "shutterSpeed": "1/400s", "iso": "ISO 250"}, "description": "Standing isolated where the River Mersey meets Liverpool Bay, Perch Rock Lighthouse rises above rippled low-tide sandbars under a quiet overcast sky.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/perch-rock-lighthouse"}, "src": "photos/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg", "thumbSrc": "photos/thumbs/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg", "heroSrc": "photos/hero/PerchRockLighthouse_NewBrighton_2023_AOropeza.jpg"}, {"id": "la-grande-roue", "title": "La Grande Roue", "file": "FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 1, "location": "Old Port of Montreal, Canada · 2019", "exif": {"focalLength": "28 mm", "aperture": "f/5.6", "shutterSpeed": "1/125s", "iso": "ISO 400"}, "description": "Framed down the center of an empty, frost-dusted wooden pier at dusk, the observation wheel stands still against a clear winter twilight gradient.", "print": {"enabled": false, "price": "$280", "dimensions": "20 × 30 in", "providerUrl": "https://example.com/prints/la-grande-roue"}, "src": "photos/FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg"}, {"id": "elizabeth-tower", "title": "Elizabeth Tower", "file": "BigBenElizabethTower_London_2025_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "London, UK · 2025", "exif": {"focalLength": "200 mm", "aperture": "f/7.1", "shutterSpeed": "1/1000s", "iso": "ISO 160"}, "description": "Isolated against brooding slate clouds, crisp afternoon sunlight catches the intricate Neo-Gothic stonework and clock face of Big Ben.", "print": {"enabled": false, "price": "$260", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/elizabeth-tower"}, "src": "photos/BigBenElizabethTower_London_2025_AOropeza.jpg", "thumbSrc": "photos/thumbs/BigBenElizabethTower_London_2025_AOropeza.jpg"}, {"id": "mute-swan", "title": "Mute Swan", "file": "MuteSwanDipping_London_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "London, UK · 2026", "exif": {"focalLength": "300 mm", "aperture": "f/5.6", "shutterSpeed": "1/1250s", "iso": "ISO 320"}, "description": "A close portrait of a mute swan against dark rippled water, freezing a delicate arc of falling water droplets mid-air.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/mute-swan"}, "src": "photos/MuteSwanDipping_London_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/MuteSwanDipping_London_2026_AOropeza.jpg"}, {"id": "nuestra-senora-tower", "title": "Nuestra Señora de los Ángeles", "file": "NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "León, Guanajuato, Mexico · 2026", "exif": {"focalLength": "150 mm", "aperture": "f/8.0", "shutterSpeed": "1/800s", "iso": "ISO 100"}, "description": "Warm late-afternoon light illuminates the baroque spire and ornate iron weathervane rising in isolation against soft clouds.", "print": {"enabled": false, "price": "$240", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/nuestra-senora-tower"}, "src": "photos/NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg"}, {"id": "margate-cliffs", "title": "Beach & Chalk Cliffs", "file": "BeachAndCliffs_Margate_UK_2026_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 2, "location": "Margate, UK · 2026", "exif": {"focalLength": "85 mm", "aperture": "f/9.0", "shutterSpeed": "1/800s", "iso": "ISO 100"}, "description": "Weathered white chalk sea stacks meet deep channel waters and wide sand along the Kent coastline, with distant figures emphasizing the scale of the shore.", "print": {"enabled": false, "price": "$220", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/margate-cliffs"}, "src": "photos/BeachAndCliffs_Margate_UK_2026_AOropeza.jpg", "thumbSrc": "photos/thumbs/BeachAndCliffs_Margate_UK_2026_AOropeza.jpg"}, {"id": "red-deer-stag", "title": "Red Deer Stag", "file": "RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 3, "location": "Richmond Park, London · 2025", "exif": {"focalLength": "250 mm", "aperture": "f/5.6", "shutterSpeed": "1/1000s", "iso": "ISO 250"}, "description": "A solitary red deer stag crowned with velvet antlers stands waist-deep in sunlit green bracken.", "print": {"enabled": false, "price": "$260", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/red-deer-stag"}, "src": "photos/RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg", "thumbSrc": "photos/thumbs/RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg"}, {"id": "brooklyn-bridge-symmetry", "title": "Brooklyn Bridge Symmetry", "file": "BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg", "orientation": "landscape", "aspectRatio": 1.5, "row": 3, "location": "New York City, USA · 2019", "exif": {"focalLength": "24 mm", "aperture": "f/8.0", "shutterSpeed": "1/250s", "iso": "ISO 250"}, "description": "Diagonal steel suspension cables converge toward the Neo-Gothic granite tower along a wet, snow-edged boardwalk on an overcast winter morning.", "print": {"enabled": false, "price": "$300", "dimensions": "20 × 30 in", "providerUrl": "https://example.com/prints/brooklyn-bridge-symmetry"}, "src": "photos/BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg"}, {"id": "snow-leopard", "title": "Snow Leopard", "file": "SnowLeopard_NewYork_2019_AOropeza.jpg", "orientation": "portrait", "aspectRatio": 0.667, "row": 3, "location": "New York, USA · 2019", "exif": {"focalLength": "300 mm", "aperture": "f/4.5", "shutterSpeed": "1/800s", "iso": "ISO 500"}, "description": "Tightly framed against soft out-of-focus foliage, a solitary snow leopard rests in quiet contemplation.", "print": {"enabled": false, "price": "$280", "dimensions": "16 × 24 in", "providerUrl": "https://example.com/prints/snow-leopard"}, "src": "photos/SnowLeopard_NewYork_2019_AOropeza.jpg", "thumbSrc": "photos/thumbs/SnowLeopard_NewYork_2019_AOropeza.jpg"}]};
     const PHOTOS = CATALOG.photos;
 
     let currentIdx = 0;
@@ -2317,11 +2479,13 @@ h1.ds-brand-name {
     function renderGallery() {
       const heroMobileSource = document.getElementById('hero-source-mobile');
       const heroFeaturedImg = document.getElementById('hero-featured-img');
-      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== heroPortrait.src) {
-        heroMobileSource.srcset = heroPortrait.src;
+      const mobileHeroUrl = heroPortrait.heroSrc || heroPortrait.src;
+      const desktopHeroUrl = heroLandscape.heroSrc || heroLandscape.src;
+      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== mobileHeroUrl) {
+        heroMobileSource.srcset = mobileHeroUrl;
       }
-      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== heroLandscape.src) {
-        heroFeaturedImg.src = heroLandscape.src;
+      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== desktopHeroUrl) {
+        heroFeaturedImg.src = desktopHeroUrl;
       }
       updateHeroForViewport();
 

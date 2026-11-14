@@ -184,6 +184,8 @@ DEV_SWITCHER_BAR = """  <!-- ===================================================
 
 PROD_EXTRA_HEAD = """  <link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" href="__HERO_MOBILE_SRCSET__" media="(max-width: 767px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="__HERO_DESKTOP_SRC__" media="(min-width: 768px)" fetchpriority="high" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="canonical" href="https://alejandrooropeza.com/" />
   <!-- Open Graph / Social Sharing Metadata -->
@@ -615,6 +617,12 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
                     f"data:font/woff2;base64,{b64_font}",
                 )
 
+    tw_path = ROOT_DIR / "src" / "styles" / "tailwind-compiled.css"
+    if tw_path.exists():
+        tailwind_head = f"  <style>\n{tw_path.read_text(encoding='utf-8')}\n  </style>"
+    else:
+        tailwind_head = '  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>'
+
     hero_landscape = next(
         (p for p in catalog["photos"] if p["id"] == catalog["site"].get("heroPhotoId")),
         catalog["photos"][0],
@@ -623,14 +631,18 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
         (p for p in catalog["photos"] if p.get("orientation") == "portrait"),
         hero_landscape,
     )
+    hero_mobile_src = hero_portrait.get("heroSrc") or hero_portrait.get("src", "")
+    hero_desktop_src = hero_landscape.get("heroSrc") or hero_landscape.get("src", "")
 
     html = HTML_BASE_TEMPLATE
     for token, rendered in build_button_instances(catalog).items():
         html = html.replace(token, rendered)
+    html = html.replace("<!-- __EXTRA_HEAD__ -->", extra_head)
+    html = html.replace("<!-- __TAILWIND_HEAD__ -->", tailwind_head)
     html = html.replace("/* __DESIGN_SYSTEM_CSS__ */", effective_css)
     html = html.replace("__CATALOG_JSON__", json.dumps(catalog, ensure_ascii=False))
-    html = html.replace("__HERO_MOBILE_SRCSET__", hero_portrait.get("src", ""))
-    html = html.replace("__HERO_DESKTOP_SRC__", hero_landscape.get("src", ""))
+    html = html.replace("__HERO_MOBILE_SRCSET__", hero_mobile_src)
+    html = html.replace("__HERO_DESKTOP_SRC__", hero_desktop_src)
     html = html.replace("__HERO_HEIGHT_CLS__", hero_height_cls)
     html = html.replace("__STAGE_HEIGHT_CLS__", stage_height_cls)
     html = html.replace("__SHELL_CLS__", shell_cls)
@@ -640,7 +652,6 @@ def build_html(design_system_css: str, catalog: dict, is_inline_embed: bool = Fa
     html = html.replace("__BODY_CLS__", body_cls)
     html = html.replace("__SHELL_STYLE__", shell_style)
     html = html.replace("<!-- __MODE_SWITCHER_BAR__ -->", mode_switcher_bar)
-    html = html.replace("<!-- __EXTRA_HEAD__ -->", extra_head)
     return html
 
 
@@ -648,8 +659,10 @@ def build_production(design_system_css: str, catalog: dict):
     dist_dir = ROOT_DIR / "dist"
     dist_photos_dir = dist_dir / "photos"
     dist_thumbs_dir = dist_photos_dir / "thumbs"
+    dist_hero_dir = dist_photos_dir / "hero"
     dist_fonts_dir = dist_dir / "fonts"
     dist_thumbs_dir.mkdir(parents=True, exist_ok=True)
+    dist_hero_dir.mkdir(parents=True, exist_ok=True)
     dist_fonts_dir.mkdir(parents=True, exist_ok=True)
 
     # 0. Copy self-hosted cross-device WOFF2 web fonts to dist/fonts/
@@ -657,7 +670,17 @@ def build_production(design_system_css: str, catalog: dict):
         for woff_path in PUBLIC_FONTS_DIR.glob("*.woff2"):
             shutil.copy2(woff_path, dist_fonts_dir / woff_path.name)
 
-    # 1. Copy untouched full-resolution originals to dist/photos/ & generate 1600px Lanczos gallery thumbnails
+    hero_landscape = next(
+        (p for p in catalog["photos"] if p["id"] == catalog["site"].get("heroPhotoId")),
+        catalog["photos"][0],
+    )
+    hero_portrait = next(
+        (p for p in catalog["photos"] if p.get("orientation") == "portrait"),
+        hero_landscape,
+    )
+    hero_ids = {hero_landscape["id"], hero_portrait["id"]}
+
+    # 1. Copy untouched full-resolution originals to dist/photos/, 1600px thumbs, & fast progressive hero JPEGs
     for p in catalog["photos"]:
         fname = p["file"]
         src = PUBLIC_PHOTOS_DIR / "hi-res" / fname
@@ -675,13 +698,25 @@ def build_production(design_system_css: str, catalog: dict):
             save_kwargs["icc_profile"] = icc
         thumb_im.save(dist_thumbs_dir / fname, **save_kwargs)
 
-    # 2. Build production catalog with relative full-res & thumbnail paths (zero base64 overhead!)
+        if p["id"] in hero_ids:
+            hero_im = im.copy()
+            max_dim = 1200 if p["id"] == hero_portrait["id"] and p.get("orientation") == "portrait" else 1920
+            if max(hero_im.size) > max_dim:
+                hero_im.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+            hero_kwargs = {"format": "JPEG", "quality": 84, "optimize": True, "progressive": True}
+            if icc:
+                hero_kwargs["icc_profile"] = icc
+            hero_im.save(dist_hero_dir / fname, **hero_kwargs)
+
+    # 2. Build production catalog with relative full-res, thumbnail, and fast hero paths (zero base64 overhead!)
     prod_catalog = json.loads(json.dumps(catalog))
     for p in prod_catalog["photos"]:
         p["src"] = f"photos/{p['file']}"
         p["thumbSrc"] = f"photos/thumbs/{p['file']}"
+        if p["id"] in hero_ids:
+            p["heroSrc"] = f"photos/hero/{p['file']}"
 
-    # 3. Build dist/index.html (clean live site without dev bar, ~38KB initial HTML)
+    # 3. Build dist/index.html (clean live site without dev bar, zero render-blocking scripts)
     prod_html = build_html(design_system_css, prod_catalog, is_inline_embed=False, is_production=True)
     with open(dist_dir / "index.html", "w", encoding="utf-8") as f:
         f.write(prod_html)
@@ -805,7 +840,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
   <title>Alejandro Oropeza — Photo gallery</title>
   <meta name="description" content="Alejandro Oropeza — Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
   <!-- __EXTRA_HEAD__ -->
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <!-- __TAILWIND_HEAD__ -->
   <style>
 /* __DESIGN_SYSTEM_CSS__ */
   </style>
@@ -1434,11 +1469,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     function renderGallery() {
       const heroMobileSource = document.getElementById('hero-source-mobile');
       const heroFeaturedImg = document.getElementById('hero-featured-img');
-      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== heroPortrait.src) {
-        heroMobileSource.srcset = heroPortrait.src;
+      const mobileHeroUrl = heroPortrait.heroSrc || heroPortrait.src;
+      const desktopHeroUrl = heroLandscape.heroSrc || heroLandscape.src;
+      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== mobileHeroUrl) {
+        heroMobileSource.srcset = mobileHeroUrl;
       }
-      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== heroLandscape.src) {
-        heroFeaturedImg.src = heroLandscape.src;
+      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== desktopHeroUrl) {
+        heroFeaturedImg.src = desktopHeroUrl;
       }
       updateHeroForViewport();
 

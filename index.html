@@ -9,7 +9,167 @@
   <title>Alejandro Oropeza — Photo gallery</title>
   <meta name="description" content="Alejandro Oropeza — Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
   
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+    <style>
+/* Precompiled Tailwind Utilities (eliminates render-blocking external JIT script) */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e5e7eb; }
+button, input, select, textarea { font-family: inherit; color: inherit; margin: 0; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+
+.hidden { display: none; }
+.block { display: block; }
+.flex { display: flex; }
+.grid { display: grid; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.shrink-0 { flex-shrink: 0; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.content-center { align-content: center; }
+.self-center { align-self: center; }
+.justify-self-start { justify-self: start; }
+.justify-self-center { justify-self: center; }
+.justify-self-end { justify-self: end; }
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-\[1fr_auto_1fr\] { grid-template-columns: 1fr auto 1fr; }
+
+.gap-1\.5 { gap: 0.375rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-2\.5 { gap: 0.625rem; }
+.gap-3 { gap: 0.75rem; }
+.space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
+.space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+.space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { inset: 0; }
+.inset-x-0 { left: 0; right: 0; }
+.top-0 { top: 0; }
+.left-0 { left: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.bottom-4 { bottom: 1rem; }
+.left-1\/2 { left: 50%; }
+.-translate-x-1\/2 { transform: translateX(-50%); }
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-0\.5 { margin-top: 0.125rem; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-12 { margin-top: 3rem; }
+.mb-2\.5 { margin-bottom: 0.625rem; }
+.mb-16 { margin-bottom: 4rem; }
+
+.p-2\.5 { padding: 0.625rem; }
+.p-3\.5 { padding: 0.875rem; }
+.p-4 { padding: 1rem; }
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+.px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.pt-3 { padding-top: 0.75rem; }
+.pt-4 { padding-top: 1rem; }
+.pt-16 { padding-top: 4rem; }
+.pt-24 { padding-top: 6rem; }
+.pb-3 { padding-bottom: 0.75rem; }
+.pb-3\.5 { padding-bottom: 0.875rem; }
+.pb-4 { padding-bottom: 1rem; }
+.pb-16 { padding-bottom: 4rem; }
+
+.w-10 { width: 2.5rem; }
+.w-full { width: 100%; }
+.h-10 { height: 2.5rem; }
+.h-32 { height: 8rem; }
+.h-36 { height: 9rem; }
+.h-48 { height: 12rem; }
+.h-full { height: 100%; }
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-full { max-width: 100%; }
+.max-w-\[calc\(100vw-2rem\)\] { max-width: calc(100vw - 2rem); }
+.max-h-full { max-height: 100%; }
+
+.object-cover { object-fit: cover; }
+.object-contain { object-fit: contain; }
+.object-center { object-position: center; }
+.overflow-hidden { overflow: hidden; }
+
+.border { border-width: 1px; }
+.border-t { border-top-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+.border-\[var\(--border\)\] { border-color: var(--border); }
+.border-\[var\(--ds-color-border\)\] { border-color: var(--ds-color-border); }
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-t-xl { border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.bg-\[var\(--card\)\] { background-color: var(--card); }
+.bg-\[var\(--primary\)\] { background-color: var(--primary); }
+.bg-\[var\(--secondary\)\] { background-color: var(--secondary); }
+.text-\[var\(--muted-foreground\)\] { color: var(--muted-foreground); }
+.text-\[var\(--primary-foreground\)\] { color: var(--primary-foreground); }
+.text-\[var\(--secondary-foreground\)\] { color: var(--secondary-foreground); }
+.text-neutral-500 { color: #737373; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-\[10px\] { font-size: 10px; }
+.font-medium { font-weight: 500; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.whitespace-nowrap { white-space: nowrap; }
+
+.cursor-pointer { cursor: pointer; }
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+.transition-colors { transition-property: color, background-color, border-color; transition-duration: 150ms; }
+.transition-opacity { transition-property: opacity; transition-duration: 150ms; }
+.hover\:opacity-75:hover { opacity: 0.75; }
+.hover\:opacity-90:hover { opacity: 0.9; }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sm\:h-52 { height: 13rem; }
+  .sm\:h-56 { height: 14rem; }
+  .sm\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+}
+
+@media (min-width: 768px) {
+  .md\:hidden { display: none; }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .md\:h-60 { height: 15rem; }
+  .md\:h-64 { height: 16rem; }
+  .md\:max-w-none { max-width: none; }
+  .md\:mt-6 { margin-top: 1.5rem; }
+  .md\:mt-16 { margin-top: 4rem; }
+  .md\:mb-20 { margin-bottom: 5rem; }
+  .md\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .md\:pt-20 { padding-top: 5rem; }
+  .md\:pb-24 { padding-bottom: 6rem; }
+}
+
+  </style>
   <style>
 /* ============================================================================
    ALEJANDRO OROPEZA — PHOTO GALLERY DESIGN SYSTEM (design-system.css)
@@ -2321,11 +2481,13 @@ h1.ds-brand-name {
     function renderGallery() {
       const heroMobileSource = document.getElementById('hero-source-mobile');
       const heroFeaturedImg = document.getElementById('hero-featured-img');
-      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== heroPortrait.src) {
-        heroMobileSource.srcset = heroPortrait.src;
+      const mobileHeroUrl = heroPortrait.heroSrc || heroPortrait.src;
+      const desktopHeroUrl = heroLandscape.heroSrc || heroLandscape.src;
+      if (heroMobileSource && heroMobileSource.getAttribute('srcset') !== mobileHeroUrl) {
+        heroMobileSource.srcset = mobileHeroUrl;
       }
-      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== heroLandscape.src) {
-        heroFeaturedImg.src = heroLandscape.src;
+      if (heroFeaturedImg && heroFeaturedImg.getAttribute('src') !== desktopHeroUrl) {
+        heroFeaturedImg.src = desktopHeroUrl;
       }
       updateHeroForViewport();
 
