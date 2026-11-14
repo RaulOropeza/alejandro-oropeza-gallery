@@ -985,7 +985,7 @@ h1.ds-brand-name {
 
 @media (min-width: 768px) {
   .ds-floating-header.ds-header-hero {
-    transform: translateY(2.5rem); /* 40px down on desktop top scroll */
+    transform: translateY(1.5rem); /* 24px down on desktop top scroll */
   }
   .ds-header-hero .ds-floating-pill {
     max-width: calc(100% - 2rem); /* 32px less wide (16px inset per side) */
@@ -1007,7 +1007,7 @@ h1.ds-brand-name {
 .ds-header-frosted .ds-floating-pill {
   max-width: 62rem;
   margin-top: 0.35rem;
-  padding: 0.35rem 0.45rem 0.35rem 1.25rem;
+  padding: 0.625rem 0.625rem 0.625rem 1.5rem;
   align-items: center !important;
   background: var(--ds-pill-bg);
   backdrop-filter: var(--ds-pill-blur);
@@ -1162,7 +1162,7 @@ h1.ds-brand-name {
 /* Concentric button padding when Desktop Showcase header morphs into pill mode */
 @media (min-width: 768px) {
   .ds-header-frosted.is-detail .ds-floating-pill {
-    padding: 0.35rem 0.45rem;
+    padding: 0.625rem;
   }
 }
 
