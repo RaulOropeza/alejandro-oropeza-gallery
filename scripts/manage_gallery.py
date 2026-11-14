@@ -341,11 +341,12 @@ def build_button_instances(catalog: dict) -> dict[str, str]:
     px_url = catalog["site"]["social"]["fiveHundredPx"].replace("&", "&amp;")
 
     btn_hdr_back = render_button(
-        "Back to gallery",
+        "Gallery",
         icon_left="arrow-left",
         onclick="showView('gallery')",
         elem_id="hdr-left-back",
         extra_cls="ds-showcase-back is-hidden",
+        aria_label="Back to gallery",
     )
     btn_mob_back = render_button(
         "Gallery",
@@ -2179,12 +2180,17 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     function handleRoute() {
       if (suppressNextVisPopstate) {
         suppressNextVisPopstate = false;
+        const curPhoto = PHOTOS[currentIdx];
+        if (currentView === 'detail' && curPhoto) {
+          navigateHash('#/photo/' + curPhoto.id, 'replace');
+        }
         return;
       }
       if (isVisualizerOpen && !(window.history.state && window.history.state.visualizer)) {
         closeVisualizer(true);
         const curPhoto = PHOTOS[currentIdx];
-        if (currentView === 'detail' && curPhoto && window.location.hash === '#/photo/' + curPhoto.id) {
+        if (currentView === 'detail' && curPhoto) {
+          navigateHash('#/photo/' + curPhoto.id, 'replace');
           return;
         }
       }
