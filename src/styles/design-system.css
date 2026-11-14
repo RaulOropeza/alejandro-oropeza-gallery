@@ -93,7 +93,7 @@
   --ds-pill-max-width: 46rem;          /* 736px (92 × 8px) scrolled header pill max-width */
   --ds-details-max-width: 28rem;       /* 448px (56 × 8px) mobile showcase details max-width */
   --ds-grid-gap: 0.5rem;               /* 8px mobile gallery grid gutter */
-  --ds-gallery-max-width: 72rem;       /* 1152px (144 × 8px) desktop gallery grid max-width */
+  --ds-gallery-max-width: 82rem;       /* 1312px desktop gallery grid max-width */
   --ds-radius-sm: 0.25rem;             /* 4px photo frame corner radius */
   --ds-radius-pill: 9999px;            /* Full pill / circle radius */
 

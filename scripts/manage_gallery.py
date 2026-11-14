@@ -1505,8 +1505,8 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           }
         }
       } else {
-        const TARGET_AR = 3.0;
-        const MAX_AR = 3.7;
+        const TARGET_AR = 2.45;
+        const MAX_AR = 3.05;
         let current = [];
         let sum = 0;
         for (let i = 0; i < items.length; i++) {
@@ -1531,7 +1531,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           if (rows.length > 0 && lastSum < 1.8) {
             const prev = rows[rows.length - 1];
             const prevSum = prev.reduce((s, it) => s + it.ar, 0);
-            if (prevSum + lastSum <= 3.8) {
+            if (prevSum + lastSum <= 3.7) {
               prev.push(...current);
             } else if (prev.length >= 3) {
               current.unshift(prev.pop());

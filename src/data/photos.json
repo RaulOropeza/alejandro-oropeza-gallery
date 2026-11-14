@@ -72,6 +72,28 @@
       }
     },
     {
+      "id": "margate-cliffs",
+      "title": "Beach & Chalk Cliffs",
+      "file": "BeachAndCliffs_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 2,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "85 mm",
+        "aperture": "f/9.0",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 100"
+      },
+      "description": "Weathered white chalk sea stacks meet deep channel waters and wide sand along the Kent coastline, with distant figures emphasizing the scale of the shore.",
+      "print": {
+        "enabled": false,
+        "price": "$220",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/margate-cliffs"
+      }
+    },
+    {
       "id": "la-grande-roue",
       "title": "La Grande Roue",
       "file": "FerrisWheel_OldPortOfMontreal_2019_AOropeza.jpg",
@@ -116,28 +138,6 @@
       }
     },
     {
-      "id": "mute-swan",
-      "title": "Mute Swan",
-      "file": "MuteSwanDipping_London_2026_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 2,
-      "location": "London, UK · 2026",
-      "exif": {
-        "focalLength": "300 mm",
-        "aperture": "f/5.6",
-        "shutterSpeed": "1/1250s",
-        "iso": "ISO 320"
-      },
-      "description": "A close portrait of a mute swan against dark rippled water, freezing a delicate arc of falling water droplets mid-air.",
-      "print": {
-        "enabled": false,
-        "price": "$240",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/mute-swan"
-      }
-    },
-    {
       "id": "nuestra-senora-tower",
       "title": "Nuestra Señora de los Ángeles",
       "file": "NuestraSenoraDeLosAngelesTower_LeonGuanajuato_2026_AOropeza.jpg",
@@ -157,72 +157,6 @@
         "price": "$240",
         "dimensions": "16 × 24 in",
         "providerUrl": "https://example.com/prints/nuestra-senora-tower"
-      }
-    },
-    {
-      "id": "margate-cliffs",
-      "title": "Beach & Chalk Cliffs",
-      "file": "BeachAndCliffs_Margate_UK_2026_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 2,
-      "location": "Margate, UK · 2026",
-      "exif": {
-        "focalLength": "85 mm",
-        "aperture": "f/9.0",
-        "shutterSpeed": "1/800s",
-        "iso": "ISO 100"
-      },
-      "description": "Weathered white chalk sea stacks meet deep channel waters and wide sand along the Kent coastline, with distant figures emphasizing the scale of the shore.",
-      "print": {
-        "enabled": false,
-        "price": "$220",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/margate-cliffs"
-      }
-    },
-    {
-      "id": "red-deer-stag",
-      "title": "Red Deer Stag",
-      "file": "RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 3,
-      "location": "Richmond Park, London · 2025",
-      "exif": {
-        "focalLength": "250 mm",
-        "aperture": "f/5.6",
-        "shutterSpeed": "1/1000s",
-        "iso": "ISO 250"
-      },
-      "description": "A solitary red deer stag crowned with velvet antlers stands waist-deep in sunlit green bracken.",
-      "print": {
-        "enabled": false,
-        "price": "$260",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/red-deer-stag"
-      }
-    },
-    {
-      "id": "brooklyn-bridge-symmetry",
-      "title": "Brooklyn Bridge Symmetry",
-      "file": "BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg",
-      "orientation": "landscape",
-      "aspectRatio": 1.5,
-      "row": 3,
-      "location": "New York City, USA · 2019",
-      "exif": {
-        "focalLength": "24 mm",
-        "aperture": "f/8.0",
-        "shutterSpeed": "1/250s",
-        "iso": "ISO 250"
-      },
-      "description": "Diagonal steel suspension cables converge toward the Neo-Gothic granite tower along a wet, snow-edged boardwalk on an overcast winter morning.",
-      "print": {
-        "enabled": false,
-        "price": "$300",
-        "dimensions": "20 × 30 in",
-        "providerUrl": "https://example.com/prints/brooklyn-bridge-symmetry"
       }
     },
     {
@@ -248,135 +182,69 @@
       }
     },
     {
-      "id": "chalk-cliff-margate",
-      "title": "Chalk Cliff, Margate",
-      "file": "ChalkCliff_Margate_UK_2026_AOropeza.jpg",
+      "id": "red-deer-stag",
+      "title": "Red Deer Stag",
+      "file": "RedDeerStagLandscape_RichmondPark_2025_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
-      "row": 4,
-      "location": "Margate, UK · 2026",
+      "row": 3,
+      "location": "Richmond Park, London · 2025",
       "exif": {
-        "focalLength": "200 mm",
-        "aperture": "f/11.0",
-        "shutterSpeed": "1/400s",
+        "focalLength": "250 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/1000s",
         "iso": "ISO 250"
       },
-      "description": "Steep white chalk cliffs rise beside dark coastal waters and weathered sea defenses along the Kent shoreline.",
-      "print": {
-        "enabled": false,
-        "price": "$240",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/chalk-cliff-margate"
-      }
-    },
-    {
-      "id": "seagulls-contrail-margate",
-      "title": "Seagulls & Contrail",
-      "file": "SeagullsContrail_Margate_2026_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 4,
-      "location": "Margate, UK · 2026",
-      "exif": {
-        "focalLength": "200 mm",
-        "aperture": "f/6.3",
-        "shutterSpeed": "1/1250s",
-        "iso": "ISO 200"
-      },
-      "description": "Silhouetted gulls glide across an open sky bisected by a high-altitude contrail.",
-      "print": {
-        "enabled": false,
-        "price": "$240",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/seagulls-contrail-margate"
-      }
-    },
-    {
-      "id": "airplane-iztaccihuatl",
-      "title": "Airplane & Iztaccíhuatl",
-      "file": "AirplaneAndIztaccihuatlVolcano_MexicoCity_2026_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 5,
-      "location": "Mexico City, Mexico · 2026",
-      "exif": {
-        "focalLength": "170 mm",
-        "aperture": "f/13.0",
-        "shutterSpeed": "1/400s",
-        "iso": "ISO 4000"
-      },
-      "description": "A departing aircraft climbs past the snow-dusted ridge of Iztaccíhuatl volcano in crisp morning air.",
+      "description": "A solitary red deer stag crowned with velvet antlers stands waist-deep in sunlit green bracken.",
       "print": {
         "enabled": false,
         "price": "$260",
         "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/airplane-iztaccihuatl"
+        "providerUrl": "https://example.com/prints/red-deer-stag"
       }
     },
     {
-      "id": "de-kat-windmill",
-      "title": "De Kat Windmill",
-      "file": "DeKatWindmill_ZaanseSchans_2023_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 6,
-      "location": "Zaanse Schans, Netherlands · 2023",
+      "id": "egyptian-goose-london",
+      "title": "Egyptian Goose",
+      "file": "EgyptianGoose_London_2025_Master_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 9,
+      "location": "London, UK · 2025",
       "exif": {
-        "focalLength": "175 mm",
+        "focalLength": "200 mm",
         "aperture": "f/6.3",
-        "shutterSpeed": "1/800s",
-        "iso": "ISO 250"
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 125"
       },
-      "description": "Historic timber sails and thatched cladding of De Kat paint mill rise beside the Zaan river.",
+      "description": "An Egyptian goose pauses along the water's edge, its warm chestnut markings standing out against muted reeds.",
       "print": {
         "enabled": false,
-        "price": "$240",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/de-kat-windmill"
+        "price": "$260",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/egyptian-goose-london"
       }
     },
     {
-      "id": "het-jonge-schap-isolated",
-      "title": "Het Jonge Schaap",
-      "file": "HetJongeSchapIsolated_ZaanseSchans_2023_AOropeza.jpg",
+      "id": "mute-swan",
+      "title": "Mute Swan",
+      "file": "MuteSwanDipping_London_2026_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
-      "row": 6,
-      "location": "Zaanse Schans, Netherlands · 2023",
+      "row": 2,
+      "location": "London, UK · 2026",
       "exif": {
-        "focalLength": "22 mm",
-        "aperture": "f/8.0",
-        "shutterSpeed": "1/80s",
-        "iso": "ISO 400"
+        "focalLength": "300 mm",
+        "aperture": "f/5.6",
+        "shutterSpeed": "1/1250s",
+        "iso": "ISO 320"
       },
-      "description": "Framed in isolation against soft northern light, the hexagonal sawmill stands quiet along the water.",
+      "description": "A close portrait of a mute swan against dark rippled water, freezing a delicate arc of falling water droplets mid-air.",
       "print": {
         "enabled": false,
         "price": "$240",
         "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/het-jonge-schap-isolated"
-      }
-    },
-    {
-      "id": "classic-jaguar-bruges",
-      "title": "Classic Jaguar, Bruges",
-      "file": "ClassicJaguarCar_Bruges_2023_AOropeza.jpg",
-      "orientation": "portrait",
-      "aspectRatio": 0.667,
-      "row": 6,
-      "location": "Bruges, Belgium · 2023",
-      "exif": {
-        "focalLength": "55 mm",
-        "aperture": "f/4.5",
-        "shutterSpeed": "1/250s",
-        "iso": "ISO 1000"
-      },
-      "description": "A polished vintage Jaguar rests along a quiet cobbled street framed by medieval brick facades.",
-      "print": {
-        "enabled": false,
-        "price": "$240",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/classic-jaguar-bruges"
+        "providerUrl": "https://example.com/prints/mute-swan"
       }
     },
     {
@@ -424,47 +292,157 @@
       }
     },
     {
-      "id": "pyramid-of-the-magician",
-      "title": "Pyramid of the Magician",
-      "file": "PyramidOfTheMagician_Uxmal_2022_AOropeza.jpg",
+      "id": "gray-squirrel-liverpool",
+      "title": "Gray Squirrel",
+      "file": "GraySquirrel_Liverpool_2023_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
-      "row": 9,
-      "location": "Uxmal, Yucatán, Mexico · 2022",
-      "exif": {
-        "focalLength": "45 mm",
-        "aperture": "f/10.0",
-        "shutterSpeed": "1/320s",
-        "iso": "ISO 100"
-      },
-      "description": "Rising steeply above the limestone plaza, the rounded Maya stonework of Uxmal catches warm afternoon light.",
-      "print": {
-        "enabled": false,
-        "price": "$260",
-        "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/pyramid-of-the-magician"
-      }
-    },
-    {
-      "id": "egyptian-goose-london",
-      "title": "Egyptian Goose",
-      "file": "EgyptianGoose_London_2025_Master_AOropeza.jpg",
-      "orientation": "landscape",
-      "aspectRatio": 1.5,
-      "row": 9,
-      "location": "London, UK · 2025",
+      "row": 14,
+      "location": "Liverpool, UK · 2023",
       "exif": {
         "focalLength": "200 mm",
         "aperture": "f/6.3",
         "shutterSpeed": "1/500s",
-        "iso": "ISO 125"
+        "iso": "ISO 4000"
       },
-      "description": "An Egyptian goose pauses along the water's edge, its warm chestnut markings standing out against muted reeds.",
+      "description": "A gray squirrel pauses attentively on mossy ground, framed by soft woodland shadows.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/gray-squirrel-liverpool"
+      }
+    },
+    {
+      "id": "brooklyn-bridge-symmetry",
+      "title": "Brooklyn Bridge Symmetry",
+      "file": "BrooklynBridgeSymmetry_NewYorkCity_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 3,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "24 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/250s",
+        "iso": "ISO 250"
+      },
+      "description": "Diagonal steel suspension cables converge toward the Neo-Gothic granite tower along a wet, snow-edged boardwalk on an overcast winter morning.",
+      "print": {
+        "enabled": false,
+        "price": "$300",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/brooklyn-bridge-symmetry"
+      }
+    },
+    {
+      "id": "skybridge-manhattan",
+      "title": "Manhattan Skybridge",
+      "file": "Skybridge_Manhattan_2019_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 10,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "70 mm",
+        "aperture": "f/4.0",
+        "shutterSpeed": "1/500s",
+        "iso": "ISO 1000"
+      },
+      "description": "Suspended high between brick and stone towers, an arched Manhattan skybridge frames the narrow canyon below.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/skybridge-manhattan"
+      }
+    },
+    {
+      "id": "classic-jaguar-bruges",
+      "title": "Classic Jaguar, Bruges",
+      "file": "ClassicJaguarCar_Bruges_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Bruges, Belgium · 2023",
+      "exif": {
+        "focalLength": "55 mm",
+        "aperture": "f/4.5",
+        "shutterSpeed": "1/250s",
+        "iso": "ISO 1000"
+      },
+      "description": "A polished vintage Jaguar rests along a quiet cobbled street framed by medieval brick facades.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/classic-jaguar-bruges"
+      }
+    },
+    {
+      "id": "de-kat-windmill",
+      "title": "De Kat Windmill",
+      "file": "DeKatWindmill_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "175 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/800s",
+        "iso": "ISO 250"
+      },
+      "description": "Historic timber sails and thatched cladding of De Kat paint mill rise beside the Zaan river.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/de-kat-windmill"
+      }
+    },
+    {
+      "id": "het-jonge-schap-isolated",
+      "title": "Het Jonge Schaap",
+      "file": "HetJongeSchapIsolated_ZaanseSchans_2023_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 6,
+      "location": "Zaanse Schans, Netherlands · 2023",
+      "exif": {
+        "focalLength": "22 mm",
+        "aperture": "f/8.0",
+        "shutterSpeed": "1/80s",
+        "iso": "ISO 400"
+      },
+      "description": "Framed in isolation against soft northern light, the hexagonal sawmill stands quiet along the water.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/het-jonge-schap-isolated"
+      }
+    },
+    {
+      "id": "hot-dog-stand-west-34th",
+      "title": "West 34th Street Stand",
+      "file": "HotDogStand_West34thStreet_2019_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 15,
+      "location": "New York City, USA · 2019",
+      "exif": {
+        "focalLength": "15 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/10s",
+        "iso": "ISO 160"
+      },
+      "description": "A classic New York street vendor stand glows under evening streetlights along West 34th Street.",
       "print": {
         "enabled": false,
         "price": "$260",
         "dimensions": "20 × 30 in",
-        "providerUrl": "https://example.com/prints/egyptian-goose-london"
+        "providerUrl": "https://example.com/prints/hot-dog-stand-west-34th"
       }
     },
     {
@@ -512,69 +490,25 @@
       }
     },
     {
-      "id": "skybridge-manhattan",
-      "title": "Manhattan Skybridge",
-      "file": "Skybridge_Manhattan_2019_AOropeza.jpg",
+      "id": "pyramid-of-the-magician",
+      "title": "Pyramid of the Magician",
+      "file": "PyramidOfTheMagician_Uxmal_2022_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
-      "row": 10,
-      "location": "New York City, USA · 2019",
+      "row": 9,
+      "location": "Uxmal, Yucatán, Mexico · 2022",
       "exif": {
-        "focalLength": "70 mm",
-        "aperture": "f/4.0",
-        "shutterSpeed": "1/500s",
-        "iso": "ISO 1000"
+        "focalLength": "45 mm",
+        "aperture": "f/10.0",
+        "shutterSpeed": "1/320s",
+        "iso": "ISO 100"
       },
-      "description": "Suspended high between brick and stone towers, an arched Manhattan skybridge frames the narrow canyon below.",
+      "description": "Rising steeply above the limestone plaza, the rounded Maya stonework of Uxmal catches warm afternoon light.",
       "print": {
         "enabled": false,
         "price": "$260",
         "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/skybridge-manhattan"
-      }
-    },
-    {
-      "id": "mountain-peak-nevado",
-      "title": "Nevado de Toluca",
-      "file": "MountainPeak_NevadoDeToluca_2020_AOropeza.jpg",
-      "orientation": "landscape",
-      "aspectRatio": 1.5,
-      "row": 11,
-      "location": "Nevado de Toluca, Mexico · 2020",
-      "exif": {
-        "focalLength": "70 mm",
-        "aperture": "f/16.0",
-        "shutterSpeed": "1/30s",
-        "iso": "ISO 100"
-      },
-      "description": "Jagged volcanic peaks emerge above drifting high-altitude clouds in the crisp first light of dawn.",
-      "print": {
-        "enabled": false,
-        "price": "$280",
-        "dimensions": "20 × 30 in",
-        "providerUrl": "https://example.com/prints/mountain-peak-nevado"
-      }
-    },
-    {
-      "id": "sunrise-silhouette-mexico",
-      "title": "Mexico City Sunrise",
-      "file": "SunriseSilhouette_MexicoCity_2020_AOropeza.jpg",
-      "orientation": "landscape",
-      "aspectRatio": 1.5,
-      "row": 11,
-      "location": "Mexico City, Mexico · 2020",
-      "exif": {
-        "focalLength": "300 mm",
-        "aperture": "f/20.0",
-        "shutterSpeed": "1/400s",
-        "iso": "ISO 160"
-      },
-      "description": "Layered city silhouettes and distant ridges glow against a warm amber sunrise.",
-      "print": {
-        "enabled": false,
-        "price": "$260",
-        "dimensions": "20 × 30 in",
-        "providerUrl": "https://example.com/prints/sunrise-silhouette-mexico"
+        "providerUrl": "https://example.com/prints/pyramid-of-the-magician"
       }
     },
     {
@@ -600,47 +534,113 @@
       }
     },
     {
-      "id": "gray-squirrel-liverpool",
-      "title": "Gray Squirrel",
-      "file": "GraySquirrel_Liverpool_2023_AOropeza.jpg",
+      "id": "mountain-peak-nevado",
+      "title": "Nevado de Toluca",
+      "file": "MountainPeak_NevadoDeToluca_2020_AOropeza.jpg",
+      "orientation": "landscape",
+      "aspectRatio": 1.5,
+      "row": 11,
+      "location": "Nevado de Toluca, Mexico · 2020",
+      "exif": {
+        "focalLength": "70 mm",
+        "aperture": "f/16.0",
+        "shutterSpeed": "1/30s",
+        "iso": "ISO 100"
+      },
+      "description": "Jagged volcanic peaks emerge above drifting high-altitude clouds in the crisp first light of dawn.",
+      "print": {
+        "enabled": false,
+        "price": "$280",
+        "dimensions": "20 × 30 in",
+        "providerUrl": "https://example.com/prints/mountain-peak-nevado"
+      }
+    },
+    {
+      "id": "airplane-iztaccihuatl",
+      "title": "Airplane & Iztaccíhuatl",
+      "file": "AirplaneAndIztaccihuatlVolcano_MexicoCity_2026_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
-      "row": 14,
-      "location": "Liverpool, UK · 2023",
+      "row": 5,
+      "location": "Mexico City, Mexico · 2026",
       "exif": {
-        "focalLength": "200 mm",
-        "aperture": "f/6.3",
-        "shutterSpeed": "1/500s",
+        "focalLength": "170 mm",
+        "aperture": "f/13.0",
+        "shutterSpeed": "1/400s",
         "iso": "ISO 4000"
       },
-      "description": "A gray squirrel pauses attentively on mossy ground, framed by soft woodland shadows.",
+      "description": "A departing aircraft climbs past the snow-dusted ridge of Iztaccíhuatl volcano in crisp morning air.",
+      "print": {
+        "enabled": false,
+        "price": "$260",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/airplane-iztaccihuatl"
+      }
+    },
+    {
+      "id": "chalk-cliff-margate",
+      "title": "Chalk Cliff, Margate",
+      "file": "ChalkCliff_Margate_UK_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/11.0",
+        "shutterSpeed": "1/400s",
+        "iso": "ISO 250"
+      },
+      "description": "Steep white chalk cliffs rise beside dark coastal waters and weathered sea defenses along the Kent shoreline.",
       "print": {
         "enabled": false,
         "price": "$240",
         "dimensions": "16 × 24 in",
-        "providerUrl": "https://example.com/prints/gray-squirrel-liverpool"
+        "providerUrl": "https://example.com/prints/chalk-cliff-margate"
       }
     },
     {
-      "id": "hot-dog-stand-west-34th",
-      "title": "West 34th Street Stand",
-      "file": "HotDogStand_West34thStreet_2019_AOropeza.jpg",
+      "id": "sunrise-silhouette-mexico",
+      "title": "Mexico City Sunrise",
+      "file": "SunriseSilhouette_MexicoCity_2020_AOropeza.jpg",
       "orientation": "landscape",
       "aspectRatio": 1.5,
-      "row": 15,
-      "location": "New York City, USA · 2019",
+      "row": 11,
+      "location": "Mexico City, Mexico · 2020",
       "exif": {
-        "focalLength": "15 mm",
-        "aperture": "f/6.3",
-        "shutterSpeed": "1/10s",
+        "focalLength": "300 mm",
+        "aperture": "f/20.0",
+        "shutterSpeed": "1/400s",
         "iso": "ISO 160"
       },
-      "description": "A classic New York street vendor stand glows under evening streetlights along West 34th Street.",
+      "description": "Layered city silhouettes and distant ridges glow against a warm amber sunrise.",
       "print": {
         "enabled": false,
         "price": "$260",
         "dimensions": "20 × 30 in",
-        "providerUrl": "https://example.com/prints/hot-dog-stand-west-34th"
+        "providerUrl": "https://example.com/prints/sunrise-silhouette-mexico"
+      }
+    },
+    {
+      "id": "seagulls-contrail-margate",
+      "title": "Seagulls & Contrail",
+      "file": "SeagullsContrail_Margate_2026_AOropeza.jpg",
+      "orientation": "portrait",
+      "aspectRatio": 0.667,
+      "row": 4,
+      "location": "Margate, UK · 2026",
+      "exif": {
+        "focalLength": "200 mm",
+        "aperture": "f/6.3",
+        "shutterSpeed": "1/1250s",
+        "iso": "ISO 200"
+      },
+      "description": "Silhouetted gulls glide across an open sky bisected by a high-altitude contrail.",
+      "print": {
+        "enabled": false,
+        "price": "$240",
+        "dimensions": "16 × 24 in",
+        "providerUrl": "https://example.com/prints/seagulls-contrail-margate"
       }
     },
     {
