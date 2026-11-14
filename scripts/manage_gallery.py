@@ -724,11 +724,18 @@ def build_production(design_system_css: str, catalog: dict):
     with open(dist_dir / "index.html", "w", encoding="utf-8") as f:
         f.write(prod_html)
 
-    # 4. Build dist/favicon.svg (monochrome minimalist camera aperture)
-    favicon_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <circle cx="16" cy="16" r="14" stroke="#141414" stroke-width="2"/>
-  <circle cx="16" cy="16" r="5" stroke="#141414" stroke-width="1.5"/>
-  <path d="M16 2 L22 11 M28 10 L23 20 M26 24 L16 26 M11 29 L7 20 M3 20 L8 11 M5 8 L15 6" stroke="#141414" stroke-width="1.2" stroke-linecap="round"/>
+    # 4. Build dist/favicon.svg (Jost 500 "AO" monogram matching .ds-brand-name)
+    favicon_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    path { fill: #141414; }
+    @media (prefers-color-scheme: dark) { path { fill: #FFFFFF; } }
+  </style>
+  <g transform="translate(1.451, 23.151) scale(0.019761, -0.019761)">
+    <path d="M162 180H532L509.5 279.5H184.5ZM345 502 456.5 242.25 458.75 213 553.75 0H687.5L345 738.75L2.5 0H136.25L233.25 219.25L235 245.25Z"/>
+  </g>
+  <g transform="translate(15.382, 23.151) scale(0.019761, -0.019761)">
+    <path d="M163.25 350Q163.25 422.25 193.875 478.375Q224.5 534.5 278.25 566.875Q332 599.25 401.25 599.25Q472 599.25 525.25 566.875Q578.5 534.5 608.875 478.375Q639.25 422.25 639.25 350Q639.25 278 608.625 221.75Q578 165.5 524.625 133.125Q471.25 100.75 401.25 100.75Q332 100.75 278.25 133.125Q224.5 165.5 193.875 221.75Q163.25 278 163.25 350ZM37.5 350Q37.5 272 64.5 205.125Q91.5 138.25 140.5 89.125Q189.5 40 256.125 12.5Q322.75 -15 401.25 -15Q480.5 -15 546.75 12.5Q613 40 662.0 89.125Q711 138.25 738.0 205.125Q765 272 765 350Q765 428.75 737.875 494.875Q710.75 561 661.5 609.625Q612.25 658.25 546.125 685.375Q480 712.5 401.25 712.5Q323.75 712.5 257.25 685.375Q190.75 658.25 141.5 609.625Q92.25 561 64.875 494.875Q37.5 428.75 37.5 350Z"/>
+  </g>
 </svg>"""
     with open(dist_dir / "favicon.svg", "w", encoding="utf-8") as f:
         f.write(favicon_svg)
