@@ -398,7 +398,22 @@ h1.ds-brand-name {
   pointer-events: none !important;
 }
 @media (hover: hover) and (pointer: fine) {
-  .ds-scroll-cue:hover { color: #FFFFFF; }
+  .ds-scroll-cue:hover .ds-scroll-cue-label {
+    background-image: radial-gradient(
+      circle 38px at var(--spot-x, 50%) var(--spot-y, 50%),
+      #FFFFFF 0%,
+      #FFFFFF 30%,
+      rgba(255, 255, 255, 0.92) 52%,
+      rgba(255, 255, 255, 0.52) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .ds-scroll-cue:hover .ds-scroll-cue-arrow {
+    color: #FFFFFF;
+  }
 }
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
@@ -406,8 +421,13 @@ h1.ds-brand-name {
   font-size: 1.125rem; /* 18px on mobile */
   line-height: 1;
   letter-spacing: 0.04em;
+  --spot-x: 50%;
+  --spot-y: 50%;
 }
 @media (min-width: 768px) {
+  .ds-scroll-cue {
+    color: rgba(255, 255, 255, 0.52);
+  }
   .ds-scroll-cue-label {
     font-size: 1rem; /* 16px on desktop */
   }

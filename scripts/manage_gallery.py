@@ -907,7 +907,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           <!-- Technical details (Mobile: centered above View gallery cue | Desktop: bottom-right) -->
           <span id="hero-tech-details" class="ds-hero-tech"></span>
           <!-- Scroll signifier (bottom-center): label + softly bobbing arrow -->
-          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-4 pointer-events-auto focus:outline-none" aria-label="View gallery">
+          <button type="button" id="hero-scroll-cue" onclick="scrollPastHero()" onmousemove="trackMenuLight(event, this)" class="ds-scroll-cue absolute left-1/2 -translate-x-1/2 bottom-4 pointer-events-auto focus:outline-none" aria-label="View gallery">
             <span class="ds-scroll-cue-label">View gallery</span>
             <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
@@ -1348,7 +1348,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       const pillRect = el.getBoundingClientRect();
       el.style.setProperty('--pill-x', `${e.clientX - pillRect.left}px`);
       el.style.setProperty('--pill-y', `${e.clientY - pillRect.top}px`);
-      const targetEl = el.querySelector('.ds-menu-text, .ds-icon-glyph') || el;
+      const targetEl = el.querySelector('.ds-menu-text, .ds-scroll-cue-label, .ds-icon-glyph') || el;
       const rect = targetEl.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
