@@ -1252,6 +1252,10 @@ h1.ds-brand-name {
 }
 
 .ds-gallery-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
   gap: var(--ds-grid-gap); /* 8px mobile / 16px desktop */
 }
 

@@ -1484,41 +1484,95 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       document.getElementById('gallery-intro-h1').textContent = CATALOG.site.introHeading;
       document.getElementById('gallery-intro-body').textContent = CATALOG.site.introDescription;
 
-      const rowsMap = {};
-      PHOTOS.forEach((p, idx) => {
-        const r = p.row || 1;
-        if (!rowsMap[r]) rowsMap[r] = [];
-        rowsMap[r].push({ photo: p, idx });
-      });
+      const isMobileGrid = window.matchMedia('(max-width: 639px)').matches;
+      const items = PHOTOS.map((photo, idx) => ({
+        photo,
+        idx,
+        ar: Number(photo.aspectRatio) || (photo.orientation === 'portrait' ? 2 / 3 : 3 / 2)
+      }));
+
+      const rows = [];
+      if (isMobileGrid) {
+        let i = 0;
+        while (i < items.length) {
+          const cur = items[i];
+          if (cur.ar < 1 && i + 1 < items.length && items[i + 1].ar < 1) {
+            rows.push([cur, items[i + 1]]);
+            i += 2;
+          } else {
+            rows.push([cur]);
+            i += 1;
+          }
+        }
+      } else {
+        const TARGET_AR = 3.0;
+        const MAX_AR = 3.7;
+        let current = [];
+        let sum = 0;
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          if (current.length > 0 && sum + item.ar > MAX_AR) {
+            rows.push(current);
+            current = [item];
+            sum = item.ar;
+          } else {
+            current.push(item);
+            sum += item.ar;
+            if (sum >= TARGET_AR) {
+              rows.push(current);
+              current = [];
+              sum = 0;
+            }
+          }
+        }
+        if (current.length > 0) {
+          // Avoid a tiny orphan last row if previous row can absorb or share one item
+          const lastSum = current.reduce((s, it) => s + it.ar, 0);
+          if (rows.length > 0 && lastSum < 1.8) {
+            const prev = rows[rows.length - 1];
+            const prevSum = prev.reduce((s, it) => s + it.ar, 0);
+            if (prevSum + lastSum <= 3.8) {
+              prev.push(...current);
+            } else if (prev.length >= 3) {
+              current.unshift(prev.pop());
+              rows.push(current);
+            } else {
+              rows.push(current);
+            }
+          } else {
+            rows.push(current);
+          }
+        }
+      }
 
       const container = document.getElementById('gallery-rows-container');
       let html = '';
-      Object.keys(rowsMap).sort((a, b) => Number(a) - Number(b)).forEach(rowKey => {
-        const items = rowsMap[rowKey];
-        const allPortraits = items.length === 4 && items.every(i => i.photo.orientation === 'portrait');
-        if (allPortraits) {
-          html += `<div class="grid grid-cols-2 sm:grid-cols-4 ds-gallery-row">`;
-          items.forEach(({ photo, idx }) => {
-            html += `
-              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" class="ds-thumb-card h-48 sm:h-56 md:h-64">
-                <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
-              </div>
-            `;
-          });
-          html += `</div>`;
-        } else {
-          html += `<div class="flex flex-col sm:flex-row ds-gallery-row">`;
-          items.forEach(({ photo, idx }) => {
-            html += `
-              <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" style="flex: ${photo.aspectRatio} 1 0%;" class="ds-thumb-card h-48 sm:h-52 md:h-60">
-                <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
-              </div>
-            `;
-          });
-          html += `</div>`;
+      rows.forEach((rowItems, rowIdx) => {
+        const sumAR = rowItems.reduce((s, it) => s + it.ar, 0);
+        const isLast = rowIdx === rows.length - 1;
+        let rowStyle = '';
+        if (!isMobileGrid && isLast && sumAR < 2.2) {
+          const pct = Math.min(100, (sumAR / 3.0) * 100).toFixed(2);
+          rowStyle = ` style="max-width: ${pct}%;"`;
         }
+        html += `<div class="ds-gallery-row"${rowStyle}>`;
+        rowItems.forEach(({ photo, idx, ar }) => {
+          html += `
+            <div onclick="openPhoto(${idx})" onmouseenter="warmPhoto(${idx})" ontouchstart="warmPhoto(${idx})" style="flex: ${Math.round(ar * 1000)} 1 0%; aspect-ratio: ${ar};" class="ds-thumb-card">
+              <img src="${photo.thumbSrc || photo.src}" alt="${photo.title}" loading="lazy" decoding="async" />
+            </div>
+          `;
+        });
+        html += `</div>`;
       });
       container.innerHTML = html;
+
+      if (!window.__galleryGridMediaBound) {
+        window.__galleryGridMediaBound = true;
+        window.matchMedia('(max-width: 639px)').addEventListener('change', () => {
+          if (currentView === 'gallery') renderGallery();
+        });
+      }
 
       document.getElementById('about-kicker').textContent = CATALOG.site.about.kicker;
       document.getElementById('about-heading').textContent = CATALOG.site.about.heading;
