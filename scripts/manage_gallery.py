@@ -22,7 +22,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from PIL import Image, ExifTags
+from PIL import Image, ImageOps, ExifTags
 
 ROOT_DIR = Path("/home/antigravity/alejandro-oropeza-gallery")
 CSS_PATH = ROOT_DIR / "src" / "styles" / "design-system.css"
@@ -698,8 +698,9 @@ def build_production(design_system_css: str, catalog: dict):
         if not src.exists():
             src = PUBLIC_PHOTOS_DIR / fname
 
-        im = Image.open(src)
-        icc = im.info.get("icc_profile")
+        raw_im = Image.open(src)
+        icc = raw_im.info.get("icc_profile")
+        im = ImageOps.exif_transpose(raw_im)
 
         save_tier(im, dist_photos_dir / fname, 3000, 87, icc)
         save_tier(im, dist_showcase_dir / fname, 1600, 85, icc)
