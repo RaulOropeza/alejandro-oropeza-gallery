@@ -187,10 +187,10 @@ PROD_EXTRA_HEAD = """  <link rel="preload" href="fonts/jost-latin.woff2" as="fon
   <link rel="preload" as="image" href="__HERO_MOBILE_SRCSET__" media="(max-width: 767px)" fetchpriority="high" />
   <link rel="preload" as="image" href="__HERO_DESKTOP_SRC__" media="(min-width: 768px)" fetchpriority="high" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="canonical" href="https://alejandrooropeza.com/" />
+  <link rel="canonical" href="https://alejandroropeza.com/" />
   <!-- Open Graph / Social Sharing Metadata -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://alejandrooropeza.com/" />
+  <meta property="og:url" content="https://alejandroropeza.com/" />
   <meta property="og:title" content="Alejandro Oropeza — Photo gallery" />
   <meta property="og:description" content="Travel photography studying architecture, wildlife, coastlines, and solitary figures in quiet isolation." />
   <meta property="og:image" content="photos/FishermanOnShoreline_Acapulco_2022_AOropeza.jpg" />
@@ -746,17 +746,20 @@ def build_production(design_system_css: str, catalog: dict):
     with open(dist_dir / "design-system.html", "w", encoding="utf-8") as f:
         f.write(ds_page_html)
 
-    # 5. Build dist/robots.txt and dist/sitemap.xml
+    # 5. Build dist/CNAME, dist/robots.txt, and dist/sitemap.xml
+    with open(dist_dir / "CNAME", "w", encoding="utf-8") as f:
+        f.write("alejandroropeza.com\n")
+
     with open(dist_dir / "robots.txt", "w", encoding="utf-8") as f:
-        f.write("User-agent: *\nAllow: /\nSitemap: https://alejandrooropeza.com/sitemap.xml\n")
+        f.write("User-agent: *\nAllow: /\nSitemap: https://alejandroropeza.com/sitemap.xml\n")
 
     sitemap_xml = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://alejandrooropeza.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://alejandrooropeza.com/#/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alejandroropeza.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://alejandroropeza.com/#/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 """
     for p in catalog["photos"]:
-        sitemap_xml += f"  <url><loc>https://alejandrooropeza.com/#/photo/{p['id']}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>\n"
+        sitemap_xml += f"  <url><loc>https://alejandroropeza.com/#/photo/{p['id']}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>\n"
     sitemap_xml += "</urlset>\n"
     with open(dist_dir / "sitemap.xml", "w", encoding="utf-8") as f:
         f.write(sitemap_xml)
