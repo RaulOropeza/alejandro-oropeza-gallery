@@ -1503,7 +1503,7 @@ h1.ds-brand-name {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  bottom: 6.25rem; /* 100px — 16px above mobile bottom bar */
+  bottom: 7.5rem; /* 120px — equidistant (~36px) between portrait image and mobile bottom bar */
   z-index: 20;
 }
 
@@ -1514,7 +1514,7 @@ h1.ds-brand-name {
   }
   .ds-btn.ds-stage-visualizer-btn,
   .ds-stage-visualizer-btn {
-    bottom: calc(6.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 .ds-btn.ds-stage-visualizer-btn:active,
