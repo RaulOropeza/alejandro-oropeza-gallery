@@ -1515,6 +1515,12 @@ h1.ds-brand-name {
   image-rendering: auto;
 }
 
+@media (max-width: 767px) {
+  #detail-img {
+    cursor: pointer;
+  }
+}
+
 /* Floating Bottom Showcase Pill Instance (Mobile Only — native GPU position: sticky, zero JS scroll slip) */
 .ds-mobile-showcase-bar {
   position: -webkit-sticky;

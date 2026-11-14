@@ -1483,7 +1483,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       if (window.location.hash === target) return true;
       try {
         if (mode === 'replace') {
-          window.history.replaceState(null, '', target);
+          window.history.replaceState(window.history.state, '', target);
         } else {
           window.history.pushState(null, '', target);
         }
@@ -1788,6 +1788,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       let visTouchMoved = 0;
       let visTouchStartX = 0;
       let visTouchStartY = 0;
+      let visTouchLastX = 0;
+      let visTouchLastY = 0;
+      let visTouchStartTime = 0;
+      let visSwipeActive = false;
       let visTouchTarget = null;
       let visPinchStartDist = 0;
       let visPinchStartScale = 1;
@@ -1807,6 +1811,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           const t1 = e.touches[1];
           visTouchMode = 'pinch';
           visTouchMoved = 999;
+          visSwipeActive = false;
           visPinchStartDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
           visPinchStartScale = visScale;
           visPinchPrevMidX = (t0.clientX + t1.clientX) / 2;
@@ -1815,8 +1820,12 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           const t0 = e.touches[0];
           visTouchMode = 'single';
           visTouchMoved = 0;
+          visSwipeActive = false;
           visTouchStartX = t0.clientX;
           visTouchStartY = t0.clientY;
+          visTouchLastX = t0.clientX;
+          visTouchLastY = t0.clientY;
+          visTouchStartTime = Date.now();
           visStartPanX = visX;
           visStartPanY = visY;
           visTouchTarget = e.target;
@@ -1837,6 +1846,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           if (visTouchMode !== 'pinch') {
             visTouchMode = 'pinch';
             visTouchMoved = 999;
+            visSwipeActive = false;
             visPinchStartDist = dist;
             visPinchStartScale = visScale;
             visPinchPrevMidX = midX;
@@ -1851,12 +1861,19 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           visPinchPrevMidY = midY;
         } else if (e.touches.length === 1 && visTouchMode === 'single') {
           const t0 = e.touches[0];
+          visTouchLastX = t0.clientX;
+          visTouchLastY = t0.clientY;
           const dx = t0.clientX - visTouchStartX;
           const dy = t0.clientY - visTouchStartY;
           visTouchMoved = Math.hypot(dx, dy);
-          if (visScale > 1.01 && visTouchMoved > 2) {
+          if (visScale > 1.05 && visTouchMoved > 2) {
             visX = visStartPanX + dx;
             visY = visStartPanY + dy;
+            applyVisualizerTransform(false);
+          } else if (visScale <= 1.05 && (visSwipeActive || (Math.abs(dx) > Math.abs(dy) * 1.15 && Math.abs(dx) > 10))) {
+            visSwipeActive = true;
+            visX = dx * 0.35;
+            visY = 0;
             applyVisualizerTransform(false);
           }
         }
@@ -1870,30 +1887,63 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           const t0 = e.touches[0];
           visTouchMode = 'single';
           visTouchMoved = 999;
+          visSwipeActive = false;
           visTouchStartX = t0.clientX;
           visTouchStartY = t0.clientY;
+          visTouchLastX = t0.clientX;
+          visTouchLastY = t0.clientY;
+          visTouchStartTime = Date.now();
           visStartPanX = visX;
           visStartPanY = visY;
           return;
         }
         if (e.touches.length === 0) {
-          if (visTouchMode === 'single' && visTouchMoved < 10 && e.changedTouches.length > 0) {
-            const t = e.changedTouches[0];
-            if (visTouchTarget === visualizerEl) {
-              closeVisualizer();
-            } else if (visTouchTarget === visualizerImg) {
-              const now = Date.now();
-              if (now - visLastTapTime < 300 && Math.hypot(t.clientX - visLastTapX, t.clientY - visLastTapY) < 32) {
-                visLastTapTime = 0;
-                const next = visScale > 1.05 ? 1 : VIS_TOGGLE_SCALE;
-                zoomVisualizerAt(next, t.clientX, t.clientY, true);
-              } else {
-                visLastTapTime = now;
-                visLastTapX = t.clientX;
-                visLastTapY = t.clientY;
+          if (visTouchMode === 'single') {
+            const t = e.changedTouches && e.changedTouches[0];
+            const endX = t ? t.clientX : visTouchLastX;
+            const endY = t ? t.clientY : visTouchLastY;
+            const dx = endX - visTouchStartX;
+            const dy = endY - visTouchStartY;
+            const duration = Date.now() - visTouchStartTime;
+
+            if (visScale <= 1.05) {
+              const isHorizontal = Math.abs(dx) > Math.abs(dy) * 1.15;
+              const isQuickFlick = duration < 380 && Math.abs(dx) > 35;
+              const isLongSwipe = Math.abs(dx) > 65;
+
+              if (isHorizontal && (isQuickFlick || isLongSwipe)) {
+                visX = 0;
+                visY = 0;
+                visSwipeActive = false;
+                visTouchMode = null;
+                stepPhoto(dx < 0 ? 1 : -1);
+                return;
+              }
+              if (visSwipeActive) {
+                visX = 0;
+                visY = 0;
+                applyVisualizerTransform(true);
+              }
+            }
+
+            if (!visSwipeActive && visTouchMoved < 10 && t) {
+              if (visTouchTarget === visualizerEl) {
+                closeVisualizer();
+              } else if (visTouchTarget === visualizerImg) {
+                const now = Date.now();
+                if (now - visLastTapTime < 300 && Math.hypot(t.clientX - visLastTapX, t.clientY - visLastTapY) < 32) {
+                  visLastTapTime = 0;
+                  const next = visScale > 1.05 ? 1 : VIS_TOGGLE_SCALE;
+                  zoomVisualizerAt(next, t.clientX, t.clientY, true);
+                } else {
+                  visLastTapTime = now;
+                  visLastTapX = t.clientX;
+                  visLastTapY = t.clientY;
+                }
               }
             }
           }
+          visSwipeActive = false;
           visTouchMode = null;
         }
       };
@@ -2162,12 +2212,13 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
       openPhoto(next, 'replace');
     }
 
-    // Touch Swiping in Fullscreen Lightbox View
+    // Touch Swiping in Showcase View & Mobile Tap-to-Fullscreen
     let touchStartX = 0;
     let touchStartY = 0;
     let touchCurrentX = 0;
     let touchStartTime = 0;
     let isTouchSwiping = false;
+    let detailJustSwiped = false;
 
     if (detailStage) {
       detailStage.addEventListener('touchstart', (e) => {
@@ -2201,6 +2252,11 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         const deltaY = (e.changedTouches[0] ? e.changedTouches[0].clientY : touchStartY) - touchStartY;
         const duration = Date.now() - touchStartTime;
 
+        if (Math.abs(deltaX) > 10) {
+          detailJustSwiped = true;
+          setTimeout(() => { detailJustSwiped = false; }, 80);
+        }
+
         if (detailImg) {
           detailImg.style.transition = 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)';
           detailImg.style.transform = 'translateX(0)';
@@ -2218,6 +2274,14 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           }
         }
       }, { passive: true });
+    }
+
+    if (detailImg) {
+      detailImg.addEventListener('click', () => {
+        if (window.innerWidth < 768 && !isVisualizerOpen && !detailJustSwiped) {
+          openVisualizer();
+        }
+      });
     }
 
     // Keyboard Navigation for Desktop Showcase & Zoomable Popup Visualizer
