@@ -1368,21 +1368,34 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     }
 
     let lastHeaderStateKey = '';
+    let mobHdrFadeTimer = null;
+
+    function applyHeaderFrostedClasses(scrolled) {
+      floatingHeader.classList.remove(
+        'ds-header-hero',
+        'ds-header-transparent-dark',
+        'ds-header-frosted'
+      );
+      if (!scrolled) {
+        if (currentView === 'gallery') {
+          floatingHeader.classList.add('ds-header-hero');
+        } else {
+          floatingHeader.classList.add('ds-header-transparent-dark');
+        }
+      } else {
+        floatingHeader.classList.add('ds-header-frosted');
+      }
+    }
 
     function updateHeaderStyle() {
       const scrolled = scrollViewport.scrollTop > 18 || window.scrollY > 18 || document.documentElement.scrollTop > 18;
       const stateKey = `${currentView}:${scrolled ? 1 : 0}`;
 
       if (stateKey !== lastHeaderStateKey) {
+        const prevStateKey = lastHeaderStateKey;
         lastHeaderStateKey = stateKey;
         const navGal = document.getElementById('nav-gallery');
         const navAbt = document.getElementById('nav-about');
-
-        floatingHeader.classList.remove(
-          'ds-header-hero',
-          'ds-header-transparent-dark',
-          'ds-header-frosted'
-        );
 
         navGal.classList.toggle('is-active', currentView === 'gallery');
         navAbt.classList.toggle('is-active', currentView === 'about');
@@ -1396,14 +1409,24 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         const heroTech = document.getElementById('hero-tech-details');
         if (heroTech) heroTech.classList.toggle('is-hidden', scrolled);
 
-        if (!scrolled) {
-          if (currentView === 'gallery') {
-            floatingHeader.classList.add('ds-header-hero');
-          } else {
-            floatingHeader.classList.add('ds-header-transparent-dark');
-          }
+        const sameNonDetailView = prevStateKey.startsWith(`${currentView}:`) && currentView !== 'detail';
+        const isMobileMenuRelocate = window.innerWidth < 768 && sameNonDetailView && !floatingHeader.classList.contains('is-switching-view');
+
+        if (isMobileMenuRelocate) {
+          clearTimeout(mobHdrFadeTimer);
+          floatingHeader.classList.add('is-mobile-relocating');
+          mobHdrFadeTimer = setTimeout(() => {
+            const latestScrolled = scrollViewport.scrollTop > 18 || window.scrollY > 18 || document.documentElement.scrollTop > 18;
+            applyHeaderFrostedClasses(latestScrolled);
+            void floatingHeader.offsetHeight;
+            requestAnimationFrame(() => {
+              floatingHeader.classList.remove('is-mobile-relocating');
+            });
+          }, 380);
         } else {
-          floatingHeader.classList.add('ds-header-frosted');
+          clearTimeout(mobHdrFadeTimer);
+          floatingHeader.classList.remove('is-mobile-relocating');
+          applyHeaderFrostedClasses(scrolled);
         }
       }
     }
