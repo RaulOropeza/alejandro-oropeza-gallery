@@ -1290,9 +1290,8 @@ h1.ds-brand-name {
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding (all multiples of 8): 104px top (1-line), 24px sides, static 184px bottom
-     (avoids dynamic env(safe-area-inset-bottom) jumps inside 100svh when mobile browser bars collapse on scroll) */
-  padding: var(--ds-showcase-title-band) 1.5rem 11.5rem 1.5rem;
+  /* Mobile padding: 104px top (1-line), 24px sides, static 156px bottom */
+  padding: var(--ds-showcase-title-band) 1.5rem 9.75rem 1.5rem;
 }
 
 @media (max-width: 767px) {
@@ -1303,30 +1302,30 @@ h1.ds-brand-name {
 
 @media (min-width: 768px) {
   .ds-showcase-stage {
-    /* Desktop padding (all multiples of 8): 160px top, 40px sides, 64px bottom (clears 36px Fullscreen button) */
-    padding: var(--ds-showcase-title-band) 2.5rem 4rem 2.5rem;
+    /* Desktop padding: 128px top (~53px below title vs ~44px above), 40px sides, 64px bottom */
+    padding: 8rem 2.5rem 4rem 2.5rem;
   }
 }
 
-/* Stage Fullscreen Visualizer Trigger (Surface Button: centered closer to image on mobile, bottom-right on desktop) */
+/* Stage Fullscreen Visualizer Trigger (Surface Button: centered closer to bottom bar on mobile, bottom-right on desktop) */
 .ds-btn.ds-stage-visualizer-btn,
 .ds-stage-visualizer-btn {
   position: absolute;
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  bottom: 7.5rem; /* 120px — static within 100svh stage so button & image never jump when browser bars hide */
+  bottom: 6.25rem; /* 100px — 16px above mobile bottom bar */
   z-index: 20;
 }
 
 /* Standalone Home Screen PWA only (no collapsible browser bar; safe-area-inset-bottom is constant) */
 @media (display-mode: standalone) and (max-width: 767px) {
   .ds-showcase-stage {
-    padding-bottom: calc(11.5rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(9.75rem + env(safe-area-inset-bottom, 0px));
   }
   .ds-btn.ds-stage-visualizer-btn,
   .ds-stage-visualizer-btn {
-    bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(6.25rem + env(safe-area-inset-bottom, 0px));
   }
 }
 .ds-btn.ds-stage-visualizer-btn:active,
@@ -1445,7 +1444,7 @@ h1.ds-brand-name {
   }
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
     position: absolute;
-    top: calc(var(--ds-showcase-title-band) / 2 - 1.9375rem);
+    top: 3.0625rem;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;

@@ -359,7 +359,7 @@
     },
     {
       "id": "classic-jaguar-bruges",
-      "title": "Classic Jaguar, Bruges",
+      "title": "Classic Jaguar",
       "file": "ClassicJaguarCar_Bruges_2023_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
@@ -469,7 +469,7 @@
     },
     {
       "id": "edisons-red-lion-pub",
-      "title": "Red Lion Pub, Southampton",
+      "title": "Red Lion Pub",
       "file": "EdisonsAndRedLionPub_Southampton_2023_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
@@ -579,7 +579,7 @@
     },
     {
       "id": "chalk-cliff-margate",
-      "title": "Chalk Cliff, Margate",
+      "title": "Chalk Cliff",
       "file": "ChalkCliff_Margate_UK_2026_AOropeza.jpg",
       "orientation": "portrait",
       "aspectRatio": 0.667,
@@ -645,7 +645,7 @@
     },
     {
       "id": "floating-dock-montreal",
-      "title": "Floating Dock, Montreal",
+      "title": "Floating Dock",
       "file": "FloatingDock_OldPortOfMontreal_2019_AOropeza.jpg",
       "orientation": "landscape",
       "aspectRatio": 1.5,
