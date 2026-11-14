@@ -1086,11 +1086,33 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
+        <!-- HERO OVERLAY & SHOWCASE DETAILS SPECIMENS -->
+        <div class="pt-3 space-y-2.5" style="border-top: 1px solid var(--ds-color-border);">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <span class="ds-value font-medium">Hero Overlay &amp; Showcase Patterns (<code>.ds-scroll-cue</code> · <code>.ds-hero-tech</code> · <code>.ds-spec-row</code>)</span>
+            <span class="ds-label">Hero cue (18px M / 16px D) · Tech EXIF (14px, fades on scroll) · Spec rows (<code>--ds-details-max-width</code>: 28rem M / 40rem D)</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="relative rounded h-32 flex items-center justify-center overflow-hidden" style="background: linear-gradient(180deg, #262626 0%, #141414 100%);">
+              <span class="ds-hero-tech" style="position: static; transform: none; margin-bottom: 2.25rem;">Sony ILCE-7M4 · 35mm · f/4.0 · 1/500s · ISO 100</span>
+              <div class="ds-scroll-cue" style="position: absolute; bottom: 0.75rem; left: 50%; transform: translateX(-50%); pointer-events: none;">
+                <span class="ds-scroll-cue-label">View gallery</span>
+                <svg class="ds-scroll-cue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="p-3.5 rounded border" style="background-color: var(--ds-color-canvas); border-color: var(--ds-color-border);">
+              <div class="ds-spec-row"><span class="ds-label">LOCATION &amp; YEAR</span><span class="ds-value">Acapulco, 2024</span></div>
+              <div class="ds-spec-row"><span class="ds-label">FOCAL LENGTH</span><span class="ds-value">135 mm</span></div>
+              <div class="ds-spec-row" style="border-bottom: none;"><span class="ds-label">SHUTTER SPEED</span><span class="ds-value">1/1000 s</span></div>
+            </div>
+          </div>
+        </div>
+
         <!-- SITE FOOTER SPECIMEN -->
         <div class="pt-3 space-y-2.5" style="border-top: 1px solid var(--ds-color-border);">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <span class="ds-value font-medium">Site Footer (<code>.ds-footer</code>)</span>
-            <span class="ds-label">Mirror of the Top Bar · Wordmark · Menu · Tonal IconButtons · Thin rule above · Muted ©</span>
+            <span class="ds-label">Mirror of the Top Bar · Wordmark · Menu · Tonal IconButtons · Thin rule above · Muted © (12px)</span>
           </div>
           <div class="rounded overflow-hidden" style="background-color: var(--ds-color-canvas);">
             <footer class="ds-footer ds-header-transparent-dark ds-footer-specimen">
@@ -1130,10 +1152,10 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
         </div>
         <div class="ds-spec-row">
           <div>
-            <span class="ds-label block">.ds-h2 · Jost Medium (500) · Uppercase · +0.05em</span>
+            <span class="ds-label block">.ds-h2 · Jost Medium (500) / Regular (400 D) · Uppercase · +0.05em</span>
             <span class="ds-h2 mt-0.5 block">Perch Rock Lighthouse</span>
           </div>
-          <code class="text-xs text-neutral-500">24px M (500) · 26px D (400)</code>
+          <code class="text-xs text-neutral-500">24px M · 26px D · 22px Pill</code>
         </div>
         <div class="ds-spec-row">
           <div>
@@ -1147,38 +1169,125 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
             <span class="ds-label block">.ds-brand-name · Jost Medium (500) · Uppercase · +0.05em</span>
             <span class="ds-brand-name mt-0.5 block">Alejandro Oropeza</span>
           </div>
-          <code class="text-xs text-neutral-500">18px / 500</code>
+          <code class="text-xs text-neutral-500">18px Base · 22px D Top · 16px Pill</code>
         </div>
-        <div class="ds-spec-row" style="border-bottom: none;">
+        <div class="ds-spec-row">
+          <div>
+            <span class="ds-label block">.ds-brand-subtitle · Nunito Sans · Uppercase · +0.16em</span>
+            <span class="ds-brand-subtitle mt-0.5 block">Photo Gallery</span>
+          </div>
+          <code class="text-xs text-neutral-500">16px M (300) · 13px D (400)</code>
+        </div>
+        <div class="ds-spec-row">
           <div>
             <span class="ds-label block">.ds-body (18px) / .ds-value (16px) / .ds-label (14px) · Nunito Sans</span>
             <span class="ds-body mt-0.5 block">Travel photography studying subjects in quiet isolation.</span>
           </div>
           <code class="text-xs text-neutral-500">18px / 300–400</code>
         </div>
+        <div class="ds-spec-row" style="border-bottom: none;">
+          <div>
+            <span class="ds-label block">.ds-footer-copy · Nunito Sans Regular (400) · +0.03em</span>
+            <span class="ds-footer-copy mt-0.5 block" style="text-align: left; margin-top: 0.25rem;">© 2026 Alejandro Oropeza</span>
+          </div>
+          <code class="text-xs text-neutral-500">12px / 400</code>
+        </div>
       </div>
     </div>
 
-    <!-- 3. PURE MONOCHROME COLOR TOKENS -->
+    <!-- 3. PURE MONOCHROME COLOR & GLASS TOKENS -->
     <div>
-      <h2 class="ds-h3 mb-2.5">3. Pure Neutral Monochrome Tokens (R = G = B)</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-        <div class="p-2.5 rounded border" style="background-color: #FFFFFF; border-color: #EBEBEB;">
+      <h2 class="ds-h3 mb-2.5">3. Pure Neutral Monochrome &amp; Glass Tokens (R = G = B)</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2.5">
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-canvas); border-color: var(--ds-color-border);">
           <div class="ds-value">#FFFFFF</div>
           <div class="ds-label mt-0.5">--ds-color-canvas</div>
         </div>
-        <div class="p-2.5 rounded border" style="background-color: #F2F2F2; border-color: #E5E5E5;">
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="ds-value">#FAFAFA</div>
+          <div class="ds-label mt-0.5">--ds-color-subtle</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-stage); border-color: var(--ds-color-border-strong);">
           <div class="ds-value">#F2F2F2</div>
           <div class="ds-label mt-0.5">--ds-color-stage</div>
         </div>
-        <div class="p-2.5 rounded border" style="background-color: #525252; border-color: #525252; color: #FFFFFF;">
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-placeholder); border-color: var(--ds-color-border-strong);">
+          <div class="ds-value">#EDEDED</div>
+          <div class="ds-label mt-0.5">--ds-color-placeholder</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-border); border-color: var(--ds-color-border-strong);">
+          <div class="ds-value">#EBEBEB</div>
+          <div class="ds-label mt-0.5">--ds-color-border</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-border-strong); border-color: var(--ds-color-border-strong);">
+          <div class="ds-value">#DCDCDC</div>
+          <div class="ds-label mt-0.5">--ds-color-border-strong</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-ink-label); border-color: var(--ds-color-ink-label);">
+          <div class="ds-value" style="color: #FFFFFF;">#8C8C8C</div>
+          <div class="ds-label mt-0.5" style="color: #F2F2F2;">--ds-color-ink-label</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-ink-muted); border-color: var(--ds-color-ink-muted);">
+          <div class="ds-value" style="color: #FFFFFF;">#737373</div>
+          <div class="ds-label mt-0.5" style="color: #EBEBEB;">--ds-color-ink-muted</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-ink-secondary); border-color: var(--ds-color-ink-secondary);">
           <div class="ds-value" style="color: #FFFFFF;">#525252</div>
           <div class="ds-label mt-0.5" style="color: #D4D4D4;">--ds-color-ink-secondary</div>
         </div>
-        <div class="p-2.5 rounded border" style="background-color: #141414; border-color: #141414; color: #FFFFFF;">
+        <div class="p-2.5 rounded border" style="background-color: var(--ds-color-ink-primary); border-color: var(--ds-color-ink-primary);">
           <div class="ds-value" style="color: #FFFFFF;">#141414</div>
           <div class="ds-label mt-0.5" style="color: #A3A3A3;">--ds-color-ink-primary</div>
         </div>
+        <div class="p-2.5 rounded border" style="background: var(--ds-pill-bg); backdrop-filter: var(--ds-pill-blur); border-color: var(--ds-color-border-strong);">
+          <div class="ds-value">68% Glass</div>
+          <div class="ds-label mt-0.5">--ds-pill-bg</div>
+        </div>
+        <div class="p-2.5 rounded border" style="background: var(--ds-surface-frosted); backdrop-filter: var(--ds-blur-frosted); border-color: var(--ds-border-frosted);">
+          <div class="ds-value">76% Glass</div>
+          <div class="ds-label mt-0.5">--ds-surface-frosted</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. CORNER RADII, SHADOWS & ELEVATION -->
+    <div>
+      <h2 class="ds-h3 mb-2.5">4. Corner Radii, Shadows &amp; Elevation</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="w-10 h-10 shrink-0" style="background-color: var(--ds-color-stage); border: 1px solid var(--ds-color-border-strong); border-radius: var(--ds-radius-sm);"></div>
+          <div><div class="ds-value">--ds-radius-sm</div><div class="ds-label">4px · Photo frames</div></div>
+        </div>
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="w-10 h-10 shrink-0" style="background-color: var(--ds-color-stage); border: 1px solid var(--ds-color-border-strong); border-radius: var(--ds-radius-pill);"></div>
+          <div><div class="ds-value">--ds-radius-pill</div><div class="ds-label">9999px · Pills &amp; buttons</div></div>
+        </div>
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="w-10 h-10 shrink-0" style="background-color: var(--ds-pill-bg); border: 1px solid var(--ds-pill-border); border-radius: var(--ds-radius-pill); box-shadow: var(--ds-pill-shadow);"></div>
+          <div><div class="ds-value">--ds-pill-shadow</div><div class="ds-label">Floating pill elevation</div></div>
+        </div>
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="w-10 h-10 shrink-0" style="background-color: var(--ds-color-canvas); border-radius: var(--ds-radius-pill); box-shadow: var(--ds-shadow-btn);"></div>
+          <div><div class="ds-value">--ds-shadow-btn</div><div class="ds-label">Control resting border &amp; bevel</div></div>
+        </div>
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: var(--ds-color-subtle); border-color: var(--ds-color-border);">
+          <div class="w-10 h-10 shrink-0" style="background-color: var(--ds-color-canvas); border-radius: var(--ds-radius-pill); box-shadow: var(--ds-shadow-btn-hover);"></div>
+          <div><div class="ds-value">--ds-shadow-btn-hover</div><div class="ds-label">Control hover lift</div></div>
+        </div>
+        <div class="p-3.5 rounded-lg border flex items-center gap-3" style="background-color: #1F1F1F; border-color: #1F1F1F;">
+          <span class="ds-brand-name" style="color: #FFFFFF; text-shadow: var(--ds-hero-text-shadow); font-size: 0.875rem;">Aa</span>
+          <div><div class="ds-value" style="color: #FFFFFF;">--ds-hero-text-shadow</div><div class="ds-label" style="color: #A3A3A3;">Hero title legibility</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. MOTION, ANIMATION & LAYOUT TOKENS -->
+    <div>
+      <h2 class="ds-h3 mb-2.5">5. Motion, Animation &amp; Layout Tokens</h2>
+      <div class="space-y-2 rounded-lg p-3.5" style="background-color: var(--ds-color-subtle); border: 1px solid var(--ds-color-border);">
+        <div class="ds-spec-row"><span class="ds-label">EASING &amp; DURATIONS</span><span class="ds-value"><code>--ds-ease-out-expo</code> · 180ms fast · 350ms header · 450ms zoom</span></div>
+        <div class="ds-spec-row"><span class="ds-label">GALLERY HOVER &amp; CUE</span><span class="ds-value"><code>--ds-hover-scale</code> (1.03) · <code>ds-scroll-bob</code> (2.2s infinite)</span></div>
+        <div class="ds-spec-row" style="border-bottom: none;"><span class="ds-label">LAYOUT WIDTHS (8PX GRID)</span><span class="ds-value"><code>--ds-pill-max-width</code> (46rem) · <code>--ds-details-max-width</code> (28rem M / 40rem D) · <code>--ds-gallery-max-width</code> (72rem)</span></div>
       </div>
     </div>
 
