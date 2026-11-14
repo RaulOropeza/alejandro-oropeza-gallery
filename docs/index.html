@@ -1479,8 +1479,8 @@ h1.ds-brand-name {
   background-color: var(--ds-color-stage); /* #F2F2F2 */
   border-bottom: 1px solid var(--ds-color-border);
   box-sizing: border-box;
-  /* Mobile padding: 104px top (1-line), 24px sides, static 156px bottom */
-  padding: var(--ds-showcase-title-band) 1.5rem 9.75rem 1.5rem;
+  /* Mobile padding: 104px top (1-line), 24px sides, static 164px bottom (zero overlap + 22px equidistant gap on Safari svh) */
+  padding: var(--ds-showcase-title-band) 1.5rem 10.25rem 1.5rem;
 }
 
 @media (max-width: 767px) {
@@ -1496,21 +1496,21 @@ h1.ds-brand-name {
   }
 }
 
-/* Stage Fullscreen Visualizer Trigger (Surface Button: centered closer to bottom bar on mobile, bottom-right on desktop) */
+/* Stage Fullscreen Visualizer Trigger (Surface Button: centered equidistantly between portrait image and mobile bottom bar) */
 .ds-btn.ds-stage-visualizer-btn,
 .ds-stage-visualizer-btn {
   position: absolute;
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  bottom: 6.625rem; /* 106px — equidistant (~21px) between portrait image and mobile bottom bar */
+  bottom: 6.625rem; /* 106px — 22px above mobile bottom bar, 22px below portrait image on Safari svh */
   z-index: 20;
 }
 
 /* Standalone Home Screen PWA only (no collapsible browser bar; safe-area-inset-bottom is constant) */
 @media (display-mode: standalone) and (max-width: 767px) {
   .ds-showcase-stage {
-    padding-bottom: calc(9.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(10.25rem + env(safe-area-inset-bottom, 0px));
   }
   .ds-btn.ds-stage-visualizer-btn,
   .ds-stage-visualizer-btn {
