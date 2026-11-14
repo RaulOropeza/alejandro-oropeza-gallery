@@ -392,9 +392,14 @@ h1.ds-brand-name {
 .ds-scroll-cue-label {
   font-family: var(--ds-font-sans);
   font-weight: 400;
-  font-size: 1.125rem; /* 18px (+2px from 16px) */
+  font-size: 1.125rem; /* 18px on mobile */
   line-height: 1;
   letter-spacing: 0.04em;
+}
+@media (min-width: 768px) {
+  .ds-scroll-cue-label {
+    font-size: 1rem; /* 16px on desktop */
+  }
 }
 .ds-scroll-cue-arrow {
   width: 22px;
