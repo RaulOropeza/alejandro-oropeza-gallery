@@ -1142,10 +1142,13 @@ h1.ds-brand-name {
 }
 
 .ds-floating-header.ds-header-frosted .ds-mobile-social-stack {
-  display: none !important;
   opacity: 0;
   visibility: hidden;
+  transform: translateY(-10px) scale(0.92);
   pointer-events: none;
+  transition: opacity 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 180ms;
 }
 
 .ds-mobile-social-stack.is-hidden,
@@ -1241,20 +1244,6 @@ h1.ds-brand-name {
     padding-top: 0.75rem; /* 12px top clearance */
     align-items: flex-start;
     justify-content: flex-end;
-    opacity: 1;
-    transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .ds-floating-header:not(.is-detail).is-mobile-relocating {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) {
-    top: auto;
-    bottom: 0;
-    padding-top: 0;
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    align-items: flex-end;
-    justify-content: flex-end;
   }
   .ds-floating-header:not(.is-detail) .ds-floating-pill {
     position: relative;
@@ -1274,9 +1263,6 @@ h1.ds-brand-name {
     box-shadow: none !important;
     pointer-events: none;
     transition: color 220ms ease;
-  }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill {
-    margin-top: 0;
   }
   .ds-floating-header:not(.is-detail) .ds-floating-pill::before {
     content: "";
@@ -2394,34 +2380,21 @@ h1.ds-brand-name {
     }
 
     let lastHeaderStateKey = '';
-    let mobHdrFadeTimer = null;
-
-    function applyHeaderFrostedClasses(scrolled) {
-      floatingHeader.classList.remove(
-        'ds-header-hero',
-        'ds-header-transparent-dark',
-        'ds-header-frosted'
-      );
-      if (!scrolled) {
-        if (currentView === 'gallery') {
-          floatingHeader.classList.add('ds-header-hero');
-        } else {
-          floatingHeader.classList.add('ds-header-transparent-dark');
-        }
-      } else {
-        floatingHeader.classList.add('ds-header-frosted');
-      }
-    }
 
     function updateHeaderStyle() {
       const scrolled = scrollViewport.scrollTop > 18 || window.scrollY > 18 || document.documentElement.scrollTop > 18;
       const stateKey = `${currentView}:${scrolled ? 1 : 0}`;
 
       if (stateKey !== lastHeaderStateKey) {
-        const prevStateKey = lastHeaderStateKey;
         lastHeaderStateKey = stateKey;
         const navGal = document.getElementById('nav-gallery');
         const navAbt = document.getElementById('nav-about');
+
+        floatingHeader.classList.remove(
+          'ds-header-hero',
+          'ds-header-transparent-dark',
+          'ds-header-frosted'
+        );
 
         navGal.classList.toggle('is-active', currentView === 'gallery');
         navAbt.classList.toggle('is-active', currentView === 'about');
@@ -2435,24 +2408,14 @@ h1.ds-brand-name {
         const heroTech = document.getElementById('hero-tech-details');
         if (heroTech) heroTech.classList.toggle('is-hidden', scrolled);
 
-        const sameNonDetailView = prevStateKey.startsWith(`${currentView}:`) && currentView !== 'detail';
-        const isMobileMenuRelocate = window.innerWidth < 768 && sameNonDetailView && !floatingHeader.classList.contains('is-switching-view');
-
-        if (isMobileMenuRelocate) {
-          clearTimeout(mobHdrFadeTimer);
-          floatingHeader.classList.add('is-mobile-relocating');
-          mobHdrFadeTimer = setTimeout(() => {
-            const latestScrolled = scrollViewport.scrollTop > 18 || window.scrollY > 18 || document.documentElement.scrollTop > 18;
-            applyHeaderFrostedClasses(latestScrolled);
-            void floatingHeader.offsetHeight;
-            requestAnimationFrame(() => {
-              floatingHeader.classList.remove('is-mobile-relocating');
-            });
-          }, 380);
+        if (!scrolled) {
+          if (currentView === 'gallery') {
+            floatingHeader.classList.add('ds-header-hero');
+          } else {
+            floatingHeader.classList.add('ds-header-transparent-dark');
+          }
         } else {
-          clearTimeout(mobHdrFadeTimer);
-          floatingHeader.classList.remove('is-mobile-relocating');
-          applyHeaderFrostedClasses(scrolled);
+          floatingHeader.classList.add('ds-header-frosted');
         }
       }
     }

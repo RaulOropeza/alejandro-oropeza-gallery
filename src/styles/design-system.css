@@ -953,10 +953,13 @@ h1.ds-brand-name {
 }
 
 .ds-floating-header.ds-header-frosted .ds-mobile-social-stack {
-  display: none !important;
   opacity: 0;
   visibility: hidden;
+  transform: translateY(-10px) scale(0.92);
   pointer-events: none;
+  transition: opacity 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 180ms;
 }
 
 .ds-mobile-social-stack.is-hidden,
@@ -1052,20 +1055,6 @@ h1.ds-brand-name {
     padding-top: 0.75rem; /* 12px top clearance */
     align-items: flex-start;
     justify-content: flex-end;
-    opacity: 1;
-    transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .ds-floating-header:not(.is-detail).is-mobile-relocating {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) {
-    top: auto;
-    bottom: 0;
-    padding-top: 0;
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    align-items: flex-end;
-    justify-content: flex-end;
   }
   .ds-floating-header:not(.is-detail) .ds-floating-pill {
     position: relative;
@@ -1085,9 +1074,6 @@ h1.ds-brand-name {
     box-shadow: none !important;
     pointer-events: none;
     transition: color 220ms ease;
-  }
-  .ds-floating-header.ds-header-frosted:not(.is-detail) .ds-floating-pill {
-    margin-top: 0;
   }
   .ds-floating-header:not(.is-detail) .ds-floating-pill::before {
     content: "";
