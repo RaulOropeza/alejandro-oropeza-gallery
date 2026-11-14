@@ -1412,9 +1412,12 @@ h1.ds-brand-name {
   }
 }
 @media (min-width: 768px) {
+  .ds-floating-header.is-detail .ds-floating-pill {
+    position: relative;
+  }
   .ds-floating-header.is-detail:not(.ds-header-frosted) #hdr-photo-title-wrap:not(.hidden) {
     position: absolute;
-    top: calc(var(--ds-showcase-title-band) / 2);
+    top: calc(var(--ds-showcase-title-band) / 2 - 1.9375rem);
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
