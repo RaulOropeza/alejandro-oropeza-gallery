@@ -983,6 +983,15 @@ h1.ds-brand-name {
   color: var(--ds-color-ink-inverse);
 }
 
+@media (min-width: 768px) {
+  .ds-floating-header.ds-header-hero {
+    transform: translateY(2.5rem); /* 40px down on desktop top scroll */
+  }
+  .ds-header-hero .ds-floating-pill {
+    max-width: calc(100% - 2rem); /* 32px less wide (16px inset per side) */
+  }
+}
+
 /* State 2: Scrolled all the way up on Showcase / About (No background, Dark Text, No Pill Box) */
 .ds-header-transparent-dark .ds-floating-pill {
   padding: 0.35rem 0;
