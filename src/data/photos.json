@@ -41,7 +41,7 @@
         "shutterSpeed": "1/50s",
         "iso": "ISO 100"
       },
-      "description": "A lone fisherman walks along the wet sand at dusk in Acapulco. The wide sky and incoming waves make him look small against the coast.",
+      "description": "A lone fisherman walks along the wet sand at dusk in Acapulco. Distant city buildings sit along the bay while waves roll in under a wide, cloudy sky.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -63,7 +63,7 @@
         "shutterSpeed": "1/400s",
         "iso": "ISO 250"
       },
-      "description": "Perch Rock Lighthouse stands alone on wet sand at low tide in New Brighton. It marks the meeting point where the river runs into the sea.",
+      "description": "Perch Rock Lighthouse stands alone behind a dark line of rocks at low tide in New Brighton. Flat sand stretches out in front under a pale, overcast sky.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -85,7 +85,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 100"
       },
-      "description": "White chalk cliffs meet the dark sea and wide sand along the coast in Margate. A few distant people show just how tall the rock walls are.",
+      "description": "White chalk cliffs meet the sea along a wide sandy beach in Margate. A few small figures walking near the water show how tall the rock walls are.",
       "print": {
         "enabled": false,
         "price": "$220",
@@ -107,7 +107,7 @@
         "shutterSpeed": "1/125s",
         "iso": "ISO 400"
       },
-      "description": "The observation wheel in Montreal stands still at the end of a quiet wooden pier. The empty walkway leads straight toward it under the evening sky.",
+      "description": "The observation wheel in Montreal stands still at the end of a wooden pier. Metal railings and bare winter trees frame the empty walkway under an evening sky.",
       "print": {
         "enabled": false,
         "price": "$280",
@@ -129,7 +129,7 @@
         "shutterSpeed": "1/1000s",
         "iso": "ISO 160"
       },
-      "description": "Big Ben rises above London under dark grey clouds. A break in the weather puts bright afternoon light right on the clock face and stonework.",
+      "description": "Big Ben rises above London against dark grey clouds. Bright afternoon sun hits the clock face and stonework while smaller roof spires sit at the bottom corner.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -151,7 +151,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 100"
       },
-      "description": "The church tower in León stands alone against a soft afternoon sky. Warm sunlight catches the stone edges and the small iron cross at the top.",
+      "description": "The church tower in León stands against a clear blue sky with soft white clouds. Warm sunlight catches the stone columns and the iron cross at the top.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -173,7 +173,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 500"
       },
-      "description": "A snow leopard rests quietly behind soft green leaves in New York. Even up close, it looks calm and completely undisturbed.",
+      "description": "A snow leopard rests quietly, looking off to the side against a soft green background. Even up close, it looks calm and completely unbothered.",
       "print": {
         "enabled": false,
         "price": "$280",
@@ -195,7 +195,7 @@
         "shutterSpeed": "1/1000s",
         "iso": "ISO 250"
       },
-      "description": "A red deer stag stands alone in tall green ferns in Richmond Park. The late sun lights up his antlers while the rest of the field stays quiet.",
+      "description": "A red deer stag stands chest-deep in green ferns in Richmond Park. Late sunlight catches his antlers while the trees behind stay quiet.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -217,7 +217,7 @@
         "shutterSpeed": "1/500s",
         "iso": "ISO 125"
       },
-      "description": "An Egyptian goose pauses by the water's edge in London. Its warm brown feathers stand out against the pale, dry reeds behind it.",
+      "description": "An Egyptian goose looks off to the side in London. Its dark brown feathers and bright orange eye stand out against soft green and tan grass.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -239,7 +239,7 @@
         "shutterSpeed": "1/1250s",
         "iso": "ISO 320"
       },
-      "description": "A mute swan floats on dark water in London. Drops of water hang in the air around its beak as it lifts its head.",
+      "description": "A mute swan floats against dark, rippled water in London. A few clear drops of water hang in mid-air just below its orange beak.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -261,7 +261,7 @@
         "shutterSpeed": "1/1600s",
         "iso": "ISO 125"
       },
-      "description": "A cormorant sits alone on a wooden post above dark water in London. Clean winter light catches the dark feathers along its neck and back.",
+      "description": "A cormorant perches alone on a bare winter branch high in the trees in London. Dark twigs and evergreen needles frame the bird against a pale grey sky.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -283,7 +283,7 @@
         "shutterSpeed": "1/1250s",
         "iso": "ISO 1000"
       },
-      "description": "A greylag goose glides across shaded pond water in Painshill Park. The dark water around it keeps the whole scene quiet and still.",
+      "description": "A greylag goose stands on green grass by the pond at Painshill Park, looking back over its shoulder. Softly rippled water fills the space behind it.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -305,7 +305,7 @@
         "shutterSpeed": "1/500s",
         "iso": "ISO 4000"
       },
-      "description": "A gray squirrel stops on mossy ground in Liverpool. It sits still in the soft shade, watching from the edge of the trees.",
+      "description": "A gray squirrel sits up in Liverpool, holding a bit of food in both paws. Soft brown autumn leaves blur into the background behind it.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -327,7 +327,7 @@
         "shutterSpeed": "1/250s",
         "iso": "ISO 250"
       },
-      "description": "The Brooklyn Bridge walkway stretches toward its stone tower on a cold, wet morning. Heavy steel cables form clean lines overhead above the empty snow-edged boards.",
+      "description": "People walk down the snow-edged wooden walkway of the Brooklyn Bridge toward its stone tower. Overhead, steel cables form clean lines against a pale winter sky.",
       "print": {
         "enabled": false,
         "price": "$300",
@@ -349,7 +349,7 @@
         "shutterSpeed": "1/500s",
         "iso": "ISO 1000"
       },
-      "description": "An arched skybridge hangs high between two brick and stone buildings in Manhattan. It connects the towers quietly above the narrow, shadowed street below.",
+      "description": "A green copper skybridge connects two brick and stone buildings high above a Manhattan street. A glass tower rises right behind it in the background.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -371,7 +371,7 @@
         "shutterSpeed": "1/250s",
         "iso": "ISO 1000"
       },
-      "description": "A vintage Jaguar sits parked on a quiet cobblestone street in Bruges. Its smooth curves stand out against the old brick buildings behind it.",
+      "description": "A pale blue vintage Jaguar sits on wet cobblestones in Bruges. Its rounded shape stands out among modern parked cars and old stepped brick buildings.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -393,7 +393,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 250"
       },
-      "description": "De Kat windmill stands beside the Zaan river in the Netherlands. Its wooden blades and dark roof sit right along the edge of the water.",
+      "description": "De Kat windmill and its dark red-roofed shed sit beside the Zaan river in the Netherlands. Blue water fills the foreground under a clear, pale sky.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -415,7 +415,7 @@
         "shutterSpeed": "1/80s",
         "iso": "ISO 400"
       },
-      "description": "The old wooden sawmill at Zaanse Schans stands quietly by the water. Pale northern light keeps the sky and river flat, leaving the mill on its own.",
+      "description": "The green wooden sawmill at Zaanse Schans stands on a small grassy point in the water. Warm sunset light colors the sky behind the dark, rippled river.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -437,7 +437,7 @@
         "shutterSpeed": "1/10s",
         "iso": "ISO 160"
       },
-      "description": "A classic street food stand glows under evening lights on West 34th Street in New York. In a busy city, it sits there like a small, bright island.",
+      "description": "A Sabrett hot dog stand glows under evening lights on West 34th Street in New York. People in winter coats blur past on the busy sidewalk.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -459,7 +459,7 @@
         "shutterSpeed": "1/80s",
         "iso": "ISO 250"
       },
-      "description": "A Beatles banner hangs between old brick buildings down Mathew Street in Liverpool. The narrow alley lines frame the sign in the middle of the street.",
+      "description": "A white Beatles banner hangs between red brick buildings down Mathew Street in Liverpool. People walk and sit below in the narrow alleyway.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -481,7 +481,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 125"
       },
-      "description": "Warm bulbs light up the dark wood front of the Red Lion Pub in Southampton. The glow makes the old building feel inviting against the evening street.",
+      "description": "A green corner cafe and the red brick Red Lion building meet along a brick-paved street in Southampton. The quiet corner sits under a bright, overcast sky.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -503,7 +503,7 @@
         "shutterSpeed": "1/320s",
         "iso": "ISO 100"
       },
-      "description": "The Pyramid of the Magician rises above the stone plaza in Uxmal. Late afternoon sun warms the rounded rock walls against a clear sky.",
+      "description": "The Pyramid of the Magician rises out of thick green trees in Uxmal. Heavy grey and white clouds hang low over the old stone steps.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -525,7 +525,7 @@
         "shutterSpeed": "1/800s",
         "iso": "ISO 250"
       },
-      "description": "A honeybee works its way across a purple lavender stem in a Mexico City garden. The green background blurs away, leaving just the bee and the flower.",
+      "description": "A honeybee clings to a purple lavender stem in a Mexico City garden. Other soft purple flowers blur around it in bright daylight.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -547,7 +547,7 @@
         "shutterSpeed": "1/30s",
         "iso": "ISO 100"
       },
-      "description": "The jagged peaks of Nevado de Toluca rise above a layer of morning clouds. Early sunlight hits the cold rock while the valley below stays hidden.",
+      "description": "The snow-dusted rocky ridge of Nevado de Toluca rises above green pine forests and patchwork farm fields. White clouds drift across a clear blue sky.",
       "print": {
         "enabled": false,
         "price": "$280",
@@ -569,7 +569,7 @@
         "shutterSpeed": "1/400s",
         "iso": "ISO 4000"
       },
-      "description": "A plane climbs through the morning sky past the snowy ridge of Iztaccíhuatl. It is a quick meeting point between a man-made machine and a quiet mountain.",
+      "description": "An airplane climbs past the snow-topped peak of Iztaccíhuatl above a busy Mexico City street. Cars and power lines fill the ground while pink morning light hits the mountain.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -591,7 +591,7 @@
         "shutterSpeed": "1/400s",
         "iso": "ISO 250"
       },
-      "description": "Steep white chalk cliffs drop down to dark water along the shore in Margate. Concrete walls at the base show where town meets the sea.",
+      "description": "A steep white chalk cliff drops into the sea in Margate. One person stands alone on the wet sand at the bottom of the frame.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -613,7 +613,7 @@
         "shutterSpeed": "1/400s",
         "iso": "ISO 160"
       },
-      "description": "Dark rooftops and distant hills line up across Mexico City at sunrise. Warm morning light glows behind the layered shapes of the city and mountains.",
+      "description": "The bright orange sun rises behind dark trees and rooftop antennas in Mexico City. Warm morning light fills the whole sky above the neighborhood.",
       "print": {
         "enabled": false,
         "price": "$260",
@@ -635,7 +635,7 @@
         "shutterSpeed": "1/1250s",
         "iso": "ISO 200"
       },
-      "description": "A few seagulls glide across an open sky above Margate. A single plane trail cuts a straight white line right behind them.",
+      "description": "Seagulls glide across a bright blue sky above Margate. One bird lines up right at the tip of a plane trail, looking as if it left the line.",
       "print": {
         "enabled": false,
         "price": "$240",
@@ -657,7 +657,7 @@
         "shutterSpeed": "1/400s",
         "iso": "ISO 800"
       },
-      "description": "A quiet wooden dock floats in icy river water at the Old Port of Montreal. Thin ice around the edges keeps the scene still and cold.",
+      "description": "A frost-covered wooden dock floats alone in dark river water at the Old Port of Montreal. A low sun shines across the water from the far shore.",
       "print": {
         "enabled": false,
         "price": "$260",
