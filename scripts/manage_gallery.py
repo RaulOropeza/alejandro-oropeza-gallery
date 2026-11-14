@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 from PIL import Image, ImageOps, ExifTags
 
-ROOT_DIR = Path("/home/antigravity/alejandro-oropeza-gallery")
+ROOT_DIR = Path(__file__).resolve().parent.parent
 CSS_PATH = ROOT_DIR / "src" / "styles" / "design-system.css"
 DATA_PATH = ROOT_DIR / "src" / "data" / "photos.json"
 PUBLIC_PHOTOS_DIR = ROOT_DIR / "public" / "photos"
@@ -969,7 +969,7 @@ HTML_BASE_TEMPLATE = """<!DOCTYPE html>
     </section>
 
     <!-- VIEW 3: ABOUT ME PAGE -->
-    <section id="view-about" class="hidden __MAIN_PULL_CLS__ pt-24 px-6 sm:px-8 pb-16 max-w-xl mx-auto">
+    <section id="view-about" class="hidden __MAIN_PULL_CLS__ w-full pt-24 px-6 sm:px-8 pb-16 max-w-xl mx-auto">
       <span id="about-kicker" class="ds-label block">ABOUT ME</span>
       <h1 id="about-heading" class="ds-brand-name mt-2">Alejandro Oropeza</h1>
       <p id="about-bio" class="ds-body mt-4"></p>

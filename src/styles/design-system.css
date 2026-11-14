@@ -141,6 +141,8 @@
 .ds-viewport-min-height {
   min-height: 100vh;
   min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ============================================================================
@@ -1510,7 +1512,7 @@ h1.ds-brand-name {
    SITE FOOTER (.ds-footer)
    ============================================================================ */
 .ds-footer {
-  margin-top: 0;
+  margin-top: auto;
   padding: 1.5rem 1.5rem; /* 24px (3 × 8px) */
   border-top: 1px solid var(--ds-color-border);
   background-color: var(--ds-color-canvas);
